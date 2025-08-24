@@ -2,7 +2,9 @@ import { Metadata } from 'next';
 
 // Base website information
 const SITE_NAME = "Hollow Knight: Silksong Release Tracker";
-const BASE_URL = "https://hollowknightsilksong.org";
+const BASE_URL = process.env.NODE_ENV === 'production' 
+  ? process.env.NEXT_PUBLIC_SITE_URL || "https://hollowknightsilksong.org"
+  : "http://localhost:3000";
 const GAME_RELEASE_DATE = "September 4, 2025";
 
 // Common keywords across all pages

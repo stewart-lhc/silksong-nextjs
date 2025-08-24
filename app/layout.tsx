@@ -54,7 +54,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://hollowknightsilksong.org',
+    url: process.env.NODE_ENV === 'production' 
+      ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
+      : 'http://localhost:3000',
     siteName: 'Hollow Knight: Silksong Release Tracker',
     title: 'Hollow Knight: Silksong - Official Release Tracker',
     description:
@@ -88,7 +90,9 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://hollowknightsilksong.org',
+    canonical: process.env.NODE_ENV === 'production' 
+      ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
+      : 'http://localhost:3000',
   },
 };
 

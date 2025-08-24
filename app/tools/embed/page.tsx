@@ -92,7 +92,10 @@ export default function EmbedToolsPage() {
   const [copied, setCopied] = useState(false);
 
   const generateEmbedUrl = () => {
-    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://silksong.com';
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 
+      (process.env.NODE_ENV === 'production' 
+        ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
+        : 'http://localhost:3000');
     const params = new URLSearchParams();
     
     if (config.theme !== 'light') params.set('theme', config.theme);
