@@ -92,10 +92,23 @@ export default function EmbedToolsPage() {
   const [copied, setCopied] = useState(false);
 
   const generateEmbedUrl = () => {
-    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 
-      (process.env.NODE_ENV === 'production' 
-        ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
-        : 'http://localhost:3000');
+    // Force localhost in development, regardless of window.location
+    const baseUrl = process.env.NODE_ENV === 'production'
+      ? (typeof window !== 'undefined' 
+          ? window.location.origin 
+          : process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org')
+      : 'http://localhost:3000';
+    
+    // Debug logging (only in development)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('🔧 generateEmbedUrl Debug:', {
+        NODE_ENV: process.env.NODE_ENV,
+        windowOrigin: typeof window !== 'undefined' ? window.location.origin : 'undefined',
+        baseUrl,
+        finalUrl: `${baseUrl}/embed/countdown`
+      });
+    }
+    
     const params = new URLSearchParams();
     
     if (config.theme !== 'light') params.set('theme', config.theme);
