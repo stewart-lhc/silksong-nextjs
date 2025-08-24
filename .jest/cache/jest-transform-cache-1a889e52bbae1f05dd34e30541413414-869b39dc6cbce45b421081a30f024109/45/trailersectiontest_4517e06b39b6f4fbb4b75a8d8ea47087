@@ -1,0 +1,105 @@
+3f2545061fdc8fea47c341b412e064bf
+"use strict";
+// Mock the useMediaQuery hook
+jest.mock('@/hooks/use-media-query', ()=>({
+        useMediaQuery: jest.fn(()=>false)
+    }));
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+const _jsxruntime = require("react/jsx-runtime");
+const _react = require("@testing-library/react");
+require("@testing-library/jest-dom");
+const _trailersection = require("../../components/trailer-section");
+describe('TrailerSection', ()=>{
+    it('renders all 5 video trailers in carousel', ()=>{
+        (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_trailersection.TrailerSection, {}));
+        // Check if the section title is present
+        expect(_react.screen.getByText('Experience the World of Silksong')).toBeInTheDocument();
+        // Check if the carousel dots are present (should be 5)
+        const dots = _react.screen.getAllByLabelText(/Go to trailer \d+/);
+        expect(dots).toHaveLength(5);
+    });
+    it('shows first trailer by default', ()=>{
+        (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_trailersection.TrailerSection, {}));
+        // Check if the first trailer title is shown
+        expect(_react.screen.getByText('Hollow Knight: Silksong - Release Trailer')).toBeInTheDocument();
+        expect(_react.screen.getByText('Trailer 1 of 5')).toBeInTheDocument();
+    });
+    it('can navigate to next trailer', async ()=>{
+        (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_trailersection.TrailerSection, {}));
+        // Click next button
+        const nextButton = _react.screen.getByLabelText('Next trailer');
+        _react.fireEvent.click(nextButton);
+        // Should show second trailer
+        await (0, _react.waitFor)(()=>{
+            expect(_react.screen.getByText("Hollow Knight: Silksong - We've Played It! | gamescom 2025")).toBeInTheDocument();
+            expect(_react.screen.getByText('Trailer 2 of 5')).toBeInTheDocument();
+        });
+    });
+    it('can navigate to previous trailer', async ()=>{
+        (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_trailersection.TrailerSection, {}));
+        // Go to second trailer first
+        const nextButton = _react.screen.getByLabelText('Next trailer');
+        _react.fireEvent.click(nextButton);
+        await (0, _react.waitFor)(()=>{
+            expect(_react.screen.getByText("Hollow Knight: Silksong - We've Played It! | gamescom 2025")).toBeInTheDocument();
+        });
+        // Then go back to first
+        const prevButton = _react.screen.getByLabelText('Previous trailer');
+        _react.fireEvent.click(prevButton);
+        await (0, _react.waitFor)(()=>{
+            expect(_react.screen.getByText('Hollow Knight: Silksong - Release Trailer')).toBeInTheDocument();
+            expect(_react.screen.getByText('Trailer 1 of 5')).toBeInTheDocument();
+        });
+    });
+    it('can click on dots to navigate', async ()=>{
+        (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_trailersection.TrailerSection, {}));
+        // Click on third dot (index 2)
+        const thirdDot = _react.screen.getByLabelText('Go to trailer 3');
+        _react.fireEvent.click(thirdDot);
+        // Should show third trailer
+        await (0, _react.waitFor)(()=>{
+            expect(_react.screen.getByText('Hollow Knight: Silksong Reveal Trailer')).toBeInTheDocument();
+            expect(_react.screen.getByText('Trailer 3 of 5')).toBeInTheDocument();
+        });
+    });
+    it('wraps around when navigating beyond bounds', async ()=>{
+        (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_trailersection.TrailerSection, {}));
+        // Go to last trailer (5th)
+        const fifthDot = _react.screen.getByLabelText('Go to trailer 5');
+        _react.fireEvent.click(fifthDot);
+        await (0, _react.waitFor)(()=>{
+            expect(_react.screen.getByText('Hollow Knight: Silksong - Details from Team Cherry')).toBeInTheDocument();
+        });
+        // Click next should wrap to first trailer
+        const nextButton = _react.screen.getByLabelText('Next trailer');
+        _react.fireEvent.click(nextButton);
+        await (0, _react.waitFor)(()=>{
+            expect(_react.screen.getByText('Hollow Knight: Silksong - Release Trailer')).toBeInTheDocument();
+            expect(_react.screen.getByText('Trailer 1 of 5')).toBeInTheDocument();
+        });
+    });
+    it('has correct YouTube links for each trailer', ()=>{
+        (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_trailersection.TrailerSection, {}));
+        // Check if YouTube link exists and updates correctly
+        const youtubeLink = _react.screen.getByText('Watch on YouTube').closest('a');
+        expect(youtubeLink).toHaveAttribute('href', 'https://www.youtube.com/watch?v=6XGeJwsUP9c');
+        // Navigate to second trailer
+        const nextButton = _react.screen.getByLabelText('Next trailer');
+        _react.fireEvent.click(nextButton);
+        // YouTube link should update
+        setTimeout(()=>{
+            const updatedLink = _react.screen.getByText('Watch on YouTube').closest('a');
+            expect(updatedLink).toHaveAttribute('href', 'https://www.youtube.com/watch?v=hHnI6nlfE2A');
+        }, 100);
+    });
+    it('renders iframe with correct video embed URL', ()=>{
+        (0, _react.render)(/*#__PURE__*/ (0, _jsxruntime.jsx)(_trailersection.TrailerSection, {}));
+        // Check if iframe is present with correct src
+        const iframe = _react.screen.getByTitle('Hollow Knight: Silksong - Release Trailer');
+        expect(iframe).toHaveAttribute('src', 'https://www.youtube.com/embed/6XGeJwsUP9c');
+    });
+});
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6XFxHaXRIdWJcXHNpbGtzb25nLW5leHRqc1xcX190ZXN0c19fXFxjb21wb25lbnRzXFx0cmFpbGVyLXNlY3Rpb24udGVzdC50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgcmVuZGVyLCBzY3JlZW4sIGZpcmVFdmVudCwgd2FpdEZvciB9IGZyb20gJ0B0ZXN0aW5nLWxpYnJhcnkvcmVhY3QnO1xyXG5pbXBvcnQgJ0B0ZXN0aW5nLWxpYnJhcnkvamVzdC1kb20nO1xyXG5pbXBvcnQgeyBUcmFpbGVyU2VjdGlvbiB9IGZyb20gJ0AvY29tcG9uZW50cy90cmFpbGVyLXNlY3Rpb24nO1xyXG5cclxuLy8gTW9jayB0aGUgdXNlTWVkaWFRdWVyeSBob29rXHJcbmplc3QubW9jaygnQC9ob29rcy91c2UtbWVkaWEtcXVlcnknLCAoKSA9PiAoe1xyXG4gIHVzZU1lZGlhUXVlcnk6IGplc3QuZm4oKCkgPT4gZmFsc2UpLCAvLyBEZWZhdWx0IHRvIGRlc2t0b3BcclxufSkpO1xyXG5cclxuZGVzY3JpYmUoJ1RyYWlsZXJTZWN0aW9uJywgKCkgPT4ge1xyXG4gIGl0KCdyZW5kZXJzIGFsbCA1IHZpZGVvIHRyYWlsZXJzIGluIGNhcm91c2VsJywgKCkgPT4ge1xyXG4gICAgcmVuZGVyKDxUcmFpbGVyU2VjdGlvbiAvPik7XHJcbiAgICBcclxuICAgIC8vIENoZWNrIGlmIHRoZSBzZWN0aW9uIHRpdGxlIGlzIHByZXNlbnRcclxuICAgIGV4cGVjdChzY3JlZW4uZ2V0QnlUZXh0KCdFeHBlcmllbmNlIHRoZSBXb3JsZCBvZiBTaWxrc29uZycpKS50b0JlSW5UaGVEb2N1bWVudCgpO1xyXG4gICAgXHJcbiAgICAvLyBDaGVjayBpZiB0aGUgY2Fyb3VzZWwgZG90cyBhcmUgcHJlc2VudCAoc2hvdWxkIGJlIDUpXHJcbiAgICBjb25zdCBkb3RzID0gc2NyZWVuLmdldEFsbEJ5TGFiZWxUZXh0KC9HbyB0byB0cmFpbGVyIFxcZCsvKTtcclxuICAgIGV4cGVjdChkb3RzKS50b0hhdmVMZW5ndGgoNSk7XHJcbiAgfSk7XHJcblxyXG4gIGl0KCdzaG93cyBmaXJzdCB0cmFpbGVyIGJ5IGRlZmF1bHQnLCAoKSA9PiB7XHJcbiAgICByZW5kZXIoPFRyYWlsZXJTZWN0aW9uIC8+KTtcclxuICAgIFxyXG4gICAgLy8gQ2hlY2sgaWYgdGhlIGZpcnN0IHRyYWlsZXIgdGl0bGUgaXMgc2hvd25cclxuICAgIGV4cGVjdChzY3JlZW4uZ2V0QnlUZXh0KCdIb2xsb3cgS25pZ2h0OiBTaWxrc29uZyAtIFJlbGVhc2UgVHJhaWxlcicpKS50b0JlSW5UaGVEb2N1bWVudCgpO1xyXG4gICAgZXhwZWN0KHNjcmVlbi5nZXRCeVRleHQoJ1RyYWlsZXIgMSBvZiA1JykpLnRvQmVJblRoZURvY3VtZW50KCk7XHJcbiAgfSk7XHJcblxyXG4gIGl0KCdjYW4gbmF2aWdhdGUgdG8gbmV4dCB0cmFpbGVyJywgYXN5bmMgKCkgPT4ge1xyXG4gICAgcmVuZGVyKDxUcmFpbGVyU2VjdGlvbiAvPik7XHJcbiAgICBcclxuICAgIC8vIENsaWNrIG5leHQgYnV0dG9uXHJcbiAgICBjb25zdCBuZXh0QnV0dG9uID0gc2NyZWVuLmdldEJ5TGFiZWxUZXh0KCdOZXh0IHRyYWlsZXInKTtcclxuICAgIGZpcmVFdmVudC5jbGljayhuZXh0QnV0dG9uKTtcclxuICAgIFxyXG4gICAgLy8gU2hvdWxkIHNob3cgc2Vjb25kIHRyYWlsZXJcclxuICAgIGF3YWl0IHdhaXRGb3IoKCkgPT4ge1xyXG4gICAgICBleHBlY3Qoc2NyZWVuLmdldEJ5VGV4dChcIkhvbGxvdyBLbmlnaHQ6IFNpbGtzb25nIC0gV2UndmUgUGxheWVkIEl0ISB8IGdhbWVzY29tIDIwMjVcIikpLnRvQmVJblRoZURvY3VtZW50KCk7XHJcbiAgICAgIGV4cGVjdChzY3JlZW4uZ2V0QnlUZXh0KCdUcmFpbGVyIDIgb2YgNScpKS50b0JlSW5UaGVEb2N1bWVudCgpO1xyXG4gICAgfSk7XHJcbiAgfSk7XHJcblxyXG4gIGl0KCdjYW4gbmF2aWdhdGUgdG8gcHJldmlvdXMgdHJhaWxlcicsIGFzeW5jICgpID0+IHtcclxuICAgIHJlbmRlcig8VHJhaWxlclNlY3Rpb24gLz4pO1xyXG4gICAgXHJcbiAgICAvLyBHbyB0byBzZWNvbmQgdHJhaWxlciBmaXJzdFxyXG4gICAgY29uc3QgbmV4dEJ1dHRvbiA9IHNjcmVlbi5nZXRCeUxhYmVsVGV4dCgnTmV4dCB0cmFpbGVyJyk7XHJcbiAgICBmaXJlRXZlbnQuY2xpY2sobmV4dEJ1dHRvbik7XHJcbiAgICBcclxuICAgIGF3YWl0IHdhaXRGb3IoKCkgPT4ge1xyXG4gICAgICBleHBlY3Qoc2NyZWVuLmdldEJ5VGV4dChcIkhvbGxvdyBLbmlnaHQ6IFNpbGtzb25nIC0gV2UndmUgUGxheWVkIEl0ISB8IGdhbWVzY29tIDIwMjVcIikpLnRvQmVJblRoZURvY3VtZW50KCk7XHJcbiAgICB9KTtcclxuICAgIFxyXG4gICAgLy8gVGhlbiBnbyBiYWNrIHRvIGZpcnN0XHJcbiAgICBjb25zdCBwcmV2QnV0dG9uID0gc2NyZWVuLmdldEJ5TGFiZWxUZXh0KCdQcmV2aW91cyB0cmFpbGVyJyk7XHJcbiAgICBmaXJlRXZlbnQuY2xpY2socHJldkJ1dHRvbik7XHJcbiAgICBcclxuICAgIGF3YWl0IHdhaXRGb3IoKCkgPT4ge1xyXG4gICAgICBleHBlY3Qoc2NyZWVuLmdldEJ5VGV4dCgnSG9sbG93IEtuaWdodDogU2lsa3NvbmcgLSBSZWxlYXNlIFRyYWlsZXInKSkudG9CZUluVGhlRG9jdW1lbnQoKTtcclxuICAgICAgZXhwZWN0KHNjcmVlbi5nZXRCeVRleHQoJ1RyYWlsZXIgMSBvZiA1JykpLnRvQmVJblRoZURvY3VtZW50KCk7XHJcbiAgICB9KTtcclxuICB9KTtcclxuXHJcbiAgaXQoJ2NhbiBjbGljayBvbiBkb3RzIHRvIG5hdmlnYXRlJywgYXN5bmMgKCkgPT4ge1xyXG4gICAgcmVuZGVyKDxUcmFpbGVyU2VjdGlvbiAvPik7XHJcbiAgICBcclxuICAgIC8vIENsaWNrIG9uIHRoaXJkIGRvdCAoaW5kZXggMilcclxuICAgIGNvbnN0IHRoaXJkRG90ID0gc2NyZWVuLmdldEJ5TGFiZWxUZXh0KCdHbyB0byB0cmFpbGVyIDMnKTtcclxuICAgIGZpcmVFdmVudC5jbGljayh0aGlyZERvdCk7XHJcbiAgICBcclxuICAgIC8vIFNob3VsZCBzaG93IHRoaXJkIHRyYWlsZXJcclxuICAgIGF3YWl0IHdhaXRGb3IoKCkgPT4ge1xyXG4gICAgICBleHBlY3Qoc2NyZWVuLmdldEJ5VGV4dCgnSG9sbG93IEtuaWdodDogU2lsa3NvbmcgUmV2ZWFsIFRyYWlsZXInKSkudG9CZUluVGhlRG9jdW1lbnQoKTtcclxuICAgICAgZXhwZWN0KHNjcmVlbi5nZXRCeVRleHQoJ1RyYWlsZXIgMyBvZiA1JykpLnRvQmVJblRoZURvY3VtZW50KCk7XHJcbiAgICB9KTtcclxuICB9KTtcclxuXHJcbiAgaXQoJ3dyYXBzIGFyb3VuZCB3aGVuIG5hdmlnYXRpbmcgYmV5b25kIGJvdW5kcycsIGFzeW5jICgpID0+IHtcclxuICAgIHJlbmRlcig8VHJhaWxlclNlY3Rpb24gLz4pO1xyXG4gICAgXHJcbiAgICAvLyBHbyB0byBsYXN0IHRyYWlsZXIgKDV0aClcclxuICAgIGNvbnN0IGZpZnRoRG90ID0gc2NyZWVuLmdldEJ5TGFiZWxUZXh0KCdHbyB0byB0cmFpbGVyIDUnKTtcclxuICAgIGZpcmVFdmVudC5jbGljayhmaWZ0aERvdCk7XHJcbiAgICBcclxuICAgIGF3YWl0IHdhaXRGb3IoKCkgPT4ge1xyXG4gICAgICBleHBlY3Qoc2NyZWVuLmdldEJ5VGV4dCgnSG9sbG93IEtuaWdodDogU2lsa3NvbmcgLSBEZXRhaWxzIGZyb20gVGVhbSBDaGVycnknKSkudG9CZUluVGhlRG9jdW1lbnQoKTtcclxuICAgIH0pO1xyXG4gICAgXHJcbiAgICAvLyBDbGljayBuZXh0IHNob3VsZCB3cmFwIHRvIGZpcnN0IHRyYWlsZXJcclxuICAgIGNvbnN0IG5leHRCdXR0b24gPSBzY3JlZW4uZ2V0QnlMYWJlbFRleHQoJ05leHQgdHJhaWxlcicpO1xyXG4gICAgZmlyZUV2ZW50LmNsaWNrKG5leHRCdXR0b24pO1xyXG4gICAgXHJcbiAgICBhd2FpdCB3YWl0Rm9yKCgpID0+IHtcclxuICAgICAgZXhwZWN0KHNjcmVlbi5nZXRCeVRleHQoJ0hvbGxvdyBLbmlnaHQ6IFNpbGtzb25nIC0gUmVsZWFzZSBUcmFpbGVyJykpLnRvQmVJblRoZURvY3VtZW50KCk7XHJcbiAgICAgIGV4cGVjdChzY3JlZW4uZ2V0QnlUZXh0KCdUcmFpbGVyIDEgb2YgNScpKS50b0JlSW5UaGVEb2N1bWVudCgpO1xyXG4gICAgfSk7XHJcbiAgfSk7XHJcblxyXG4gIGl0KCdoYXMgY29ycmVjdCBZb3VUdWJlIGxpbmtzIGZvciBlYWNoIHRyYWlsZXInLCAoKSA9PiB7XHJcbiAgICByZW5kZXIoPFRyYWlsZXJTZWN0aW9uIC8+KTtcclxuICAgIFxyXG4gICAgLy8gQ2hlY2sgaWYgWW91VHViZSBsaW5rIGV4aXN0cyBhbmQgdXBkYXRlcyBjb3JyZWN0bHlcclxuICAgIGNvbnN0IHlvdXR1YmVMaW5rID0gc2NyZWVuLmdldEJ5VGV4dCgnV2F0Y2ggb24gWW91VHViZScpLmNsb3Nlc3QoJ2EnKTtcclxuICAgIGV4cGVjdCh5b3V0dWJlTGluaykudG9IYXZlQXR0cmlidXRlKCdocmVmJywgJ2h0dHBzOi8vd3d3LnlvdXR1YmUuY29tL3dhdGNoP3Y9NlhHZUp3c1VQOWMnKTtcclxuICAgIFxyXG4gICAgLy8gTmF2aWdhdGUgdG8gc2Vjb25kIHRyYWlsZXJcclxuICAgIGNvbnN0IG5leHRCdXR0b24gPSBzY3JlZW4uZ2V0QnlMYWJlbFRleHQoJ05leHQgdHJhaWxlcicpO1xyXG4gICAgZmlyZUV2ZW50LmNsaWNrKG5leHRCdXR0b24pO1xyXG4gICAgXHJcbiAgICAvLyBZb3VUdWJlIGxpbmsgc2hvdWxkIHVwZGF0ZVxyXG4gICAgc2V0VGltZW91dCgoKSA9PiB7XHJcbiAgICAgIGNvbnN0IHVwZGF0ZWRMaW5rID0gc2NyZWVuLmdldEJ5VGV4dCgnV2F0Y2ggb24gWW91VHViZScpLmNsb3Nlc3QoJ2EnKTtcclxuICAgICAgZXhwZWN0KHVwZGF0ZWRMaW5rKS50b0hhdmVBdHRyaWJ1dGUoJ2hyZWYnLCAnaHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1oSG5JNm5sZkUyQScpO1xyXG4gICAgfSwgMTAwKTtcclxuICB9KTtcclxuXHJcbiAgaXQoJ3JlbmRlcnMgaWZyYW1lIHdpdGggY29ycmVjdCB2aWRlbyBlbWJlZCBVUkwnLCAoKSA9PiB7XHJcbiAgICByZW5kZXIoPFRyYWlsZXJTZWN0aW9uIC8+KTtcclxuICAgIFxyXG4gICAgLy8gQ2hlY2sgaWYgaWZyYW1lIGlzIHByZXNlbnQgd2l0aCBjb3JyZWN0IHNyY1xyXG4gICAgY29uc3QgaWZyYW1lID0gc2NyZWVuLmdldEJ5VGl0bGUoJ0hvbGxvdyBLbmlnaHQ6IFNpbGtzb25nIC0gUmVsZWFzZSBUcmFpbGVyJyk7XHJcbiAgICBleHBlY3QoaWZyYW1lKS50b0hhdmVBdHRyaWJ1dGUoJ3NyYycsICdodHRwczovL3d3dy55b3V0dWJlLmNvbS9lbWJlZC82WEdlSndzVVA5YycpO1xyXG4gIH0pO1xyXG59KTsiXSwibmFtZXMiOlsiamVzdCIsIm1vY2siLCJ1c2VNZWRpYVF1ZXJ5IiwiZm4iLCJkZXNjcmliZSIsIml0IiwicmVuZGVyIiwiVHJhaWxlclNlY3Rpb24iLCJleHBlY3QiLCJzY3JlZW4iLCJnZXRCeVRleHQiLCJ0b0JlSW5UaGVEb2N1bWVudCIsImRvdHMiLCJnZXRBbGxCeUxhYmVsVGV4dCIsInRvSGF2ZUxlbmd0aCIsIm5leHRCdXR0b24iLCJnZXRCeUxhYmVsVGV4dCIsImZpcmVFdmVudCIsImNsaWNrIiwid2FpdEZvciIsInByZXZCdXR0b24iLCJ0aGlyZERvdCIsImZpZnRoRG90IiwieW91dHViZUxpbmsiLCJjbG9zZXN0IiwidG9IYXZlQXR0cmlidXRlIiwic2V0VGltZW91dCIsInVwZGF0ZWRMaW5rIiwiaWZyYW1lIiwiZ2V0QnlUaXRsZSJdLCJtYXBwaW5ncyI6IjtBQUlBLDhCQUE4QjtBQUM5QkEsS0FBS0MsSUFBSSxDQUFD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

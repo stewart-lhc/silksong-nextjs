@@ -17,10 +17,10 @@ export const timeline: TimelineEvent[] = timelineData as TimelineEvent[];
 export const checklist: ChecklistCategory[] = checklistData;
 export const gameInfo: GameInfo = gameInfoData;
 export const comparison = comparisonData;
-export const differences: DifferenceItem[] = differencesData;
-export const platforms: PlatformItem[] = platformsData;
+export const differences: DifferenceItem[] = differencesData as DifferenceItem[];
+export const platforms: PlatformItem[] = platformsData as PlatformItem[];
 export const faqs: FaqItem[] = faqsData;
-export const differencesUnconfirmed: UnconfirmedDifferenceItem[] = differencesUnconfirmedData;
+export const differencesUnconfirmed: UnconfirmedDifferenceItem[] = differencesUnconfirmedData as UnconfirmedDifferenceItem[];
 
 // Utility functions for data access
 export const getTimelineByType = (type: 'Official' | 'Media' | 'Community') => {

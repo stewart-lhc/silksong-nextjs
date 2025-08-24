@@ -26,7 +26,7 @@ const customJestConfig = {
   // Module name mapping for path aliases
   moduleNameMapper: {
     // Handle path aliases (must match tsconfig.json paths)
-    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@/(.*)$': '<rootDir>/$1',
     '^@/app/(.*)$': '<rootDir>/app/$1',
     '^@/components/(.*)$': '<rootDir>/components/$1',
     '^@/lib/(.*)$': '<rootDir>/lib/$1',
@@ -153,8 +153,8 @@ const customJestConfig = {
   // Test timeout
   testTimeout: 10000,
   
-  // Setup timeout
-  setupFilesAfterEnvTimeout: 30000,
+  // Setup timeout (removed deprecated option)
+  // setupFilesAfterEnvTimeout: 30000,
   
   // ===== ERROR HANDLING =====
   

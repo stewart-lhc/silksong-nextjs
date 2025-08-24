@@ -213,8 +213,8 @@ export function throttle<T extends (...args: any[]) => any>(
   return throttled;
 }
 
-// React Server Component compatible caching
-export const memoize = cache;
+// React Server Component compatible caching - alias for React's cache function
+export const serverMemoize = cache;
 
 // Client-side memory management for components
 export class ComponentMemoryManager {
@@ -237,7 +237,9 @@ export class ComponentMemoryManager {
     if (this.renderCache.size >= this.maxCacheSize) {
       // Remove oldest entries (FIFO)
       const firstKey = this.renderCache.keys().next().value;
-      this.renderCache.delete(firstKey);
+      if (firstKey !== undefined) {
+        this.renderCache.delete(firstKey);
+      }
     }
     this.renderCache.set(key, result);
   }
@@ -399,11 +401,11 @@ export async function* processInChunks<T>(
     yield chunk;
     
     // Yield control back to the browser/event loop
-    await new Promise(resolve => {
+    await new Promise<void>(resolve => {
       if (typeof window !== 'undefined' && nextJSTaskScheduler) {
-        nextJSTaskScheduler.scheduleTask(resolve);
+        nextJSTaskScheduler.scheduleTask(() => resolve());
       } else {
-        setTimeout(resolve, 0);
+        setTimeout(() => resolve(), 0);
       }
     });
   }
@@ -523,7 +525,6 @@ export function prefetchNextJSPage(href: string): void {
 // Export commonly used utilities
 export {
   cache as serverCache,
-  memoize,
 };
 
 // Type definitions for better TypeScript support

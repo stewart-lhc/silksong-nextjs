@@ -1,4 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { TrailerSection } from '@/components/trailer-section';
 
 // Mock the useMediaQuery hook

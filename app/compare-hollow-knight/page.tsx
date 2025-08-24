@@ -129,7 +129,7 @@ export default function CompareHollowKnightPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((item: ComparisonItem, index: number) => (
+                {data.map((item: any, index: number) => (
                   <TableRow key={index} className="hover:bg-muted/50">
                     <TableCell className="font-medium">{item.dimension}</TableCell>
                     <TableCell>{item.hollowKnight}</TableCell>

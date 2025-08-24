@@ -379,7 +379,7 @@ export function generateEnhancedMetadata(config: PageSEOConfig): Metadata {
     verification: {
       google: 'your-google-verification-code',
       yandex: 'your-yandex-verification-code',
-      bing: 'your-bing-verification-code',
+      // bing: 'your-bing-verification-code', // Not supported in Next.js 15
     },
     robots: {
       index: true,
@@ -434,7 +434,7 @@ Object.keys(seoConfigs).forEach(key => {
   if (key !== 'home') {
     config.breadcrumbs = [
       { name: 'Home', item: BASE_URL },
-      { name: config.title?.split(' - ')[0] || 'Page', item: config.alternates?.canonical || BASE_URL }
+      { name: (typeof config.title === 'string' ? config.title.split(' - ')[0] : 'Page') || 'Page', item: (typeof config.alternates?.canonical === 'string' ? config.alternates.canonical : BASE_URL) }
     ];
   }
   

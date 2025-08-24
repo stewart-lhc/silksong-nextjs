@@ -29,21 +29,21 @@ interface SupabaseMutationConfig<TData, TVariables> extends UseMutationOptions<T
  */
 export function useSupabaseQuery<T extends TableName>(
   table: T,
-  options: SupabaseQueryConfig<TableRow<T>[]> & {
+  options: SupabaseQueryConfig<any[]> & {
     select?: string;
     filter?: (query: any) => any;
     single?: false;
   }
-): ReturnType<typeof useQuery<TableRow<T>[]>>;
+): ReturnType<typeof useQuery<any[]>>;
 
 export function useSupabaseQuery<T extends TableName>(
   table: T,
-  options: SupabaseQueryConfig<TableRow<T> | null> & {
+  options: SupabaseQueryConfig<any | null> & {
     select?: string;
     filter?: (query: any) => any;
     single: true;
   }
-): ReturnType<typeof useQuery<TableRow<T> | null>>;
+): ReturnType<typeof useQuery<any | null>>;
 
 export function useSupabaseQuery<T extends TableName>(
   table: T,
@@ -82,16 +82,16 @@ export function useSupabaseQuery<T extends TableName>(
  */
 export function useSupabaseInsert<T extends TableName>(
   table: T,
-  options: SupabaseMutationConfig<TableRow<T>[], TableInsert<T>[]> = {}
+  options: SupabaseMutationConfig<any[], any[]> = {}
 ) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: TableInsert<T>[]) => {
+    mutationFn: async (data: any[]) => {
       const result = await executeQuery(async () => 
         supabase.from(table).insert(data).select()
       );
-      return result as TableRow<T>[];
+      return result as any[];
     },
     onSuccess: () => {
       // Invalidate related queries
@@ -106,12 +106,12 @@ export function useSupabaseInsert<T extends TableName>(
  */
 export function useSupabaseUpdate<T extends TableName>(
   table: T,
-  options: SupabaseMutationConfig<TableRow<T>[], { filter: (query: any) => any; data: TableUpdate<T> }> = {}
+  options: SupabaseMutationConfig<any[], { filter: (query: any) => any; data: any }> = {}
 ) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ filter, data }: { filter: (query: any) => any; data: TableUpdate<T> }) => {
+    mutationFn: async ({ filter, data }: { filter: (query: any) => any; data: any }) => {
       let query = supabase.from(table).update(data);
       query = filter(query);
       
@@ -130,7 +130,7 @@ export function useSupabaseUpdate<T extends TableName>(
  */
 export function useSupabaseDelete<T extends TableName>(
   table: T,
-  options: SupabaseMutationConfig<TableRow<T>[], (query: any) => any> = {}
+  options: SupabaseMutationConfig<any[], (query: any) => any> = {}
 ) {
   const queryClient = useQueryClient();
 
