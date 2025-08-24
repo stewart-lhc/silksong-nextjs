@@ -1,0 +1,180 @@
+[
+  {
+    "id": "account",
+    "title": "Account Setup",
+    "description": "Prepare your gaming accounts for Silksong's release",
+    "items": [
+      {
+        "id": "account-1",
+        "text": "Pre-order Silksong on Steam",
+        "completed": false
+      },
+      {
+        "id": "account-2",
+        "text": "Add Silksong to Xbox Game Pass wishlist",
+        "completed": false
+      },
+      {
+        "id": "account-3",
+        "text": "Follow Team Cherry on social media",
+        "completed": false
+      },
+      {
+        "id": "account-4",
+        "text": "Subscribe to Hollow Knight newsletter",
+        "completed": false
+      },
+      {
+        "id": "account-5",
+        "text": "Join Hollow Knight Discord server",
+        "completed": false
+      },
+      {
+        "id": "account-6",
+        "text": "Enable notifications for Team Cherry updates",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "id": "lore",
+    "title": "Lore & Story Preparation",
+    "description": "Refresh your knowledge of Hollow Knight's world and story",
+    "items": [
+      {
+        "id": "lore-1",
+        "text": "Complete Hollow Knight main story",
+        "completed": false
+      },
+      {
+        "id": "lore-2",
+        "text": "Unlock all Hollow Knight endings",
+        "completed": false
+      },
+      {
+        "id": "lore-3",
+        "text": "Complete Godmaster DLC",
+        "completed": false
+      },
+      {
+        "id": "lore-4",
+        "text": "Read all lore tablets and inspect all lore items",
+        "completed": false
+      },
+      {
+        "id": "lore-5",
+        "text": "Watch Hornet's appearances in Hollow Knight",
+        "completed": false
+      },
+      {
+        "id": "lore-6",
+        "text": "Study the map of Hallownest",
+        "completed": false
+      },
+      {
+        "id": "lore-7",
+        "text": "Research Pharloom (Silksong's setting)",
+        "completed": false
+      },
+      {
+        "id": "lore-8",
+        "text": "Watch all Silksong trailers and gameplay",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "id": "hardware",
+    "title": "Hardware & Setup",
+    "description": "Ensure your gaming setup is ready for the ultimate Silksong experience",
+    "items": [
+      {
+        "id": "hardware-1",
+        "text": "Check system requirements for Silksong",
+        "completed": false
+      },
+      {
+        "id": "hardware-2",
+        "text": "Update graphics drivers",
+        "completed": false
+      },
+      {
+        "id": "hardware-3",
+        "text": "Free up storage space (estimate 10GB+)",
+        "completed": false
+      },
+      {
+        "id": "hardware-4",
+        "text": "Test controller functionality",
+        "completed": false
+      },
+      {
+        "id": "hardware-5",
+        "text": "Calibrate monitor/TV display settings",
+        "completed": false
+      },
+      {
+        "id": "hardware-6",
+        "text": "Set up recording software for highlights",
+        "completed": false
+      },
+      {
+        "id": "hardware-7",
+        "text": "Prepare backup save system",
+        "completed": false
+      },
+      {
+        "id": "hardware-8",
+        "text": "Test audio setup for soundtrack experience",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "id": "community",
+    "title": "Community Engagement",
+    "description": "Connect with the Hollow Knight community for the Silksong journey",
+    "items": [
+      {
+        "id": "community-1",
+        "text": "Join r/HollowKnight subreddit",
+        "completed": false
+      },
+      {
+        "id": "community-2",
+        "text": "Follow Silksong fan accounts on Twitter",
+        "completed": false
+      },
+      {
+        "id": "community-3",
+        "text": "Watch theory videos about Silksong",
+        "completed": false
+      },
+      {
+        "id": "community-4",
+        "text": "Plan viewing party for release day",
+        "completed": false
+      },
+      {
+        "id": "community-5",
+        "text": "Prepare spoiler-free zones/blocklists",
+        "completed": false
+      },
+      {
+        "id": "community-6",
+        "text": "Find streaming/gameplay buddies",
+        "completed": false
+      },
+      {
+        "id": "community-7",
+        "text": "Bookmark Silksong wikis and guides",
+        "completed": false
+      },
+      {
+        "id": "community-8",
+        "text": "Plan social media strategy for sharing progress",
+        "completed": false
+      }
+    ]
+  }
+]

@@ -1,0 +1,62 @@
+{
+  "title": "Hollow Knight: Silksong",
+  "developer": "Team Cherry",
+  "releaseStatus": "Coming Soon",
+  "platforms": [
+    {
+      "name": "PC (Steam)",
+      "logo": "/assets/platforms/steam-logo.png",
+      "url": "https://store.steampowered.com/app/1030300/Hollow_Knight_Silksong/"
+    },
+    {
+      "name": "PC (GOG)",
+      "logo": "/assets/platforms/gog-logo.png",
+      "url": "https://www.gog.com/game/hollow_knight_silksong"
+    },
+    {
+      "name": "Nintendo Switch",
+      "logo": "/assets/platforms/switch-logo.png",
+      "url": "https://www.nintendo.com/us/store/products/hollow-knight-silksong-switch/"
+    },
+    {
+      "name": "Nintendo Switch 2",
+      "logo": "/assets/platforms/switch2-logo.png",
+      "url": "#"
+    },
+    {
+      "name": "PlayStation 5",
+      "logo": "/assets/platforms/ps5-logo.png",
+      "url": "https://www.playstation.com/en-us/games/hollow-knight-silksong/"
+    },
+    {
+      "name": "Xbox Series X/S",
+      "logo": "/assets/platforms/xbox-logo.png",
+      "url": "https://www.xbox.com/en-us/games/hollow-knight-silksong"
+    }
+  ],
+  "description": "The highly anticipated sequel to Hollow Knight featuring Hornet as the playable protagonist in the kingdom of Pharloom. Experience new abilities, creatures, and challenges in this expansive action-adventure.",
+  "features": [
+    {
+      "title": "Play as Hornet",
+      "description": "Master her needle and thread abilities in fast-paced combat",
+      "icon": "⚔️"
+    },
+    {
+      "title": "Kingdom of Pharloom",
+      "description": "Explore a vast and interconnected world filled with secrets",
+      "icon": "🏰"
+    },
+    {
+      "title": "New Abilities",
+      "description": "Discover unique movement and combat mechanics",
+      "icon": "✨"
+    },
+    {
+      "title": "Epic Bosses",
+      "description": "Battle challenging foes with intricate attack patterns",
+      "icon": "👹"
+    }
+  ],
+  "lastUpdate": "2025-08-22",
+  "expectedRelease": "2025"
+}

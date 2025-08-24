@@ -1,0 +1,62 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "es6"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    
+    /* Path Mapping - 路径别名配置 */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./app/*", "./components/*", "./lib/*", "./data/*"],
+      "@/components/*": ["./components/*"],
+      "@/components/ui/*": ["./components/ui/*"],
+      "@/lib/*": ["./lib/*"],
+      "@/styles/*": ["./styles/*"],
+      "@/hooks/*": ["./app/hooks/*", "./hooks/*"],
+      "@/utils/*": ["./lib/utils/*"],
+      "@/types/*": ["./types/*"],
+      "@/data/*": ["./data/*"]
+    },
+    
+    /* Type Checking */
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    
+    /* Next.js 特定配置 */
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/**/*",
+    "components/**/*",
+    "lib/**/*",
+    "styles/**/*",
+    "hooks/**/*",
+    "types/**/*",
+    "data/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "out",
+    "dist"
+  ]
+}

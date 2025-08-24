@@ -1,0 +1,92 @@
+[
+  {
+    "id": "1",
+    "date": "2019-02-14",
+    "title": "Hollow Knight: Silksong Revealed",
+    "description": "Team Cherry officially announced the sequel to Hollow Knight, 'Silksong,' and released its first trailer. Originally planned as a DLC for Hollow Knight, it evolved into a full-fledged sequel.",
+    "type": "Official",
+    "source": "https://www.teamcherry.com.au/blog/hollow-knight-silksong-revealed",
+    "category": "announcement"
+  },
+  {
+    "id": "2",
+    "date": "2019-06-11",
+    "title": "E3 2019 Nintendo Treehouse Live",
+    "description": "During the Nintendo Treehouse Live event at E3, official gameplay of Silksong was showcased, providing a deeper look at the gameplay mechanics. A playable demo was also available at the event.",
+    "type": "Media",
+    "source": "https://www.youtube.com/watch?v=c2-cboG-f-w",
+    "category": "gameplay"
+  },
+  {
+    "id": "3",
+    "date": "2019-12-31",
+    "title": "EDGE Magazine Feature",
+    "description": "EDGE Magazine published an exclusive feature on Silksong, revealing new game details, enemies, and mechanics. This was a significant information update after a long period of silence.",
+    "type": "Media",
+    "source": "https://www.gamesradar.com/edge-magazine-hollow-knight-silksong-devs-talk-new-world-new-hero-and-the-challenges-of-a-sequel/",
+    "category": "development"
+  },
+  {
+    "id": "4",
+    "date": "2022-06-12",
+    "title": "Xbox & Bethesda Games Showcase 2022",
+    "description": "After a long absence, Silksong reappeared at the Xbox & Bethesda Games Showcase with a new trailer. It was also confirmed that the game would be available on Xbox Game Pass on day one.",
+    "type": "Official",
+    "source": "https://www.youtube.com/watch?v=JSfuFlhsxT4",
+    "category": "announcement"
+  },
+  {
+    "id": "5",
+    "date": "2023-05-10",
+    "title": "Game Delay Announcement",
+    "description": "Matthew Griffin, head of marketing and publishing at Team Cherry, confirmed that Silksong was originally planned for release in the first half of 2023 but was delayed to ensure quality.",
+    "type": "Official",
+    "source": "https://twitter.com/griffinmatta/status/1656093223819149312",
+    "category": "release_date"
+  },
+  {
+    "id": "6",
+    "date": "2024-04-01",
+    "title": "April Fools' Day Joke and Community Hype",
+    "description": "A well-known community joke is that the game might get a 'surprise' release on April Fools' Day. Every year on this day, community anticipation and discussion reach a new peak.",
+    "type": "Community",
+    "source": "https://www.reddit.com/r/Silksong/",
+    "category": "expectation"
+  },
+   {
+    "id": "7",
+    "date": "2024-09-25",
+    "title": "Nintendo Direct September 2024",
+    "description": "During the Nintendo Direct Partner Showcase, the community widely hoped for an update on Silksong, despite no official indications.",
+    "type": "Community",
+    "source": "https://www.nintendo.com/us/nintendo-direct/",
+    "category": "expectation"
+  },
+   {
+    "id": "8",
+    "date": "2024-12-12",
+    "title": "The Game Awards (TGA) 2024",
+    "description": "As in previous years, leading up to and during The Game Awards, many fans speculated and hoped for a release date announcement for Silksong, which did not happen.",
+    "type": "Community",
+    "source": "https://thegameawards.com/",
+    "category": "expectation"
+  },
+  {
+    "id": "9",
+    "date": "2025-08-19",
+    "title": "Gamescom 2025 Opening Night Live",
+    "description": "During Gamescom's Opening Night Live event, Silksong was briefly mentioned, confirming a 2025 release window and offering a hands-on demo at the show.",
+    "type": "Media",
+    "source": "https://www.gamesradar.com/hollow-knight-silksong-guide/",
+    "category": "gameplay"
+  },
+  {
+    "id": "10",
+    "date": "2025-08-21",
+    "title": "Official Release Date Announced",
+    "description": "Team Cherry released a 'Special Announcement' video, officially confirming that Hollow Knight: Silksong will be released on September 4, 2025, ending years of anticipation.",
+    "type": "Official",
+    "source": "https://www.youtube.com/watch?v=muanUBa0xWM",
+    "category": "release_date"
+  }
+]

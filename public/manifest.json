@@ -1,0 +1,49 @@
+{
+  "name": "Hollow Knight: Silksong Release Tracker",
+  "short_name": "Silksong Tracker",
+  "description": "Official countdown and information hub for Hollow Knight: Silksong release on September 4, 2025",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#2d1b69",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pressKit/silksong_logo_white_4k_White.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pressKit/silksong_logo_white_4k_White.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/pressKit/Silksong_Promo_02_2400.png",
+      "sizes": "2400x1350",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/pressKit/screenShot/Silksong-Screenshots-_0001_19.webp",
+      "sizes": "1920x1080",
+      "type": "image/webp",
+      "form_factor": "wide"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
