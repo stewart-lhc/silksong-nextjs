@@ -17,9 +17,11 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: "Home", path: "/", description: "Latest news and countdown" },
+  { label: "Compare Differences", path: "/compare-hollow-knight", description: "Silksong vs Hollow Knight comparison" },
+  { label: "Platforms & Game Pass", path: "/platforms", description: "Available platforms and FAQ" },
+  { label: "Embed Tools", path: "/tools/embed", description: "Countdown embed generator" },
   { label: "Timeline", path: "/timeline", description: "Official statements timeline" },
   { label: "Checklist", path: "/checklist", description: "Player preparation guide" },
-  { label: "Platforms", path: "/platforms", description: "Available platforms" },
   { label: "FAQ", path: "/faq", description: "Frequently asked questions" }
 ];
 

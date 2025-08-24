@@ -116,6 +116,36 @@ export const FeaturesSection = memo(() => {
           </div>
         </div>
         
+        {/* PRD Required CTA Links */}
+        <div className="text-center space-y-8">
+          <div className="space-y-4">
+            <h3 className="text-2xl md:text-3xl font-bold text-white">
+              Dive Deeper Into Silksong
+            </h3>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Discover detailed comparisons, platform availability, and tools to share your excitement for the most anticipated Metroidvania sequel.
+            </p>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a 
+              href="/compare-hollow-knight" 
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              Compare Differences
+              <span className="ml-2">→</span>
+            </a>
+            
+            <a 
+              href="/platforms" 
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              Platforms & Game Pass
+              <span className="ml-2">→</span>
+            </a>
+          </div>
+        </div>
+        
       </div>
     </section>
   );
