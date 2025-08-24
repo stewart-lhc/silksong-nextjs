@@ -123,15 +123,7 @@ export default function EmbedToolsPage() {
 
   const generateEmbedCode = () => {
     const url = generateEmbedUrl();
-    return `<iframe 
-  src="${url}"
-  width="${config.width}"
-  height="${config.height}"
-  frameborder="0"
-  scrolling="no"
-  loading="lazy"
-  title="Hollow Knight: Silksong Countdown">
-</iframe>`;
+    return `<iframe src="${url}" width="${config.width}" height="${config.height}" frameborder="0" scrolling="no" loading="lazy" title="Hollow Knight: Silksong Countdown"></iframe>`;
   };
 
   const copyToClipboard = async (text: string) => {
@@ -276,12 +268,12 @@ export default function EmbedToolsPage() {
               <CardDescription>See how your widget will look</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="border rounded-lg p-4 bg-muted/20">
+              <div className="border rounded-lg p-6 bg-muted/20 min-h-[300px] flex items-center justify-center">
                 <iframe
                   src={generateEmbedUrl()}
                   width={config.width}
                   height={config.height}
-                  style={{ border: 'none', maxWidth: '100%' }}
+                  style={{ border: 'none', maxWidth: '100%', minHeight: '200px' }}
                   title="Widget Preview"
                 />
               </div>
@@ -307,7 +299,7 @@ export default function EmbedToolsPage() {
                   readOnly
                   value={generateEmbedCode()}
                   className="font-mono text-sm resize-none"
-                  rows={8}
+                  rows={2}
                 />
                 <Button
                   size="sm"
