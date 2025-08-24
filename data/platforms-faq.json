@@ -1,0 +1,36 @@
+{
+  "faqData": [
+    {
+      "question": "Which platforms will Hollow Knight: Silksong be available on?",
+      "answer": "Silksong is confirmed for PC (Steam, GOG), Nintendo Switch, PlayStation 5, and Xbox Series X/S. The game will also be available on Nintendo Switch 2 when the console launches."
+    },
+    {
+      "question": "Will Silksong be available on PlayStation 4 or older consoles?",
+      "answer": "No official confirmation has been made for PS4, Xbox One, or older generation consoles. Team Cherry appears to be focusing on current-generation platforms for optimal performance."
+    },
+    {
+      "question": "Will there be cross-platform save progression?",
+      "answer": "Cross-platform save functionality has not been officially confirmed. This feature would depend on platform holder policies and Team Cherry's implementation decisions."
+    },
+    {
+      "question": "Is Silksong coming to mobile devices?",
+      "answer": "There has been no official announcement regarding mobile versions (iOS/Android). Team Cherry has historically focused on PC and console platforms."
+    },
+    {
+      "question": "Will Silksong support HDR and next-gen console features?",
+      "answer": "While not explicitly detailed, the game is being developed for current-generation consoles, suggesting it will take advantage of improved hardware capabilities."
+    },
+    {
+      "question": "Can I pre-order Silksong on any platform?",
+      "answer": "Pre-orders are not yet available on any platform. Team Cherry typically opens pre-orders closer to the official release date announcement."
+    },
+    {
+      "question": "Will there be platform-exclusive content?",
+      "answer": "Team Cherry has not announced any platform-exclusive content. The core Silksong experience is expected to be consistent across all platforms."
+    },
+    {
+      "question": "What about Steam Deck compatibility?",
+      "answer": "While not officially confirmed, Hollow Knight runs excellently on Steam Deck, and Silksong as a PC title is expected to have similar compatibility."
+    }
+  ]
+}

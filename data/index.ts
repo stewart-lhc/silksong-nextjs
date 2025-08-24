@@ -2,15 +2,25 @@
 import timelineData from './timeline.json';
 import checklistData from './checklist.json';
 import gameInfoData from './gameInfo.json';
+import comparisonData from './comparison.json';
+import differencesData from './differences.json';
+import platformsData from './platforms.json';
+import faqsData from './faqs.json';
+import differencesUnconfirmedData from './differences-unconfirmed.json';
 
 // Type imports
-import type { TimelineEvent, ChecklistCategory, ChecklistSubItem } from '../types';
+import type { TimelineEvent, ChecklistCategory, ChecklistSubItem, DifferenceItem, PlatformItem, FaqItem, UnconfirmedDifferenceItem } from '../types';
 import type { GameInfo } from '../types/game';
 
 // Typed exports
 export const timeline: TimelineEvent[] = timelineData as TimelineEvent[];
 export const checklist: ChecklistCategory[] = checklistData;
 export const gameInfo: GameInfo = gameInfoData;
+export const comparison = comparisonData;
+export const differences: DifferenceItem[] = differencesData;
+export const platforms: PlatformItem[] = platformsData;
+export const faqs: FaqItem[] = faqsData;
+export const differencesUnconfirmed: UnconfirmedDifferenceItem[] = differencesUnconfirmedData;
 
 // Utility functions for data access
 export const getTimelineByType = (type: 'Official' | 'Media' | 'Community') => {
@@ -112,5 +122,67 @@ export const getCategoryProgress = (categoryId: string) => {
     completed,
     total,
     percentage: total > 0 ? Math.round((completed / total) * 100) : 0
+  };
+};
+
+// New utility functions for PRD Day 2 data
+export const getDifferencesByStatus = (status: 'confirmed' | 'hinted' | 'tba') => {
+  return differences.filter(item => item.status === status);
+};
+
+export const getPlatformsByStatus = (status: 'confirmed' | 'tba' | 'unannounced') => {
+  return platforms.filter(item => item.status === status);
+};
+
+export const getConfirmedPlatforms = () => {
+  return getPlatformsByStatus('confirmed');
+};
+
+export const getGamePassPlatform = () => {
+  return platforms.find(platform => 
+    platform.platform.toLowerCase().includes('game pass')
+  );
+};
+
+export const getFaqsByKeyword = (keyword: string) => {
+  return faqs.filter(faq => 
+    faq.q.toLowerCase().includes(keyword.toLowerCase()) ||
+    faq.a.toLowerCase().includes(keyword.toLowerCase())
+  );
+};
+
+export const getGamePassFaqs = () => {
+  return getFaqsByKeyword('game pass');
+};
+
+export const getDifferencesStats = () => {
+  const total = differences.length;
+  const confirmed = getDifferencesByStatus('confirmed').length;
+  const hinted = getDifferencesByStatus('hinted').length;
+  const tba = getDifferencesByStatus('tba').length;
+  
+  return {
+    total,
+    confirmed,
+    hinted,
+    tba,
+    confirmedPercentage: total > 0 ? Math.round((confirmed / total) * 100) : 0,
+    hintedPercentage: total > 0 ? Math.round((hinted / total) * 100) : 0,
+    tbaPercentage: total > 0 ? Math.round((tba / total) * 100) : 0
+  };
+};
+
+export const getPlatformsStats = () => {
+  const total = platforms.length;
+  const confirmed = getPlatformsByStatus('confirmed').length;
+  const tba = getPlatformsByStatus('tba').length;
+  const unannounced = getPlatformsByStatus('unannounced').length;
+  
+  return {
+    total,
+    confirmed,
+    tba,
+    unannounced,
+    confirmedPercentage: total > 0 ? Math.round((confirmed / total) * 100) : 0
   };
 };

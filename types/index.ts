@@ -133,3 +133,37 @@ export interface AppError {
   message: string;
   details?: Record<string, unknown>;
 }
+
+// New data types for PRD Day 2
+export interface DifferenceItem {
+  dimension: string;
+  hk: string;
+  ss: string;
+  status: 'confirmed' | 'hinted' | 'tba';
+  source: {
+    label: string;
+    url: string;
+  } | null;
+}
+
+export interface PlatformItem {
+  platform: string;
+  status: 'confirmed' | 'tba' | 'unannounced';
+  notes?: string;
+  source?: {
+    label: string;
+    url: string;
+  } | null;
+}
+
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
+export interface UnconfirmedDifferenceItem {
+  expectation: string;
+  rationale: string;
+  status: 'unconfirmed';
+  note?: string;
+}

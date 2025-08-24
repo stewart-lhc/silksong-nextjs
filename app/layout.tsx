@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono, Poppins } from 'next/font/google';
+import { JetBrains_Mono, Poppins } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { Providers } from './providers';
 import { Navigation } from '@/components/navigation';
@@ -12,31 +12,23 @@ import { websiteSchema, organizationSchema } from '@/lib/structured-data';
 import './globals.css';
 
 // Optimized font loading with preload and fallbacks
-const fontSans = Inter({
+// 限制字体数量以优化性能 - 主要使用Poppins作为sans字体
+const fontSans = Poppins({
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-sans',
-  display: 'swap',
-  preload: true,
-  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto'],
+  display: 'swap', // 性能优化：启用font-display:swap
+  preload: true, // 预加载关键字体
+  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
   adjustFontFallback: true,
 });
 
 const fontMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-mono',
-  display: 'swap',
-  preload: false, // Only preload if used above the fold
-  fallback: ['Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New'],
-  adjustFontFallback: true,
-});
-
-const fontPoppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
-  variable: '--font-poppins',
-  display: 'swap',
-  preload: true, // Used for headings above the fold
-  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont'],
+  display: 'swap', // 性能优化：启用font-display:swap
+  preload: false, // 仅在需要时加载等宽字体
+  fallback: ['Menlo', 'Monaco', 'Consolas', 'monospace'],
   adjustFontFallback: true,
 });
 
@@ -111,8 +103,7 @@ export default function RootLayout({
         className={cn(
           'min-h-screen bg-background font-sans antialiased',
           fontSans.variable,
-          fontMono.variable,
-          fontPoppins.variable
+          fontMono.variable
         )}
       >
         <Providers>

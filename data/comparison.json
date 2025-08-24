@@ -1,0 +1,84 @@
+{
+  "comparisonData": [
+    {
+      "dimension": "Protagonist",
+      "hollowKnight": "The Knight (Silent vessel)",
+      "silksong": "Hornet (Princess-protector)",
+      "status": "confirmed",
+      "source": "Official trailer and gameplay reveals"
+    },
+    {
+      "dimension": "Setting",
+      "hollowKnight": "Kingdom of Hallownest",
+      "silksong": "Kingdom of Pharloom",
+      "status": "confirmed",
+      "source": "Team Cherry development blogs"
+    },
+    {
+      "dimension": "Combat System",
+      "hollowKnight": "Nail-based melee combat",
+      "silksong": "Needle and thread combat with tools",
+      "status": "confirmed",
+      "source": "Official gameplay demonstrations"
+    },
+    {
+      "dimension": "Movement",
+      "hollowKnight": "Wall jump, dash, double jump",
+      "silksong": "Thread abilities, enhanced mobility",
+      "status": "confirmed",
+      "source": "Gameplay footage analysis"
+    },
+    {
+      "dimension": "Magic System",
+      "hollowKnight": "Soul-based spells",
+      "silksong": "Silk and thread-based abilities",
+      "status": "hinted",
+      "source": "Trailer implications and dev interviews"
+    },
+    {
+      "dimension": "World Size",
+      "hollowKnight": "~15 major areas",
+      "silksong": "Expanded interconnected world",
+      "status": "hinted",
+      "source": "Developer statements about scope"
+    },
+    {
+      "dimension": "Boss Count",
+      "hollowKnight": "47+ boss encounters",
+      "silksong": "New roster of challenging bosses",
+      "status": "tba",
+      "source": "Speculation from community"
+    },
+    {
+      "dimension": "Story Length",
+      "hollowKnight": "20-40 hours main story",
+      "silksong": "Similar or expanded length",
+      "status": "tba",
+      "source": "Team Cherry hints about scope"
+    },
+    {
+      "dimension": "Art Style",
+      "hollowKnight": "Hand-drawn 2D animation",
+      "silksong": "Enhanced hand-drawn animation",
+      "status": "confirmed",
+      "source": "Visual comparisons from trailers"
+    },
+    {
+      "dimension": "Music",
+      "hollowKnight": "Christopher Larkin orchestral",
+      "silksong": "Christopher Larkin composition",
+      "status": "confirmed",
+      "source": "Official soundtrack samples released"
+    }
+  ],
+  "unconfirmedExpectations": [
+    "Co-op multiplayer mode",
+    "New Game+ with additional content",
+    "Photo mode for capturing moments",
+    "Achievement/trophy system expansion",
+    "Accessibility options improvements",
+    "Additional language localizations",
+    "Post-launch content updates",
+    "Cross-platform progression save"
+  ]
+}

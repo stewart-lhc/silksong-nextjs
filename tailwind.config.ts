@@ -155,31 +155,23 @@ export default {
   			}
   		},
   		fontFamily: {
+  			// 限制字体族数量以优化性能 - 只使用2个主要字体族
   			sans: [
   				'Poppins',
   				'system-ui',
+  				'-apple-system',
+  				'BlinkMacSystemFont',
   				'sans-serif'
   			],
   			mono: [
-  				'Fira Code',
   				'JetBrains Mono',
+  				'Menlo',
+  				'Monaco',
+  				'Consolas',
   				'monospace'
-  			],
-  			poppins: [
-  				'Poppins',
-  				'system-ui',
-  				'sans-serif'
-  			],
-  			heading: [
-  				'Poppins',
-  				'system-ui',
-  				'sans-serif'
-  			],
-  			body: [
-  				'Poppins',
-  				'system-ui',
-  				'sans-serif'
   			]
+  			// 移除重复的字体族配置以减少CSS体积
+  			// poppins, heading, body 都使用 sans 族
   		},
   		fontSize: {
   			xs: [

@@ -1,21 +1,15 @@
+'use client';
+
+import { useState } from 'react';
 import { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Clock, CheckCircle, Monitor, Smartphone, Gamepad2 } from 'lucide-react';
+import { ExternalLink, Clock, CheckCircle, Monitor, Smartphone, Gamepad2, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 import { PlatformLogo } from '@/components/platform-logo';
+import faqData from '@/data/platforms-faq.json';
 
-export const metadata: Metadata = {
-  title: 'Platforms - Hollow Knight: Silksong',
-  description: 'Complete platform availability information for Hollow Knight: Silksong including confirmed releases, Game Pass, and official store links.',
-  keywords: ['Hollow Knight', 'Silksong', 'platforms', 'Steam', 'Xbox', 'Nintendo Switch', 'PlayStation', 'Game Pass'],
-  openGraph: {
-    title: 'Silksong Platforms & Availability',
-    description: 'Check which platforms Hollow Knight: Silksong will be available on, including Game Pass day-one availability.',
-    type: 'website',
-    images: ['/pressKit/Silksong_Promo_02_2400.png']
-  }
-};
+// Note: Metadata is handled by the parent layout since this is a client component
 
 interface Platform {
   id: string;
@@ -25,6 +19,41 @@ interface Platform {
   description: string;
   officialUrl?: string;
   gamePassIncluded?: boolean;
+}
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+function FAQAccordionItem({ item, isOpen, onToggle }: { 
+  item: FAQItem; 
+  isOpen: boolean; 
+  onToggle: () => void; 
+}) {
+  return (
+    <div className="border border-border rounded-lg">
+      <button
+        className="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-muted/50 transition-colors"
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        aria-controls={`faq-answer-${item.question}`}
+      >
+        <span className="font-medium">{item.question}</span>
+        {isOpen ? (
+          <ChevronUpIcon className="w-5 h-5 text-muted-foreground" />
+        ) : (
+          <ChevronDownIcon className="w-5 h-5 text-muted-foreground" />
+        )}
+      </button>
+      <div
+        id={`faq-answer-${item.question}`}
+        className={`px-4 pb-3 text-muted-foreground ${isOpen ? 'block' : 'hidden'}`}
+      >
+        {item.answer}
+      </div>
+    </div>
+  );
 }
 
 const platforms: Platform[] = [
@@ -152,13 +181,43 @@ const getStatusInfo = (status: Platform["status"]) => {
 };
 
 export default function PlatformsPage() {
+  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  
   const confirmedPlatforms = platforms.filter(p => p.status === "confirmed");
   const rumoredPlatforms = platforms.filter(p => p.status === "rumored");
   const unknownPlatforms = platforms.filter(p => p.status === "unknown");
+  
+  const faqItems: FAQItem[] = faqData.faqData;
+
+  const toggleFAQ = (index: number) => {
+    setOpenFAQ(openFAQ === index ? null : index);
+  };
+
+  // Generate FAQ JSON-LD structured data
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.answer
+      }
+    }))
+  };
 
   return (
-    <div className="container mx-auto px-6 py-12">
-      {/* Header */}
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqStructuredData)
+        }}
+      />
+      
+      <div className="container mx-auto px-6 py-12">
+        {/* Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-bold font-poppins text-foreground mb-4">
           Platforms & Availability
@@ -329,6 +388,33 @@ export default function PlatformsPage() {
         </section>
       )}
 
+      {/* FAQ Section */}
+      <section className="mb-12">
+        <h2 className="text-2xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>
+        <div className="max-w-3xl mx-auto space-y-4">
+          {faqItems.map((item, index) => (
+            <FAQAccordionItem
+              key={index}
+              item={item}
+              isOpen={openFAQ === index}
+              onToggle={() => toggleFAQ(index)}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* Statistics */}
+      <Card className="max-w-2xl mx-auto mb-8">
+        <CardContent className="pt-6">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-primary mb-2">
+              {confirmedPlatforms.length}
+            </div>
+            <div className="text-muted-foreground">Confirmed Platforms</div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Information Note */}
       <Card className="max-w-2xl mx-auto border-blue-500/30">
         <CardContent className="pt-6">
@@ -340,6 +426,7 @@ export default function PlatformsPage() {
           </p>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </>
   );
 }

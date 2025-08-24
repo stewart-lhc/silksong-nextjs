@@ -1,0 +1,98 @@
+[
+  {
+    "platform": "PC (Steam)",
+    "status": "confirmed",
+    "notes": "Available for pre-purchase and wishlist",
+    "source": {
+      "label": "Steam Store Page",
+      "url": "https://store.steampowered.com/app/1030300/Hollow_Knight_Silksong/"
+    }
+  },
+  {
+    "platform": "Xbox Series X/S",
+    "status": "confirmed",
+    "notes": "Optimized for Xbox Series consoles",
+    "source": {
+      "label": "Xbox Wire",
+      "url": "https://news.xbox.com/en-us/2022/06/12/xbox-games-showcase-2022-recap/"
+    }
+  },
+  {
+    "platform": "Xbox One",
+    "status": "confirmed",
+    "notes": "Backward compatible support",
+    "source": {
+      "label": "Xbox Store",
+      "url": "https://www.xbox.com/en-us/games/hollow-knight-silksong"
+    }
+  },
+  {
+    "platform": "PlayStation 5",
+    "status": "confirmed",
+    "notes": "Enhanced for PS5 hardware",
+    "source": {
+      "label": "PlayStation Blog",
+      "url": "https://blog.playstation.com/2022/06/12/hollow-knight-silksong-coming-to-playstation/"
+    }
+  },
+  {
+    "platform": "PlayStation 4",
+    "status": "confirmed",
+    "notes": "Standard PS4 support with PS5 upgrades available",
+    "source": {
+      "label": "PlayStation Store",
+      "url": "https://www.playstation.com/en-us/games/hollow-knight-silksong/"
+    }
+  },
+  {
+    "platform": "Nintendo Switch",
+    "status": "confirmed",
+    "notes": "Handheld and docked mode support",
+    "source": {
+      "label": "Nintendo eShop",
+      "url": "https://www.nintendo.com/us/store/products/hollow-knight-silksong-switch/"
+    }
+  },
+  {
+    "platform": "PC (GOG)",
+    "status": "confirmed",
+    "notes": "DRM-free version available",
+    "source": {
+      "label": "GOG Store Page",
+      "url": "https://www.gog.com/game/hollow_knight_silksong"
+    }
+  },
+  {
+    "platform": "Game Pass (Day One)",
+    "status": "confirmed",
+    "notes": "Available on Xbox Game Pass and PC Game Pass from launch day",
+    "source": {
+      "label": "Xbox Game Pass Announcement",
+      "url": "https://news.xbox.com/en-us/2022/06/12/hollow-knight-silksong-xbox-game-pass/"
+    }
+  },
+  {
+    "platform": "Epic Games Store",
+    "status": "tba",
+    "notes": "No official confirmation yet",
+    "source": null
+  },
+  {
+    "platform": "Nintendo Switch 2",
+    "status": "unannounced",
+    "notes": "Next-generation Nintendo console compatibility",
+    "source": null
+  },
+  {
+    "platform": "PC (Humble Store)",
+    "status": "tba",
+    "notes": "Third-party PC distribution",
+    "source": null
+  },
+  {
+    "platform": "Mobile (iOS/Android)",
+    "status": "unannounced",
+    "notes": "Mobile platform adaptation",
+    "source": null
+  }
+]
