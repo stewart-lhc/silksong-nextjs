@@ -114,7 +114,7 @@ export function TrailerSection() {
             {/* Video Player with Carousel */}
             <div 
               ref={containerRef}
-              className="relative aspect-video bg-slate-900/50 backdrop-blur-sm rounded-lg border border-border/50 overflow-hidden shadow-2xl"
+              className="relative aspect-video bg-card/50 backdrop-blur-sm rounded-lg border border-border/50 overflow-hidden card-enhanced"
             >
               {/* Swipe overlay on mobile to capture gestures above iframe */}
               {isMobile && (

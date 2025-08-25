@@ -5,7 +5,7 @@ export const siteConfig = {
   url: "https://silksong-archive.com",
   ogImage: "/og-image.jpg",
   links: {
-    twitter: "https://twitter.com/teamcherry",
+    twitter: "https://x.com/teamcherry",
     github: "https://github.com/team-cherry",
     steam: "https://store.steampowered.com/app/1030300/Hollow_Knight_Silksong/",
   },

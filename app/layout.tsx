@@ -1,13 +1,13 @@
-import type { Metadata } from 'next';
-import { JetBrains_Mono, Poppins } from 'next/font/google';
-import { cn } from '@/lib/utils';
-import { Providers } from './providers';
-import { Navigation } from '@/components/navigation';
 import { Footer } from '@/components/footer';
+import { Navigation } from '@/components/navigation';
 import { PerformanceMonitor } from '@/components/performance-monitor';
 import { PWAInstaller } from '@/components/pwa-installer';
 import { StructuredData } from '@/components/structured-data';
-import { websiteSchema, organizationSchema } from '@/lib/structured-data';
+import { organizationSchema, websiteSchema } from '@/lib/structured-data';
+import { cn } from '@/lib/utils';
+import type { Metadata } from 'next';
+import { JetBrains_Mono, Poppins } from 'next/font/google';
+import { Providers } from './providers';
 
 import './globals.css';
 
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     default: 'Hollow Knight: Silksong - Official Release Tracker',
     template: '%s | Hollow Knight: Silksong',
   },
-  description: 
+  description:
     'The ultimate source for Hollow Knight: Silksong news, updates, release countdown, and comprehensive game information. Track the most anticipated Metroidvania sequel.',
   keywords: [
     'Hollow Knight',
@@ -54,9 +54,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: process.env.NODE_ENV === 'production' 
-      ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
-      : 'http://localhost:3000',
+    url:
+      process.env.NODE_ENV === 'production'
+        ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
+        : 'http://localhost:3000',
     siteName: 'Hollow Knight: Silksong Release Tracker',
     title: 'Hollow Knight: Silksong - Official Release Tracker',
     description:
@@ -90,9 +91,10 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: process.env.NODE_ENV === 'production' 
-      ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
-      : 'http://localhost:3000',
+    canonical:
+      process.env.NODE_ENV === 'production'
+        ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
+        : 'http://localhost:3000',
   },
 };
 
@@ -102,25 +104,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body 
+    <html lang='en' suppressHydrationWarning>
+      <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased',
           fontSans.variable,
           fontMono.variable
         )}
+        suppressHydrationWarning={true}
       >
         <Providers>
           <PerformanceMonitor />
           <PWAInstaller />
           <StructuredData data={[websiteSchema, organizationSchema]} />
-          <div className="min-h-screen bg-background">
+          <div className='min-h-screen bg-background'>
             <Navigation />
-            
-            <main className="pt-20">
-              {children}
-            </main>
-            
+
+            <main className='pt-20'>{children}</main>
+
             <Footer />
           </div>
         </Providers>

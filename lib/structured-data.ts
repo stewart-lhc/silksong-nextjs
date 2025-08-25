@@ -8,7 +8,7 @@ export const organizationSchema = {
   "url": BASE_URL,
   "description": "Community-driven hub for Hollow Knight: Silksong information and updates",
   "sameAs": [
-    "https://twitter.com/teamcherry",
+    "https://x.com/teamcherry",
     "https://www.reddit.com/r/HollowKnight/",
     "https://discord.gg/hollowknight"
   ]
@@ -59,7 +59,7 @@ export const videoGameSchema = {
     "url": "https://www.teamcherry.com.au/",
     "description": "Independent game development studio from Australia",
     "sameAs": [
-      "https://twitter.com/teamcherry",
+      "https://x.com/teamcherry",
       "https://www.teamcherry.com.au/",
       "https://store.steampowered.com/developer/TeamCherry"
     ],

@@ -1,0 +1,94 @@
+<context>
+# Overview  
+Silksong Next.js is a comprehensive fan website dedicated to Hollow Knight: Silksong, providing fans with the latest information, updates, and interactive features related to the highly anticipated sequel. The website serves as a central hub for game information, developer updates, platform availability, and community engagement.
+
+# Core Features  
+1. **Game Information Hub**: Comprehensive information about Silksong including story, features, and comparisons with Hollow Knight
+2. **Timeline & Updates**: Interactive timeline showing development progress and major announcements
+3. **Platform Information**: Detailed platform availability and system requirements
+4. **Developer Section**: Information about Team Cherry and development insights  
+5. **FAQ System**: Comprehensive frequently asked questions with organized categories
+6. **Email Subscription**: Newsletter subscription system for game updates
+7. **Interactive Checklist**: Feature checklist for tracking confirmed game elements
+8. **Multimedia Content**: Trailer sections, soundtrack integration, and visual assets
+9. **Embed Tools**: Embeddable countdown widgets and other interactive tools
+10. **Performance Monitoring**: Advanced performance optimization and monitoring
+
+# User Experience  
+- **Primary Users**: Hollow Knight fans eagerly awaiting Silksong release
+- **Secondary Users**: Gaming journalists, content creators, and new players discovering the series
+- **Key Flows**: 
+  - Information discovery → subscription → regular updates
+  - FAQ browsing → finding specific answers
+  - Timeline exploration → understanding development progress
+- **UI/UX**: Modern, responsive design with accessibility features (WCAG compliance)
+</context>
+<PRD>
+# Technical Architecture  
+- **Frontend**: Next.js 14 with App Router, React 18, TypeScript
+- **Styling**: Tailwind CSS with Shadcn/UI component library
+- **State Management**: React hooks, local storage for user preferences
+- **Backend**: Next.js API routes for subscriptions and analytics
+- **Database**: Supabase for subscription management and analytics
+- **Performance**: Image optimization, lazy loading, Web Vitals monitoring
+- **Testing**: Jest with React Testing Library
+- **Deployment**: Vercel or similar platform with CDN
+
+# Development Roadmap  
+
+## Phase 1: Core Website Structure
+- Basic site layout with navigation and footer
+- Home page with hero section and key information
+- Responsive design implementation
+- Basic SEO optimization
+
+## Phase 2: Content Management System
+- FAQ system with categorized questions
+- Timeline component with interactive elements  
+- Game information pages (story, features)
+- Developer information section
+
+## Phase 3: Interactive Features
+- Email subscription system with Supabase integration
+- Countdown timer and embeddable widgets
+- Checklist functionality for tracking game features
+- Platform comparison tools
+
+## Phase 4: Advanced Features & Optimization
+- Performance monitoring and Web Vitals tracking
+- Advanced analytics and user behavior tracking
+- PWA features and offline capability
+- Accessibility enhancements (WCAG compliance)
+
+## Phase 5: Content Enhancement
+- Multimedia integration (trailers, soundtrack)
+- Press kit and media resources
+- Tools and utilities for fans
+- API endpoints for third-party integrations
+
+# Logical Dependency Chain
+1. **Foundation First**: Basic Next.js setup, routing, and layout components
+2. **Content Structure**: Navigation, pages, and data management before interactive features  
+3. **Core Functionality**: Information display before subscription and interactive elements
+4. **Data Integration**: Database setup before user-facing features that require persistence
+5. **Performance Optimization**: After core functionality is stable
+6. **Advanced Features**: Analytics and monitoring after basic functionality is complete
+
+# Risks and Mitigations  
+- **Technical Challenges**: 
+  - Complex state management → Use simple React patterns and avoid over-engineering
+  - Performance with media content → Implement lazy loading and optimization early
+- **Content Management**: 
+  - Keeping information up-to-date → Automated data validation scripts
+  - SEO optimization → Structured data and meta tag management
+- **User Engagement**:
+  - Subscription system reliability → Thorough testing and error handling
+  - Mobile responsiveness → Mobile-first development approach
+
+# Appendix  
+- **Existing Components**: Hero section, trailer section, story section, navigation, footer
+- **Data Sources**: JSON files for timeline, FAQ, platform information, game data
+- **Performance Targets**: Core Web Vitals compliance, sub-3s load times
+- **Browser Support**: Modern browsers with progressive enhancement
+- **Accessibility**: WCAG 2.1 AA compliance with color contrast validation
+</PRD>

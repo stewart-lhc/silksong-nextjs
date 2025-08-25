@@ -1,9 +1,9 @@
 'use client';
 
+import { Facebook, Menu, Youtube } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState, useCallback, useMemo } from 'react';
-import { Twitter, Youtube, Facebook, Menu, X } from 'lucide-react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -16,55 +16,99 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { label: "Home", path: "/", description: "Latest news and countdown" },
-  { label: "Compare Differences", path: "/compare-hollow-knight", description: "Silksong vs Hollow Knight comparison" },
-  { label: "Platforms & Game Pass", path: "/platforms", description: "Available platforms and FAQ" },
-  { label: "Embed Tools", path: "/tools/embed", description: "Countdown embed generator" },
-  { label: "Timeline", path: "/timeline", description: "Official statements timeline" },
-  { label: "Checklist", path: "/checklist", description: "Player preparation guide" },
-  { label: "FAQ", path: "/faq", description: "Frequently asked questions" }
+  { label: 'Home', path: '/', description: 'Latest news and countdown' },
+  {
+    label: 'Timelines',
+    path: '/timeline',
+    description: 'Official statements timeline',
+  },
+  {
+    label: 'Platforms',
+    path: '/platforms',
+    description: 'Available platforms and FAQ',
+  },
+  {
+    label: 'Checklist',
+    path: '/checklist',
+    description: 'Player preparation guide',
+  },
+  {
+    label: 'HK Differences',
+    path: '/compare-hollow-knight',
+    description: 'Silksong vs Hollow Knight comparison',
+  },
+  { label: 'FAQ', path: '/faq', description: 'Frequently asked questions' },
+  {
+    label: 'Tools',
+    path: '/tools',
+    description: 'Countdown embed generator and other tools',
+  },
 ];
 
+// X (formerly Twitter) logo component
+const XIcon = ({ className }: { className?: string }) => (
+  <svg viewBox='0 0 24 24' fill='currentColor' className={className}>
+    <path d='M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z' />
+  </svg>
+);
+
 const socialLinks = [
-  { Icon: Twitter, href: "https://twitter.com/teamcherry", label: "Twitter" },
-  { Icon: Youtube, href: "https://youtube.com/c/TeamCherryGames", label: "YouTube" },
-  { Icon: Facebook, href: "https://facebook.com/teamcherrygames", label: "Facebook" }
+  { Icon: XIcon, href: 'https://x.com/teamcherry', label: 'X' },
+  {
+    Icon: Youtube,
+    href: 'https://youtube.com/c/TeamCherryGames',
+    label: 'YouTube',
+  },
+  {
+    Icon: Facebook,
+    href: 'https://facebook.com/teamcherrygames',
+    label: 'Facebook',
+  },
 ];
 
 // Memoized NavLinks component to prevent unnecessary re-renders
-function NavLinks({ mobile = false, onItemClick, currentPath }: { 
+function NavLinks({
+  mobile = false,
+  onItemClick,
+  currentPath,
+}: {
   mobile?: boolean; 
   onItemClick?: () => void; 
   currentPath: string;
 }) {
-  const isActive = useCallback((path: string) => currentPath === path, [currentPath]);
+  const isActive = useCallback(
+    (path: string) => currentPath === path,
+    [currentPath]
+  );
   
   return (
     <>
-      {navItems.map((item) => (
+      {navItems.map(item => (
         <Link
           key={item.path}
           href={item.path}
           onClick={onItemClick}
           className={cn(
-            "transition-colors duration-200 font-medium",
+            'font-medium transition-colors duration-200',
             mobile 
-              ? "block px-4 py-3 text-base border-b border-border/50 hover:bg-accent/50"
-              : "px-3 py-2 rounded-md text-sm hover:text-primary-glow",
+              ? 'block border-b border-border/50 px-4 py-3 text-base hover:bg-primary/10 hover:text-primary-600'
+              : 'rounded-md px-3 py-2 text-sm hover:bg-primary/5 hover:text-primary-600',
             isActive(item.path)
               ? mobile
-                ? "bg-primary/90 text-white border-primary/50"
-                : "text-primary-glow bg-accent/30"
+                ? 'border-primary/50 bg-primary-600 text-white'
+                : 'bg-primary/10 font-semibold text-primary-600'
               : mobile
-                ? "text-foreground"
-                : "text-muted-foreground"
+                ? 'text-primary-500 hover:text-primary-600'
+                : 'text-primary-500 hover:text-primary-600'
           )}
         >
           {mobile ? (
             <div>
               <div>{item.label}</div>
               {item.description && (
-                <div className="text-xs text-muted-foreground mt-1">{item.description}</div>
+                <div className='mt-1 text-xs text-foreground/60'>
+                  {item.description}
+                </div>
               )}
             </div>
           ) : (
@@ -79,17 +123,22 @@ function NavLinks({ mobile = false, onItemClick, currentPath }: {
 // Memoized Social Links component
 function SocialLinks() {
   return (
-    <div className="flex items-center space-x-2 border-l border-border/50 pl-6">
+    <div className='flex items-center space-x-2 border-l border-border/50 pl-6'>
       {socialLinks.map(({ Icon, href, label }) => (
         <Button 
           key={label}
-          variant="ghost" 
-          size="icon" 
-          className="text-foreground hover:text-primary-glow"
+          variant='ghost'
+          size='icon'
+          className='text-foreground/70 transition-colors duration-200 hover:text-primary-600'
           asChild
         >
-          <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
-            <Icon className="h-5 w-5" />
+          <a
+            href={href}
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label={label}
+          >
+            <Icon className='h-5 w-5' />
           </a>
         </Button>
       ))}
@@ -100,19 +149,26 @@ function SocialLinks() {
 // Memoized Mobile Social Links component
 function MobileSocialLinks() {
   return (
-    <div className="border-t border-border/50 pt-4">
-      <div className="text-sm font-medium text-foreground mb-3">Follow Team Cherry</div>
-      <div className="flex items-center space-x-3">
+    <div className='border-t border-border/50 pt-4'>
+      <div className='mb-3 text-sm font-medium text-primary-600'>
+        Follow Team Cherry
+      </div>
+      <div className='flex items-center space-x-3'>
         {socialLinks.map(({ Icon, href, label }) => (
           <Button 
             key={label}
-            variant="ghost" 
-            size="icon" 
-            className="text-foreground hover:text-primary-glow"
+            variant='ghost'
+            size='icon'
+            className='text-foreground/70 transition-colors duration-200 hover:text-primary-600'
             asChild
           >
-            <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
-              <Icon className="h-5 w-5" />
+            <a
+              href={href}
+              target='_blank'
+              rel='noopener noreferrer'
+              aria-label={label}
+            >
+              <Icon className='h-5 w-5' />
             </a>
           </Button>
         ))}
@@ -135,17 +191,21 @@ export function Navigation() {
   const handleToggle = useCallback(() => setIsOpen(prev => !prev), []);
   
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
+    <nav className='fixed left-0 right-0 top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-md'>
+      <div className='container mx-auto px-6 py-4'>
+        <div className='flex items-center justify-between'>
           {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <img src="/favicon.ico" alt="Hollow Knight Silksong" className="h-10 object-contain" />
+          <Link href='/' className='flex items-center'>
+            <img
+              src='/favicon.ico'
+              alt='Hollow Knight Silksong'
+              className='h-10 object-contain'
+            />
           </Link>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            <div className="flex items-center space-x-1">
+          <div className='hidden items-center space-x-6 md:flex'>
+            <div className='flex items-center space-x-1'>
               <NavLinks currentPath={currentPath} />
             </div>
             
@@ -154,25 +214,38 @@ export function Navigation() {
           </div>
           
           {/* Mobile Navigation */}
-          <div className="md:hidden">
+          <div className='md:hidden'>
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-foreground" onClick={handleToggle}>
-                  <Menu className="h-6 w-6" />
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  className='text-foreground/70 transition-colors duration-200 hover:text-primary-600'
+                  onClick={handleToggle}
+                >
+                  <Menu className='h-6 w-6' />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[280px] sm:w-[300px]">
-                <div className="flex flex-col h-full">
+              <SheetContent side='right' className='w-[280px] sm:w-[300px]'>
+                <div className='flex h-full flex-col'>
                   {/* Header */}
-                  <div className="flex items-center justify-center pb-4 border-b border-border/50">
-                    <Link href="/" onClick={handleClose}>
-                      <img src="/favicon.ico" alt="Hollow Knight Silksong" className="h-8 object-contain" />
+                  <div className='flex items-center justify-center border-b border-border/50 pb-4'>
+                    <Link href='/' onClick={handleClose}>
+                      <img
+                        src='/favicon.ico'
+                        alt='Hollow Knight Silksong'
+                        className='h-8 object-contain'
+                      />
                     </Link>
                   </div>
                   
                   {/* Navigation Links */}
-                  <div className="flex-1 py-4">
-                    <NavLinks mobile onItemClick={handleClose} currentPath={currentPath} />
+                  <div className='flex-1 py-4'>
+                    <NavLinks
+                      mobile
+                      onItemClick={handleClose}
+                      currentPath={currentPath}
+                    />
                   </div>
                   
                   {/* Social Links */}

@@ -61,7 +61,7 @@ const createVideoGameStructuredData = () => ({
     "name": "Team Cherry",
     "url": "https://www.teamcherry.com.au/",
     "sameAs": [
-      "https://twitter.com/teamcherry",
+      "https://x.com/teamcherry",
       "https://www.teamcherry.com.au/"
     ]
   },

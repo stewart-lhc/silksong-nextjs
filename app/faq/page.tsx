@@ -113,41 +113,50 @@ export default function FAQPage() {
   }));
 
   return (
-    <div className="container mx-auto px-6 py-12">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold font-poppins text-foreground mb-4">
-          Frequently Asked Questions
-        </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Find answers to the most common questions about Hollow Knight: Silksong, 
-          compiled from official sources and Team Cherry communications.
-        </p>
+      <div className="bg-card/50 backdrop-blur-sm border-b">
+        <div className="container mx-auto px-6 py-12">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold fantasy-text mb-4 text-foreground">
+              Frequently Asked Questions
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Find answers to the most common questions about Hollow Knight: Silksong, 
+              compiled from official sources and Team Cherry communications.
+            </p>
+            <div className="mt-4 text-sm text-muted-foreground">
+              Last updated: August 21, 2025
+            </div>
+          </div>
+        </div>
       </div>
+
+      <div className="container mx-auto px-6 py-12">
 
       {/* Quick Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-        <Card className="text-center">
+        <Card className="text-center card-enhanced">
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-primary-glow">{faqItems.length}</div>
+            <div className="text-2xl font-bold text-hornet-secondary">{faqItems.length}</div>
             <div className="text-sm text-muted-foreground">Total Questions</div>
           </CardContent>
         </Card>
-        <Card className="text-center">
+        <Card className="text-center card-enhanced">
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-primary-glow">5</div>
+            <div className="text-2xl font-bold text-hornet-secondary">5</div>
             <div className="text-sm text-muted-foreground">Categories</div>
           </CardContent>
         </Card>
-        <Card className="text-center">
+        <Card className="text-center card-enhanced">
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-primary-glow">2024</div>
+            <div className="text-2xl font-bold text-hornet-secondary">2025</div>
             <div className="text-sm text-muted-foreground">Last Updated</div>
           </CardContent>
         </Card>
-        <Card className="text-center">
+        <Card className="text-center card-enhanced">
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-primary-glow">Sept 4</div>
+            <div className="text-2xl font-bold text-hornet-secondary">Sept 4</div>
             <div className="text-sm text-muted-foreground">Release Date</div>
           </CardContent>
         </Card>
@@ -161,7 +170,7 @@ export default function FAQPage() {
           const Icon = info.icon;
           
           return (
-            <Card key={category}>
+            <Card key={category} className="card-enhanced">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3">
                   <Icon className="w-6 h-6" />
@@ -211,7 +220,7 @@ export default function FAQPage() {
       </div>
 
       {/* Additional Resources */}
-      <Card className="max-w-2xl mx-auto mt-12">
+      <Card className="max-w-2xl mx-auto mt-12 card-enhanced">
         <CardHeader>
           <CardTitle className="text-center">Still Have Questions?</CardTitle>
           <CardDescription className="text-center">
@@ -224,18 +233,18 @@ export default function FAQPage() {
               href="https://teamcherry.com.au/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="p-4 border border-border/50 rounded-lg hover:bg-accent/30 transition-colors text-center"
+              className="p-4 border rounded-lg hover:bg-muted/50 transition-colors text-center"
             >
               <div className="font-medium text-foreground">Team Cherry Website</div>
               <div className="text-sm text-muted-foreground">Official developer blog and updates</div>
             </a>
             <a 
-              href="https://twitter.com/teamcherry" 
+              href="https://x.com/teamcherry" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="p-4 border border-border/50 rounded-lg hover:bg-accent/30 transition-colors text-center"
+              className="p-4 border rounded-lg hover:bg-muted/50 transition-colors text-center"
             >
-              <div className="font-medium text-foreground">Twitter</div>
+              <div className="font-medium text-foreground">X</div>
               <div className="text-sm text-muted-foreground">Latest news and announcements</div>
             </a>
           </div>
@@ -246,6 +255,7 @@ export default function FAQPage() {
       <div className="text-center mt-8 text-sm text-muted-foreground max-w-2xl mx-auto">
         Information on this page is compiled from official Team Cherry communications and may change. 
         For the most up-to-date information, always check Team Cherry's official channels.
+      </div>
       </div>
     </div>
   );

@@ -8,24 +8,73 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         allow: '/',
         disallow: [
-          '/api/',
+          '/api/*', // Allow API documentation page but block API endpoints
           '/admin/',
           '/_next/',
           '/private/',
           '/components-test', // Hide test pages from crawlers
+          '/wcag-demo', // Hide demo pages
+          '/theme-demo', // Hide demo pages
+          '/color-system-docs/internal', // Allow main docs but block internal
+        ],
+      },
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
+        disallow: [
+          '/api/*',
+          '/admin/',
+          '/_next/',
+          '/private/',
         ],
       },
       {
         userAgent: 'GPTBot',
-        disallow: '/', // Disallow AI training crawlers if desired
+        allow: [
+          '/',
+          '/timeline',
+          '/platforms', 
+          '/checklist',
+          '/compare-hollow-knight',
+          '/faq',
+          '/tools',
+          '/developers',
+        ],
+        disallow: [
+          '/api/',
+          '/admin/',
+        ],
       },
       {
         userAgent: 'ChatGPT-User',
-        disallow: '/',
+        allow: [
+          '/',
+          '/timeline',
+          '/platforms',
+          '/checklist', 
+          '/compare-hollow-knight',
+          '/faq',
+          '/tools',
+          '/developers',
+        ],
+        disallow: [
+          '/api/',
+          '/admin/',
+        ],
       },
       {
         userAgent: 'CCBot',
-        disallow: '/',
+        allow: [
+          '/',
+          '/faq',
+          '/timeline',
+        ],
+        disallow: [
+          '/api/',
+          '/admin/',
+          '/tools/',
+          '/developers/',
+        ],
       },
     ],
     sitemap: `${BASE_URL}/sitemap.xml`,

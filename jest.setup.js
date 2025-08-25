@@ -60,9 +60,9 @@ jest.mock('next/navigation', () => ({
 }));
 
 // Mock Next.js dynamic imports
-jest.mock('next/dynamic', () => (func) => {
+jest.mock('next/dynamic', () => func => {
   const dynamicModule = func();
-  const MockedComponent = (props) => {
+  const MockedComponent = props => {
     return React.createElement('div', props, 'Mocked Dynamic Component');
   };
   MockedComponent.displayName = 'MockedDynamicComponent';
@@ -72,7 +72,6 @@ jest.mock('next/dynamic', () => (func) => {
 // Mock Next.js Image component
 jest.mock('next/image', () => {
   const MockedImage = ({ src, alt, ...props }) => {
-    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
     return React.createElement('img', { src, alt, ...props });
   };
   MockedImage.displayName = 'NextImage';
@@ -127,9 +126,9 @@ jest.mock('framer-motion', () => ({
   }),
   useInView: () => true,
   useScroll: () => ({ scrollYProgress: { get: () => 0 } }),
-  useSpring: (value) => ({ get: () => value }),
+  useSpring: value => ({ get: () => value }),
   useTransform: (value, input, output) => ({ get: () => output[0] }),
-  useMotionValue: (initial) => ({ get: () => initial, set: jest.fn() }),
+  useMotionValue: initial => ({ get: () => initial, set: jest.fn() }),
 }));
 
 // Mock Intersection Observer
@@ -152,7 +151,7 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
 // Mock matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation((query) => ({
+  value: jest.fn().mockImplementation(query => ({
     matches: false,
     media: query,
     onchange: null,
@@ -173,7 +172,7 @@ Object.defineProperty(window, 'scrollTo', {
 // Mock localStorage
 Object.defineProperty(window, 'localStorage', {
   value: {
-    getItem: jest.fn((key) => null),
+    getItem: jest.fn(key => null),
     setItem: jest.fn(),
     removeItem: jest.fn(),
     clear: jest.fn(),
@@ -186,7 +185,7 @@ Object.defineProperty(window, 'localStorage', {
 // Mock sessionStorage
 Object.defineProperty(window, 'sessionStorage', {
   value: {
-    getItem: jest.fn((key) => null),
+    getItem: jest.fn(key => null),
     setItem: jest.fn(),
     removeItem: jest.fn(),
     clear: jest.fn(),
@@ -231,10 +230,16 @@ jest.mock('@/lib/supabase/client', () => ({
       then: jest.fn().mockResolvedValue({ data: [], error: null }),
     })),
     auth: {
-      getSession: jest.fn().mockResolvedValue({ data: { session: null }, error: null }),
-      getUser: jest.fn().mockResolvedValue({ data: { user: null }, error: null }),
+      getSession: jest
+        .fn()
+        .mockResolvedValue({ data: { session: null }, error: null }),
+      getUser: jest
+        .fn()
+        .mockResolvedValue({ data: { user: null }, error: null }),
       signOut: jest.fn().mockResolvedValue({ error: null }),
-      onAuthStateChange: jest.fn(() => ({ data: { subscription: { unsubscribe: jest.fn() } } })),
+      onAuthStateChange: jest.fn(() => ({
+        data: { subscription: { unsubscribe: jest.fn() } },
+      })),
     },
     storage: {
       from: jest.fn(() => ({
@@ -242,12 +247,14 @@ jest.mock('@/lib/supabase/client', () => ({
         download: jest.fn().mockResolvedValue({ data: null, error: null }),
         remove: jest.fn().mockResolvedValue({ data: null, error: null }),
         list: jest.fn().mockResolvedValue({ data: [], error: null }),
-        getPublicUrl: jest.fn(() => ({ data: { publicUrl: 'https://example.com/file.jpg' } })),
+        getPublicUrl: jest.fn(() => ({
+          data: { publicUrl: 'https://example.com/file.jpg' },
+        })),
       })),
     },
   },
   executeQuery: jest.fn().mockResolvedValue({}),
-  SupabaseQueryError: jest.fn().mockImplementation((message) => {
+  SupabaseQueryError: jest.fn().mockImplementation(message => {
     const error = new Error(message);
     error.name = 'SupabaseQueryError';
     return error;
@@ -296,7 +303,7 @@ import { ThemeProvider } from 'next-themes';
 function render(ui, { ...renderOptions } = {}) {
   function Wrapper({ children }) {
     return (
-      <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+      <ThemeProvider attribute='class' defaultTheme='light' enableSystem>
         {children}
       </ThemeProvider>
     );

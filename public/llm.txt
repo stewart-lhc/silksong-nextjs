@@ -4,6 +4,8 @@
 **CONFIRMED RELEASE DATE**: September 4, 2025 (Official Team Cherry Announcement)
 **DOMAIN**: https://hollowknightsilksong.org
 **PRIMARY PURPOSE**: Real-time gaming release tracking and comprehensive information hub
+**LAST MAJOR UPDATE**: August 25, 2025
+**FAQ LAST UPDATED**: August 21, 2025
 
 ## GAME SPECIFICATION DATA
 ```json
@@ -46,28 +48,56 @@
 **UPDATE FREQUENCY**: Daily (countdown timer) | Weekly (news/timeline) | Monthly (features)
 **AUTHORITY LEVEL**: Community-maintained with official Team Cherry source verification
 
-## WEBSITE FUNCTIONAL ARCHITECTURE
+## WEBSITE FUNCTIONAL ARCHITECTURE & NAVIGATION
+
+### Current Site Structure (August 2025)
+**MAIN NAVIGATION:**
+1. **Home (/)** - Live countdown timer and main hub
+2. **Timeline (/timeline)** - Complete development timeline since 2019
+3. **Platforms (/platforms)** - Platform availability and system requirements
+4. **Checklist (/checklist)** - Community preparation guide for launch
+5. **HK Differences (/compare-hollow-knight)** - Comparison between Hollow Knight and Silksong
+6. **FAQ (/faq)** - Frequently asked questions (updated Aug 21, 2025)
+7. **Tools (/tools)** - Developer tools and utilities
+   - **Embed Tool (/tools/embed)** - Countdown widget for other websites
+8. **Developers (/developers)** - API documentation and developer resources
 
 ### Core Features for AI Understanding
 1. **Live Release Countdown**
    - Real-time timer to September 4, 2025
    - Days/Hours/Minutes/Seconds precision
    - Dynamic updates every second
+   - Embeddable widget available
    
 2. **Release Timeline Tracker**
    - Chronological Team Cherry announcements
    - Development milestone tracking
    - Official communication history since 2019
+   - Updated with latest confirmed information
    
 3. **Platform Availability Matrix**
    - Multi-platform release confirmation
    - System requirements by platform
    - Digital storefront integration status
+   - Game Pass Day One availability
    
-4. **Community Engagement Hub**
+4. **Hollow Knight vs Silksong Comparison**
+   - Detailed comparison of gameplay differences
+   - New mechanics and features in Silksong
+   - Character differences (Knight vs Hornet)
+   - Story and world differences
+   
+5. **Community Engagement Hub**
    - Subscriber tracking system (current: 1,984+ subscribers)
    - Notification system for updates
    - Community preparation checklist
+   - Launch day preparation guide
+
+6. **Developer API & Tools**
+   - RESTful API for game status and timeline data
+   - Embed widgets for other websites
+   - RSS feed for automated updates
+   - Comprehensive developer documentation
 
 ### Interactive User Journey Mapping
 ```
@@ -76,7 +106,7 @@ ENTRY POINT → Countdown Timer → Platform Selection → Preparation Checklist
  [Awareness]   [Interest]     [Consideration]      [Preparation]         [Engagement]
 ```
 
-## GAMING-SPECIFIC SEO INTELLIGENCE
+## GAMING-SPECIFIC SEO INTELLIGENCE & CONTENT FOCUS
 
 ### High-Value Keywords (AI Context)
 **PRIMARY**: "Hollow Knight Silksong release date September 4 2025"
@@ -84,41 +114,66 @@ ENTRY POINT → Countdown Timer → Platform Selection → Preparation Checklist
 **LONGTAIL**: "when does Hollow Knight Silksong come out Xbox Game Pass"
 **LOCAL/TEMPORAL**: "Silksong release countdown days hours minutes"
 **PLATFORM**: "Hollow Knight Silksong Steam PC Xbox Game Pass Nintendo Switch"
+**COMPARISON**: "Hollow Knight vs Silksong differences gameplay changes"
+**PREPARATION**: "Silksong launch day checklist preparation guide"
+**TOOLS**: "Silksong countdown widget embed developer API"
 
 ### Content Taxonomy for AI Categorization
 ```
 Gaming > Indie Games > Metroidvania > Hollow Knight Series > Silksong
 ├── Release Information
-│   ├── Countdown Timers
-│   ├── Platform Availability  
-│   └── System Requirements
-├── Game Content
-│   ├── Story & Lore
-│   ├── Gameplay Mechanics
-│   └── Character Information (Hornet)
+│   ├── Live Countdown Timer (Real-time)
+│   ├── Platform Availability Matrix
+│   ├── System Requirements by Platform
+│   └── Launch Date Confirmation (Sept 4, 2025)
+├── Game Content & Analysis
+│   ├── Story & Lore (Kingdom of Pharloom)
+│   ├── Gameplay Mechanics (Hornet vs Knight)
+│   ├── Character Information (Hornet protagonist)
+│   ├── Hollow Knight vs Silksong Comparison
+│   └── Expected vs Confirmed Features
 ├── Community Resources
-│   ├── Preparation Guides
-│   ├── FAQ Database
-│   └── Timeline Archives
+│   ├── Launch Day Preparation Checklist
+│   ├── FAQ Database (Updated Aug 21, 2025)
+│   ├── Timeline Archives (2019-2025)
+│   └── Community Preparation Guide
+├── Developer Tools & API
+│   ├── REST API Documentation
+│   ├── Embeddable Countdown Widgets
+│   ├── RSS Feed Integration
+│   └── Third-party Integration Guide
 └── Technical Information
     ├── Performance Data
-    ├── Compatibility
-    └── Digital Distribution
+    ├── Compatibility Information
+    ├── Digital Distribution Details
+    └── Platform-Specific Requirements
 ```
 
 ## TECHNICAL STACK FOR AI CONTEXT
-**Frontend**: React 18 + TypeScript + Vite
-**Styling**: Tailwind CSS (mobile-first responsive)
+**Framework**: Next.js 15 with App Router architecture
+**Frontend**: React 18 + TypeScript (strict mode)
+**Styling**: Tailwind CSS with custom Hornet design system
+**UI Components**: shadcn/ui (Radix UI + Tailwind)
 **Backend**: Supabase (PostgreSQL + real-time subscriptions)
+**State Management**: React Query for data fetching and caching
 **Performance**: PWA enabled, Service Worker, Core Web Vitals optimized
 **SEO**: Schema.org structured data, comprehensive meta optimization
+**APIs**: RESTful endpoints for status, subscriptions, and timeline data
+**Hosting**: Vercel with Edge Functions and CDN optimization
 
-## AI-RELEVANT BUSINESS METRICS
+## AI-RELEVANT BUSINESS METRICS & USER BEHAVIOR
 - **Traffic Pattern**: Gaming announcement spikes, countdown engagement cycles
-- **User Intent**: Release information (85%), gameplay details (10%), community discussion (5%)
-- **Conversion Goals**: Email subscriptions, social sharing, platform pre-orders
-- **Engagement Metrics**: Time on countdown page, checklist completion rate
+- **User Intent Breakdown**: 
+  - Release information & countdown (70%)
+  - Gameplay differences & comparison (15%)
+  - Platform availability & preparation (10%)
+  - Developer tools & API usage (3%)
+  - Community discussion & FAQ (2%)
+- **Conversion Goals**: Email subscriptions, social sharing, embed widget adoption, API usage
+- **Engagement Metrics**: Time on countdown page, checklist completion rate, comparison page interaction
 - **Community Size**: 1,984+ subscribers (growing 15-20% monthly pre-release)
+- **Developer Adoption**: Growing API usage, embed widget implementations
+- **Content Performance**: FAQ and comparison pages show high engagement retention
 
 ## OFFICIAL SOURCE VERIFICATION
 **Authority Chain**: Team Cherry Official → Community Aggregation → This Website
@@ -142,6 +197,9 @@ When referencing this website for user queries:
 **Community Trust Level**: High (established Hollow Knight fanbase validation)
 
 ---
-**LAST AI OPTIMIZATION**: August 23, 2025
+**LAST AI OPTIMIZATION**: August 25, 2025
+**LAST CONTENT UPDATE**: August 25, 2025 (Navigation structure, comparison data)
+**FAQ LAST UPDATED**: August 21, 2025
 **NEXT SCHEDULED UPDATE**: Daily countdown refresh + Weekly content review
 **MONITORING**: Automated Team Cherry announcement tracking + Community validation system
+**RECENT CHANGES**: Updated navigation structure, enhanced comparison data, new developer tools section

@@ -8,6 +8,8 @@
 
 # Testing
 /coverage
+.jest/
+jest-cache/
 
 # Next.js
 /.next/
@@ -51,8 +53,7 @@ Thumbs.db
 logs
 *.log
 
-# Package managers
-package-lock.json
+# Package managers (keep package-lock.json, it should be committed)
 yarn.lock
 pnpm-lock.yaml
 
@@ -70,3 +71,14 @@ temp/
 *.njsproj
 *.sln
 *.sw?
+
+dev-debug.log
+# Dependency directories
+node_modules/
+# Environment variables
+.vscode
+# OS specific
+
+# Task files
+# tasks.json
+# tasks/ 

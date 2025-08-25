@@ -6,13 +6,11 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = {
   // Fix for workspace root warning
   outputFileTracingRoot: __dirname,
-  
-  // Server external packages (moved from experimental)
-  serverExternalPackages: [],
+
   // Enable static exports if needed
   // output: 'export',
   // trailingSlash: true,
-  
+
   // Enhanced image optimization
   images: {
     formats: ['image/webp', 'image/avif'],
@@ -36,21 +34,19 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
-    ]
+    ],
   },
-  
+
   // Performance optimizations
   compress: true,
   poweredByHeader: false,
-  
+
   // Bundle optimization and code splitting
   experimental: {
     // Enable modern features for better performance
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
-    // Optimize server components
-    serverComponentsExternalPackages: [],
   },
-  
+
   // Webpack configuration for advanced optimizations
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // Production optimizations
@@ -106,18 +102,18 @@ const nextConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       // Optimize lodash imports
-      'lodash': 'lodash-es',
+      lodash: 'lodash-es',
     };
 
     return config;
   },
-  
+
   // TypeScript configuration
   typescript: {
     // Dangerously allow production builds to successfully complete even if your project has TypeScript errors
     ignoreBuildErrors: true,
   },
-  
+
   // ESLint configuration
   eslint: {
     // Warning: This allows production builds to successfully complete even if your project has ESLint errors

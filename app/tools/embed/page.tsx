@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -86,10 +86,18 @@ export default function EmbedToolsPage() {
     layout: 'horizontal',
     border: true,
     width: '400',
-    height: '120'
+    height: '300'
   });
 
   const [copied, setCopied] = useState(false);
+  const [previewLoading, setPreviewLoading] = useState(true);
+  const [previewError, setPreviewError] = useState(false);
+
+  // Reset loading state when config changes
+  useEffect(() => {
+    setPreviewLoading(true);
+    setPreviewError(false);
+  }, [config]);
 
   const generateEmbedUrl = () => {
     // Force localhost in development, regardless of window.location
@@ -146,21 +154,27 @@ export default function EmbedToolsPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-          Embed Code Generator
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-          Create a customizable countdown widget for Hollow Knight: Silksong to embed on your website, 
-          blog, or social media. Fully responsive and lightweight.
-        </p>
+      <div className="bg-card/50 backdrop-blur-sm border-b">
+        <div className="container mx-auto px-4 py-8 max-w-6xl">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold mb-4 fantasy-text text-foreground">
+              Embed Code Generator
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Create a customizable countdown widget for Hollow Knight: Silksong to embed on your website, 
+              blog, or social media. Fully responsive and lightweight.
+            </p>
+          </div>
+        </div>
       </div>
+
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Configuration */}
-        <Card>
+        <Card className="card-enhanced">
           <CardHeader>
             <CardTitle>Widget Configuration</CardTitle>
             <CardDescription>Customize your countdown widget appearance and behavior</CardDescription>
@@ -262,23 +276,75 @@ export default function EmbedToolsPage() {
         {/* Preview & Code */}
         <div className="space-y-6">
           {/* Preview */}
-          <Card>
+          <Card className="card-enhanced">
             <CardHeader>
               <CardTitle>Live Preview</CardTitle>
               <CardDescription>See how your widget will look</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="border rounded-lg p-6 bg-muted/20 min-h-[300px] flex items-center justify-center">
-                <iframe
-                  src={generateEmbedUrl()}
-                  width={config.width}
-                  height={config.height}
-                  style={{ border: 'none', maxWidth: '100%', minHeight: '200px' }}
-                  title="Widget Preview"
-                />
+              <div className="border rounded-lg p-6 bg-muted/20 min-h-[600px] h-[70vh] flex items-center justify-center relative">
+                {previewLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-card/80 backdrop-blur-sm rounded-lg">
+                    <div className="text-center space-y-3">
+                      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto"></div>
+                      <p className="text-sm text-muted-foreground">Loading preview...</p>
+                    </div>
+                  </div>
+                )}
+                {previewError ? (
+                  <div className="text-center space-y-4">
+                    <div className="text-destructive">
+                      <svg className="w-16 h-16 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 18.5c-.77.833.192 2.5 1.732 2.5z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-lg font-medium text-destructive mb-2">Failed to load preview</p>
+                      <p className="text-sm text-muted-foreground mb-4">The widget preview couldn't be loaded. This might be due to a network issue or server error.</p>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => {
+                          setPreviewError(false);
+                          setPreviewLoading(true);
+                          // Force iframe reload
+                          const iframe = document.querySelector('[data-embed-preview]') as HTMLIFrameElement;
+                          if (iframe) {
+                            iframe.src = iframe.src;
+                          }
+                        }}
+                      >
+                        Retry Preview
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <iframe
+                    data-embed-preview
+                    src={generateEmbedUrl()}
+                    width={config.width}
+                    height={config.height}
+                    title="Widget Preview"
+                    loading="eager"
+                    onLoad={() => {
+                      setPreviewLoading(false);
+                      setPreviewError(false);
+                    }}
+                    onError={() => {
+                      setPreviewLoading(false);
+                      setPreviewError(true);
+                    }}
+                    style={{
+                      border: 'none',
+                      maxWidth: '100%',
+                      minHeight: '500px',
+                      opacity: previewLoading ? '0' : '1',
+                      transition: 'opacity 0.3s ease-in-out'
+                    }}
+                  />
+                )}
               </div>
               <div className="mt-4 flex gap-2">
-                <Button variant="outline" size="sm" asChild>
+                <Button variant="outline" size="sm" asChild className="btn-outline-fantasy">
                   <a href={generateEmbedUrl()} target="_blank" rel="noopener noreferrer">
                     Open in New Tab <ExternalLinkIcon className="w-4 h-4 ml-1" />
                   </a>
@@ -288,7 +354,7 @@ export default function EmbedToolsPage() {
           </Card>
 
           {/* Embed Code */}
-          <Card>
+          <Card className="card-enhanced">
             <CardHeader>
               <CardTitle>Embed Code</CardTitle>
               <CardDescription>Copy this code to your website</CardDescription>
@@ -303,7 +369,7 @@ export default function EmbedToolsPage() {
                 />
                 <Button
                   size="sm"
-                  className="absolute top-2 right-2"
+                  className="absolute top-2 right-2 btn-fantasy"
                   onClick={() => copyToClipboard(generateEmbedCode())}
                 >
                   {copied ? (
@@ -325,7 +391,7 @@ export default function EmbedToolsPage() {
       </div>
 
       {/* Parameter Reference */}
-      <Card className="mt-8">
+      <Card className="mt-8 card-enhanced">
         <CardHeader>
           <CardTitle>Parameter Reference</CardTitle>
           <CardDescription>
@@ -372,7 +438,7 @@ export default function EmbedToolsPage() {
       </Card>
 
       {/* Usage Guidelines */}
-      <Card className="mt-8">
+      <Card className="mt-8 card-enhanced">
         <CardHeader>
           <CardTitle>Usage Guidelines</CardTitle>
           <CardDescription>Best practices for embedding the countdown widget</CardDescription>
@@ -404,6 +470,7 @@ export default function EmbedToolsPage() {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }

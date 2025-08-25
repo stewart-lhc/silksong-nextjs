@@ -164,28 +164,28 @@ export default function ChecklistPage() {
   const overallProgress = getOverallProgress();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="bg-black/50 backdrop-blur-sm border-b border-white/10">
+      <div className="bg-card/50 backdrop-blur-sm border-b">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold font-poppins text-white mb-4">
+            <h1 className="text-4xl md:text-6xl font-bold fantasy-text mb-4 text-foreground">
               Silksong Readiness Checklist
             </h1>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-6">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
               Prepare yourself for the ultimate Hollow Knight: Silksong experience
             </p>
             
             {/* User Name Input */}
             <div className="max-w-sm mx-auto mb-6">
-              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg p-3">
-                <User className="w-5 h-5 text-gray-400" />
+              <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm rounded-lg p-3 border">
+                <User className="w-5 h-5 text-muted-foreground" />
                 <Input
                   type="text"
                   placeholder="Enter your name..."
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
-                  className="bg-transparent border-none text-white placeholder-gray-400 focus:ring-0 focus:outline-none"
+                  className="bg-transparent border-none text-foreground placeholder-muted-foreground focus:ring-0 focus:outline-none"
                 />
               </div>
             </div>
@@ -193,10 +193,10 @@ export default function ChecklistPage() {
             {/* Overall Progress */}
             <div className="max-w-md mx-auto">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-400">
+                <span className="text-sm text-muted-foreground">
                   {userName ? `${userName}'s Progress` : 'Overall Progress'}
                 </span>
-                <span className="text-sm text-gray-400">{overallProgress}%</span>
+                <span className="text-sm text-muted-foreground">{overallProgress}%</span>
               </div>
               <Progress value={overallProgress} className="h-3" />
             </div>
@@ -209,7 +209,7 @@ export default function ChecklistPage() {
         <div className="flex flex-col gap-3">
           <button
             onClick={handlePrint}
-            className="w-12 h-12 bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110 flex items-center justify-center group"
+            className="w-12 h-12 bg-hornet-primary hover:bg-hornet-dark text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110 flex items-center justify-center group"
             title="Print Checklist"
           >
             <Printer className="w-5 h-5" />
@@ -219,7 +219,7 @@ export default function ChecklistPage() {
           </button>
           <button
             onClick={handleShare}
-            className="w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110 flex items-center justify-center group"
+            className="w-12 h-12 bg-hornet-secondary hover:bg-hornet-accent text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110 flex items-center justify-center group"
             title="Share Progress"
           >
             <Share2 className="w-5 h-5" />
@@ -229,7 +229,7 @@ export default function ChecklistPage() {
           </button>
           <button
             onClick={resetProgress}
-            className="w-12 h-12 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110 flex items-center justify-center group"
+            className="w-12 h-12 bg-hornet-dark hover:bg-hornet-primary text-white rounded-full shadow-lg transition-all duration-200 hover:scale-110 flex items-center justify-center group"
             title="Reset Progress"
           >
             <RotateCcw className="w-5 h-5" />
@@ -251,19 +251,19 @@ export default function ChecklistPage() {
             return (
               <Card 
                 key={category.id} 
-                className="bg-black/40 backdrop-blur-sm border-white/20 print:bg-white print:border-black print:shadow-none"
+                className="card-enhanced print:bg-white print:border-black print:shadow-none"
               >
                 <Collapsible open={isExpanded} onOpenChange={() => toggleCategory(category.id)}>
                   <CollapsibleTrigger asChild>
-                    <CardHeader className="cursor-pointer hover:bg-white/5 transition-colors print:hover:bg-transparent">
+                    <CardHeader className="cursor-pointer hover:bg-hornet-dark/10 transition-colors print:hover:bg-transparent">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <span className="text-2xl print:text-lg">{getCategoryIcon(category.id)}</span>
                           <div>
-                            <CardTitle className="text-xl text-white print:text-black">
+                            <CardTitle className="text-xl text-foreground print:text-black">
                               {category.title}
                             </CardTitle>
-                            <CardDescription className="text-gray-300 print:text-gray-700">
+                            <CardDescription className="text-muted-foreground print:text-gray-700">
                               {category.description}
                             </CardDescription>
                           </div>
@@ -281,9 +281,9 @@ export default function ChecklistPage() {
                             </div>
                           </div>
                           {isExpanded ? (
-                            <ChevronUp className="w-5 h-5 text-gray-400 print:hidden" />
+                            <ChevronUp className="w-5 h-5 text-hornet-accent print:hidden" />
                           ) : (
-                            <ChevronDown className="w-5 h-5 text-gray-400 print:hidden" />
+                            <ChevronDown className="w-5 h-5 text-hornet-accent print:hidden" />
                           )}
                         </div>
                       </div>
@@ -296,7 +296,7 @@ export default function ChecklistPage() {
                         {category.items.map((item) => (
                           <div 
                             key={item.id}
-                            className="flex items-center space-x-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors print:bg-transparent print:hover:bg-transparent print:border print:border-gray-300"
+                            className="flex items-center space-x-3 p-3 rounded-lg bg-hornet-dark/10 hover:bg-hornet-dark/20 transition-colors print:bg-transparent print:hover:bg-transparent print:border print:border-gray-300"
                           >
                             <Checkbox
                               id={item.id}
@@ -308,16 +308,16 @@ export default function ChecklistPage() {
                               htmlFor={item.id}
                               className={`flex-1 text-sm cursor-pointer transition-colors ${
                                 item.completed 
-                                  ? 'text-gray-400 line-through print:text-gray-600' 
-                                  : 'text-gray-200 print:text-black'
+                                  ? 'text-muted-foreground line-through print:text-gray-600' 
+                                  : 'text-foreground print:text-black'
                               }`}
                             >
                               {item.text}
                             </label>
                             {item.completed ? (
-                              <CheckCircle className="w-4 h-4 text-green-400 print:text-green-600" />
+                              <CheckCircle className="w-4 h-4 text-hornet-secondary print:text-green-600" />
                             ) : (
-                              <Circle className="w-4 h-4 text-gray-500 print:text-gray-400" />
+                              <Circle className="w-4 h-4 text-hornet-accent/50 print:text-gray-400" />
                             )}
                           </div>
                         ))}
@@ -330,10 +330,10 @@ export default function ChecklistPage() {
           })}
 
           {/* Summary Card */}
-          <Card className="bg-black/20 backdrop-blur-sm border-white/10 print:bg-white print:border-black">
+          <Card className="card-enhanced print:bg-white print:border-black">
             <CardContent className="pt-6">
               <div className="text-center">
-                <h3 className="text-2xl font-bold text-white mb-4 print:text-black">
+                <h3 className="text-2xl font-bold text-foreground mb-4 print:text-black">
                   {userName ? `${userName}'s Checklist Summary` : 'Checklist Summary'}
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -342,17 +342,17 @@ export default function ChecklistPage() {
                     return (
                       <div key={category.id} className="text-center">
                         <div className="text-2xl mb-1">{getCategoryIcon(category.id)}</div>
-                        <div className="text-sm text-gray-400 print:text-gray-600">
+                        <div className="text-sm text-muted-foreground print:text-gray-600">
                           {category.title}
                         </div>
-                        <div className="text-lg font-bold text-white print:text-black">
+                        <div className="text-lg font-bold text-foreground print:text-black">
                           {completedItems}/{category.items.length}
                         </div>
                       </div>
                     );
                   })}
                 </div>
-                <p className="text-gray-400 text-sm print:text-gray-600">
+                <p className="text-muted-foreground text-sm print:text-gray-600">
                   Keep track of your preparation progress and ensure you're ready for Silksong's release!
                 </p>
               </div>

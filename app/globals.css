@@ -1,7 +1,7 @@
 /**
  * Hollow Knight: Silksong Global Styles for Next.js
- * Dark Fantasy Design System with shadcn/ui Integration
- * 针对 Next.js App Router 优化的全局样式
+ * Hornet Brand Color System with shadcn/ui Integration
+ * 针对 Next.js App Router 优化的全局样式 - Hornet 红色主题
  */
 
 @tailwind base;
@@ -12,64 +12,64 @@
   :root {
     /* === CORE THEME VARIABLES === */
     /* Dark mystical background palette - 深邃神秘背景色调 */
-    --background: 120 20% 4%;      /* 主背景 - 深暗绿色 */
-    --foreground: 120 15% 95%;     /* 主文字颜色 - 浅绿白色 */
+    --background: 0 15% 6%;        /* 主背景 - 深暗红色调 */
+    --foreground: 0 5% 95%;        /* 主文字颜色 - 浅红白色 */
 
-    --card: 120 20% 6%;            /* 卡片背景 */
-    --card-foreground: 120 15% 95%; /* 卡片文字 */
+    --card: 0 15% 8%;              /* 卡片背景 */
+    --card-foreground: 0 5% 95%;   /* 卡片文字 */
 
-    --popover: 120 20% 6%;         /* 弹出层背景 */
-    --popover-foreground: 120 15% 95%; /* 弹出层文字 */
+    --popover: 0 15% 8%;           /* 弹出层背景 */
+    --popover-foreground: 0 5% 95%; /* 弹出层文字 */
 
     /* === PRIMARY COLORS - 主色调系统 === */
-    /* Mystical moss green primary - 神秘苔藓绿 */
-    --primary: 110 50% 35%;        /* 主色 */
-    --primary-foreground: 120 15% 95%; /* 主色文字 */
-    --primary-glow: 110 60% 45%;   /* 发光效果 */
+    /* Hornet brand red primary - Hornet 品牌红 */
+    --primary: 351 77% 52%;        /* 主色 - Hornet 红 #C43444 */
+    --primary-foreground: 0 5% 95%; /* 主色文字 */
+    --primary-glow: 351 85% 62%;   /* 发光效果 */
     
     /* === SECONDARY COLORS - 辅助色系统 === */
-    /* Dark moss secondary - 深暗苔藓色 */
-    --secondary: 120 25% 12%;      /* 辅助色 */
-    --secondary-foreground: 120 15% 95%; /* 辅助色文字 */
+    /* Dark crimson secondary - 深暗深红色 */
+    --secondary: 0 25% 14%;        /* 辅助色 */
+    --secondary-foreground: 0 5% 95%; /* 辅助色文字 */
 
     /* === MUTED COLORS - 静音色系统 === */
-    /* Muted moss tones - 静音苔藓色调 */
-    --muted: 120 20% 10%;          /* 静音背景 */
-    --muted-foreground: 120 20% 65%; /* 静音文字 */
+    /* Muted crimson tones - 静音深红色调 */
+    --muted: 0 20% 12%;            /* 静音背景 */
+    --muted-foreground: 0 15% 65%; /* 静音文字 */
 
     /* === ACCENT COLORS - 强调色系统 === */
-    /* Golden accent for highlights - 金色强调 */
-    --accent: 45 85% 60%;          /* 强调色 - 幻想金色 */
-    --accent-foreground: 120 20% 4%; /* 强调色文字 */
+    /* Rose gold accent for highlights - 玫瑰金强调 */
+    --accent: 15 65% 65%;          /* 强调色 - 玫瑰金 */
+    --accent-foreground: 0 15% 6%; /* 强调色文字 */
 
     /* === DESTRUCTIVE COLORS - 危险色系统 === */
-    /* Gothic red for danger - 哥特红色 */
-    --destructive: 0 75% 50%;      /* 危险色 */
-    --destructive-foreground: 120 15% 95%; /* 危险色文字 */
+    /* Deeper red for danger - 更深的红色 */
+    --destructive: 0 85% 55%;      /* 危险色 */
+    --destructive-foreground: 0 5% 95%; /* 危险色文字 */
 
     /* === BORDER & INPUT - 边框和输入框 === */
     /* Subtle borders - 微妙边框 */
-    --border: 120 20% 15%;         /* 边框颜色 */
-    --input: 120 20% 15%;          /* 输入框边框 */
-    --ring: 110 50% 35%;           /* 焦点环颜色 */
+    --border: 0 20% 18%;           /* 边框颜色 */
+    --input: 0 20% 18%;            /* 输入框边框 */
+    --ring: 351 77% 52%;           /* 焦点环颜色 */
 
     /* === RADIUS - 圆角系统 === */
     --radius: 0.75rem;             /* 默认圆角 */
 
-    /* === FANTASY THEME VARIABLES - 奇幻主题变量 === */
-    /* Custom fantasy colors - 自定义奇幻色彩 */
-    --fantasy-gold: 45 85% 60%;    /* 幻想金色 */
-    --fantasy-silver: 210 10% 85%; /* 幻想银色 */
-    --mystical-glow: 110 60% 45%;  /* 神秘发光 */
-    --shadow-deep: 120 30% 2%;     /* 深邃阴影 */
-    --moss-light: 110 40% 55%;     /* 浅苔藓色 */
-    --moss-dark: 110 40% 25%;      /* 深苔藓色 */
+    /* === HORNET THEME VARIABLES - Hornet 主题变量 === */
+    /* Custom Hornet colors - 自定义 Hornet 色彩 */
+    --hornet-gold: 45 85% 60%;     /* Hornet 金色 */
+    --hornet-silver: 210 10% 85%;  /* Hornet 银色 */
+    --mystical-glow: 351 85% 62%;  /* 神秘发光 - Hornet 红 */
+    --shadow-deep: 0 30% 3%;       /* 深邃阴影 */
+    --crimson-light: 351 60% 65%;  /* 浅深红色 */
+    --crimson-dark: 351 60% 35%;   /* 深深红色 */
 
     /* === GRADIENT VARIABLES - 渐变变量 === */
     --gradient-mystical: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
     --gradient-shadow: linear-gradient(180deg, hsl(var(--shadow-deep)), hsl(var(--background)));
-    --gradient-moss: linear-gradient(45deg, hsl(var(--moss-dark)), hsl(var(--moss-light)));
-    --gradient-gold: linear-gradient(135deg, hsl(var(--fantasy-gold)), hsl(45 75% 55%));
+    --gradient-crimson: linear-gradient(45deg, hsl(var(--crimson-dark)), hsl(var(--crimson-light)));
+    --gradient-gold: linear-gradient(135deg, hsl(var(--hornet-gold)), hsl(45 75% 55%));
 
     /* === SHADOW VARIABLES - 阴影变量 === */
     --shadow-mystical: 0 10px 40px -10px hsl(var(--primary) / 0.3);
@@ -84,25 +84,25 @@
   /* === DARK MODE SUPPORT - 深色模式支持 === */
   .dark {
     /* 重复相同的变量以确保深色模式一致性 */
-    --background: 120 20% 4%;
-    --foreground: 120 15% 95%;
-    --card: 120 20% 6%;
-    --card-foreground: 120 15% 95%;
-    --popover: 120 20% 6%;
-    --popover-foreground: 120 15% 95%;
-    --primary: 110 50% 35%;
-    --primary-foreground: 120 15% 95%;
-    --secondary: 120 25% 12%;
-    --secondary-foreground: 120 15% 95%;
-    --muted: 120 20% 10%;
-    --muted-foreground: 120 20% 65%;
-    --accent: 45 85% 60%;
-    --accent-foreground: 120 20% 4%;
-    --destructive: 0 75% 50%;
-    --destructive-foreground: 120 15% 95%;
-    --border: 120 20% 15%;
-    --input: 120 20% 15%;
-    --ring: 110 50% 35%;
+    --background: 0 15% 6%;
+    --foreground: 0 5% 95%;
+    --card: 0 15% 8%;
+    --card-foreground: 0 5% 95%;
+    --popover: 0 15% 8%;
+    --popover-foreground: 0 5% 95%;
+    --primary: 351 77% 52%;
+    --primary-foreground: 0 5% 95%;
+    --secondary: 0 25% 14%;
+    --secondary-foreground: 0 5% 95%;
+    --muted: 0 20% 12%;
+    --muted-foreground: 0 15% 65%;
+    --accent: 15 65% 65%;
+    --accent-foreground: 0 15% 6%;
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 5% 95%;
+    --border: 0 20% 18%;
+    --input: 0 20% 18%;
+    --ring: 351 77% 52%;
   }
 }
 
@@ -117,11 +117,11 @@
     @apply bg-background text-foreground font-sans;
     background: hsl(var(--background));
     
-    /* 奇幻背景纹理 - 神秘光晕效果 */
+    /* Hornet 背景纹理 - 神秘红色光晕效果 */
     background-image: 
       radial-gradient(circle at 20% 80%, hsl(var(--primary) / 0.05) 0%, transparent 50%),
       radial-gradient(circle at 80% 20%, hsl(var(--mystical-glow) / 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, hsl(var(--fantasy-gold) / 0.02) 0%, transparent 30%);
+      radial-gradient(circle at 40% 40%, hsl(var(--hornet-gold) / 0.02) 0%, transparent 30%);
     background-attachment: fixed;
     background-size: 100% 100%, 80% 80%, 60% 60%;
     
@@ -187,14 +187,15 @@
     filter: drop-shadow(0 0 30px hsl(var(--mystical-glow) / 0.7));
   }
 
-  /* Fantasy Text - 改进的奇幻文字效果 */
+  /* Enhanced Hornet Text with improved readability */
   .fantasy-text {
     background: linear-gradient(135deg, 
-      hsl(var(--fantasy-gold)) 0%, 
-      hsl(45 90% 65%) 25%,
-      hsl(45 85% 70%) 50%,
-      hsl(45 80% 65%) 75%,
-      hsl(var(--fantasy-gold)) 100%
+      hsl(var(--hornet-gold)) 0%, 
+      hsl(15 85% 75%) 20%,
+      hsl(351 90% 75%) 40%,
+      hsl(15 80% 70%) 60%,
+      hsl(351 85% 70%) 80%,
+      hsl(var(--hornet-gold)) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -202,35 +203,57 @@
     font-weight: 700;
     letter-spacing: 0.05em;
     
-    /* 提升可读性的阴影 */
-    filter: drop-shadow(0 2px 4px hsl(var(--shadow-deep) / 0.5));
+    /* Enhanced drop shadow for better contrast */
+    filter: 
+      drop-shadow(0 1px 2px hsl(var(--background)))
+      drop-shadow(0 2px 4px hsl(var(--shadow-deep) / 0.8))
+      drop-shadow(0 0 8px hsl(var(--primary) / 0.3));
     
-    /* 后备颜色 */
-    color: hsl(45 85% 65%);
+    /* High contrast fallback color */
+    color: hsl(351 90% 75%);
     
-    /* 文字阴影增强 */
+    /* Enhanced text shadow for readability */
     text-shadow: 
-      0 0 10px hsl(var(--fantasy-gold) / 0.3),
-      0 2px 4px hsl(var(--shadow-deep) / 0.8);
+      0 0 8px hsl(var(--hornet-gold) / 0.4),
+      0 1px 2px hsl(var(--background)),
+      0 2px 4px hsl(var(--shadow-deep) / 0.9);
   }
   
-  /* 浏览器兼容性处理 */
+  /* Browser compatibility - enhanced version */
   @supports (-webkit-background-clip: text) {
     .fantasy-text {
       color: transparent;
+      /* Keep enhanced drop shadows for better visibility */
+      filter: 
+        drop-shadow(0 1px 2px hsl(var(--background)))
+        drop-shadow(0 2px 4px hsl(var(--shadow-deep) / 0.8))
+        drop-shadow(0 0 8px hsl(var(--primary) / 0.3));
       text-shadow: none;
     }
   }
   
-  /* 不支持 background-clip 的后备方案 */
+  /* Enhanced fallback for unsupported browsers */
   @supports not (-webkit-background-clip: text) {
     .fantasy-text {
-      color: hsl(45 90% 70%) !important;
-      -webkit-text-fill-color: hsl(45 90% 70%) !important;
+      color: hsl(351 90% 75%) !important;
+      -webkit-text-fill-color: hsl(351 90% 75%) !important;
       text-shadow: 
-        0 0 15px hsl(var(--fantasy-gold) / 0.4),
-        0 2px 6px hsl(var(--shadow-deep) / 0.9) !important;
+        0 0 12px hsl(var(--hornet-gold) / 0.5),
+        0 1px 2px hsl(var(--background)),
+        0 2px 6px hsl(var(--shadow-deep)) !important;
+      filter: none !important;
     }
+  }
+  
+  /* High contrast alternative for accessibility */
+  .fantasy-text-accessible {
+    color: hsl(351 85% 80%) !important;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-shadow: 
+      0 0 8px hsl(var(--background)),
+      0 2px 4px hsl(var(--shadow-deep) / 0.9);
+    filter: drop-shadow(0 2px 4px hsl(var(--background)));
   }
 
   /* 文字阴影工具类 */
@@ -247,12 +270,12 @@
       0 2px 4px hsl(var(--shadow-deep) / 0.8);
   }
 
-  /* 哥特式边框 */
+  /* Hornet 哥特式边框 */
   .gothic-border {
     border-image: linear-gradient(45deg, 
-      hsl(var(--fantasy-gold)), 
+      hsl(var(--hornet-gold)), 
       transparent, 
-      hsl(var(--fantasy-silver))
+      hsl(var(--hornet-silver))
     ) 1;
     border-width: 2px;
     border-style: solid;
@@ -264,9 +287,13 @@
     transition: transform 0.1s ease-out;
   }
 
-  /* 苔藓纹理 */
+  /* Improved moss-texture with better text contrast */
   .moss-texture {
-    background: var(--gradient-moss);
+    background: linear-gradient(135deg, 
+      hsl(var(--background)) 0%,
+      hsl(var(--card)) 50%, 
+      hsl(var(--secondary) / 0.3) 100%
+    );
     position: relative;
   }
 
@@ -275,10 +302,31 @@
     position: absolute;
     inset: 0;
     background-image: 
-      radial-gradient(circle at 25% 25%, hsl(var(--moss-light) / 0.3) 1px, transparent 1px),
-      radial-gradient(circle at 75% 75%, hsl(var(--moss-dark) / 0.2) 1px, transparent 1px);
-    background-size: 50px 50px, 30px 30px;
-    animation: float 6s ease-in-out infinite;
+      radial-gradient(circle at 25% 25%, hsl(var(--primary) / 0.08) 2px, transparent 2px),
+      radial-gradient(circle at 75% 75%, hsl(var(--accent) / 0.05) 1px, transparent 1px);
+    background-size: 60px 60px, 40px 40px;
+    animation: float 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* Enhanced moss-texture with card overlay for better readability */
+  .moss-texture-enhanced {
+    background: linear-gradient(135deg, 
+      hsl(var(--background)) 0%,
+      hsl(var(--card) / 0.8) 40%, 
+      hsl(var(--secondary) / 0.2) 100%
+    );
+    position: relative;
+    backdrop-filter: blur(1px);
+  }
+
+  .moss-texture-enhanced::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 30% 30%, hsl(var(--primary) / 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 70% 70%, hsl(var(--accent) / 0.03) 0%, transparent 40%);
     pointer-events: none;
   }
 
@@ -288,33 +336,79 @@
     max-width: 1400px;
   }
 
-  /* 卡片组件增强 */
+  /* Enhanced card component with better contrast */
   .card-enhanced {
-    @apply bg-card/80 backdrop-blur-sm border border-border/50 rounded-lg;
+    @apply bg-card/90 backdrop-blur-sm border border-border/60 rounded-lg;
     box-shadow: var(--shadow-mystical);
     transition: var(--transition-mystical);
+    /* Ensure minimum contrast ratio */
+    color: hsl(var(--foreground));
   }
 
   .card-enhanced:hover {
-    @apply border-primary/30;
-    box-shadow: 0 0 30px hsl(110 60% 45% / 0.4);
+    @apply border-primary/40 bg-card/95;
+    box-shadow: 0 0 30px hsl(351 85% 62% / 0.4);
     transform: translateY(-2px);
   }
 
-  /* 按钮增强样式 */
+  /* WCAG AA compliant text color combinations */
+  .text-high-contrast {
+    color: hsl(var(--foreground)) !important;
+    text-shadow: 0 1px 2px hsl(var(--background) / 0.8);
+  }
+
+  .text-medium-contrast {
+    color: hsl(var(--foreground) / 0.9) !important;
+    text-shadow: 0 1px 2px hsl(var(--background) / 0.6);
+  }
+
+  .text-accessible-muted {
+    color: hsl(var(--foreground) / 0.75) !important;
+    text-shadow: 0 1px 2px hsl(var(--background) / 0.5);
+  }
+
+  /* Background combinations for optimal readability */
+  .bg-readable-primary {
+    background: linear-gradient(135deg, 
+      hsl(var(--card)) 0%, 
+      hsl(var(--card) / 0.9) 100%
+    ) !important;
+    border: 1px solid hsl(var(--border) / 0.6);
+  }
+
+  .bg-readable-secondary {
+    background: linear-gradient(135deg, 
+      hsl(var(--background)) 0%, 
+      hsl(var(--card) / 0.8) 100%
+    ) !important;
+    border: 1px solid hsl(var(--border) / 0.4);
+  }
+
+  /* Enhanced button styles with better contrast */
   .btn-fantasy {
-    @apply bg-gradient-to-r from-primary to-accent text-primary-foreground;
+    @apply bg-gradient-to-r from-primary to-accent text-white;
     @apply font-semibold px-6 py-3 rounded-lg transition-all duration-300;
     @apply hover:shadow-xl hover:scale-105 active:scale-95;
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary;
-    box-shadow: 0 0 30px hsl(110 60% 45% / 0.4);
+    box-shadow: 0 0 30px hsl(351 85% 62% / 0.4);
+    /* Ensure high contrast text */
+    color: white !important;
+    text-shadow: 0 1px 2px hsl(var(--background) / 0.8);
   }
 
   .btn-outline-fantasy {
-    @apply border-2 border-primary/50 text-primary bg-transparent;
+    @apply border-2 border-primary text-primary bg-card/50;
     @apply font-semibold px-6 py-3 rounded-lg transition-all duration-300;
-    @apply hover:bg-primary hover:text-primary-foreground hover:shadow-xl;
+    @apply hover:bg-primary hover:text-white hover:shadow-xl;
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary;
+    /* Enhanced border and background for better visibility */
+    backdrop-filter: blur(4px);
+    color: hsl(var(--primary)) !important;
+  }
+
+  .btn-outline-fantasy:hover {
+    color: white !important;
+    text-shadow: 0 1px 2px hsl(var(--background) / 0.8);
   }
 }
 
@@ -333,11 +427,11 @@
   @keyframes glow-pulse {
     0%, 100% { 
       filter: drop-shadow(0 0 15px hsl(var(--mystical-glow) / 0.4)) 
-              drop-shadow(0 0 30px hsl(var(--fantasy-gold) / 0.2)); 
+              drop-shadow(0 0 30px hsl(var(--hornet-gold) / 0.2)); 
     }
     50% { 
       filter: drop-shadow(0 0 25px hsl(var(--mystical-glow) / 0.7)) 
-              drop-shadow(0 0 50px hsl(var(--fantasy-gold) / 0.4)); 
+              drop-shadow(0 0 50px hsl(var(--hornet-gold) / 0.4)); 
     }
   }
 
@@ -389,7 +483,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      hsl(var(--fantasy-gold) / 0.1),
+      hsl(var(--hornet-gold) / 0.1),
       transparent
     );
     background-size: 200% 100%;
@@ -452,6 +546,22 @@
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
   }
+
+  /* Silksong column highlighting */
+  .silksong-table-row:hover .silksong-cell {
+    background: linear-gradient(135deg, hsl(351 77% 52% / 0.08) 0%, hsl(351 77% 52% / 0.12) 100%) !important;
+    border-left-color: hsl(351 77% 52% / 0.5) !important;
+    color: hsl(351 77% 55%);
+    box-shadow: inset 0 0 0 1px hsl(351 77% 52% / 0.1);
+  }
+
+  /* Mobile responsiveness for Silksong highlighting */
+  @media (max-width: 768px) {
+    .silksong-cell {
+      border-left-width: 1px !important;
+      padding-left: 0.5rem !important;
+    }
+  }
 }
 
 /* === MEDIA QUERIES - 媒体查询 === */
@@ -471,9 +581,9 @@
 /* 高对比度模式支持 */
 @media (prefers-contrast: high) {
   :root {
-    --border: 120 20% 30%;
-    --input: 120 20% 30%;
-    --primary: 110 60% 50%;
+    --border: 0 20% 30%;
+    --input: 0 20% 30%;
+    --primary: 351 80% 55%;
   }
 }
 

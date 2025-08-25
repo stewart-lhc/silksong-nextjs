@@ -90,20 +90,30 @@ export function SoundtrackSection() {
   }, [currentTrack]);
 
   return (
-    <section className="py-24 bg-gradient-to-br from-slate-900 to-slate-800">
-      <div className="container mx-auto px-6">
+    <section className="py-24 relative bg-gradient-to-br from-background via-card to-secondary/20">
+      {/* Subtle background pattern for depth */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 25% 25%, hsl(var(--primary) / 0.05) 1px, transparent 1px),
+                           radial-gradient(circle at 75% 75%, hsl(var(--accent) / 0.03) 1px, transparent 1px)`,
+          backgroundSize: '50px 50px, 30px 30px'
+        }} />
+      </div>
+      
+      <div className="container mx-auto px-6 relative">
         <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold font-poppins text-white mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold font-poppins fantasy-text mb-6">
             Orchestral Soundtrack
           </h2>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="text-xl text-foreground/80 max-w-2xl mx-auto">
             Experience the haunting melodies and epic compositions by Christopher Larkin 
             that bring the world of Silksong to life.
           </p>
         </div>
 
         <div className="max-w-2xl mx-auto">
-          <Card className="bg-black/40 backdrop-blur-sm border-white/20">
+          <Card className="card-enhanced">
             <CardContent className="p-8">
               {/* Current Track Info */}
               <div className="text-center mb-8">
@@ -112,10 +122,10 @@ export function SoundtrackSection() {
                   alt="Silksong OST Cover" 
                   className="w-48 h-48 mx-auto rounded-lg shadow-xl mb-6"
                 />
-                <h3 className="text-2xl font-bold text-white mb-2">
+                <h3 className="text-2xl font-bold text-foreground mb-2">
                   {tracks[currentTrack].title}
                 </h3>
-                <p className="text-gray-400">Christopher Larkin</p>
+                <p className="text-foreground/70">Christopher Larkin</p>
               </div>
 
               {/* Audio Element */}
@@ -126,13 +136,13 @@ export function SoundtrackSection() {
 
               {/* Progress Bar */}
               <div className="mb-6">
-                <div className="flex justify-between text-sm text-gray-400 mb-2">
+                <div className="flex justify-between text-sm text-foreground/60 mb-2">
                   <span>{formatTime(currentTime)}</span>
                   <span>{duration ? formatTime(duration) : tracks[currentTrack].duration}</span>
                 </div>
-                <div className="w-full bg-gray-700 rounded-full h-2">
+                <div className="w-full bg-muted rounded-full h-2">
                   <div 
-                    className="bg-purple-500 h-2 rounded-full transition-all duration-200"
+                    className="bg-primary h-2 rounded-full transition-all duration-200"
                     style={{ width: duration ? `${(currentTime / duration) * 100}%` : '0%' }}
                   />
                 </div>
@@ -143,7 +153,7 @@ export function SoundtrackSection() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-white hover:text-purple-400"
+                  className="text-foreground hover:text-primary"
                   onClick={prevTrack}
                 >
                   <SkipBack className="w-5 h-5" />
@@ -152,7 +162,7 @@ export function SoundtrackSection() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="w-16 h-16 text-white hover:text-purple-400 bg-purple-600 hover:bg-purple-700 rounded-full"
+                  className="w-16 h-16 btn-fantasy rounded-full"
                   onClick={togglePlay}
                 >
                   {isPlaying ? <Pause className="w-8 h-8" /> : <Play className="w-8 h-8 ml-1" />}
@@ -161,7 +171,7 @@ export function SoundtrackSection() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-white hover:text-purple-400"
+                  className="text-foreground hover:text-primary"
                   onClick={nextTrack}
                 >
                   <SkipForward className="w-5 h-5" />
@@ -175,8 +185,8 @@ export function SoundtrackSection() {
                     key={track.id}
                     className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${
                       index === currentTrack 
-                        ? 'bg-purple-600/30 text-purple-400' 
-                        : 'hover:bg-white/5 text-gray-300'
+                        ? 'bg-primary/20 text-primary border border-primary/30' 
+                        : 'hover:bg-muted/30 text-foreground/80 hover:text-foreground'
                     }`}
                     onClick={() => setCurrentTrack(index)}
                   >
@@ -190,7 +200,7 @@ export function SoundtrackSection() {
                       </div>
                       <span>{track.title}</span>
                     </div>
-                    <span className="text-sm text-gray-500">{track.duration}</span>
+                    <span className="text-sm text-foreground/50">{track.duration}</span>
                   </button>
                 ))}
               </div>
@@ -202,7 +212,7 @@ export function SoundtrackSection() {
                     href="https://christopherlarkin.bandcamp.com/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-white border-white/30 hover:bg-white/10"
+                    className="flex items-center gap-2 text-foreground border-border hover:bg-muted/50"
                   >
                     <ExternalLink className="w-4 h-4" />
                     More from Christopher Larkin

@@ -216,21 +216,27 @@ export default function PlatformsPage() {
         }}
       />
       
-      <div className="container mx-auto px-6 py-12">
+      <div className="min-h-screen bg-background">
         {/* Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold font-poppins text-foreground mb-4">
-          Platforms & Availability
-        </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Stay up to date with official platform confirmations and availability information for Hollow Knight: Silksong.
-        </p>
-      </div>
+        <div className="bg-card/50 backdrop-blur-sm border-b">
+          <div className="container mx-auto px-6 py-12">
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold fantasy-text mb-4 text-foreground">
+                Platforms & Availability
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Stay up to date with official platform confirmations and availability information for Hollow Knight: Silksong.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="container mx-auto px-6 py-12">
 
       {/* Game Pass Highlight */}
-      <Card className="max-w-2xl mx-auto mb-12 border-green-500/30">
+      <Card className="max-w-2xl mx-auto mb-12 border-hornet-secondary/30 card-enhanced">
         <CardHeader className="text-center">
-          <CardTitle className="text-green-500 flex items-center justify-center gap-2">
+          <CardTitle className="text-hornet-secondary flex items-center justify-center gap-2">
             <CheckCircle className="w-6 h-6" />
             Xbox Game Pass Day One
           </CardTitle>
@@ -243,7 +249,7 @@ export default function PlatformsPage() {
       {/* Confirmed Platforms */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
-          <CheckCircle className="w-6 h-6 text-green-500" />
+          <CheckCircle className="w-6 h-6 text-hornet-secondary" />
           Confirmed Platforms
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -251,7 +257,7 @@ export default function PlatformsPage() {
             const statusInfo = getStatusInfo(platform.status);
             
             return (
-              <Card key={platform.id} className="hover:shadow-lg transition-shadow">
+              <Card key={platform.id} className="hover:shadow-lg transition-shadow card-enhanced">
                 <CardHeader>
                   <div className="flex items-center justify-between mb-2">
                     <PlatformLogo 
@@ -266,13 +272,13 @@ export default function PlatformsPage() {
                   <CardTitle className="flex items-center justify-between">
                     {platform.name}
                     {platform.gamePassIncluded && (
-                      <Badge className="bg-green-500/10 text-green-500 border-green-500/20 text-xs">
+                      <Badge className="bg-hornet-secondary/10 text-hornet-secondary border-hornet-secondary/20 text-xs">
                         Game Pass
                       </Badge>
                     )}
                   </CardTitle>
                   {platform.releaseWindow && (
-                    <CardDescription className="text-primary-glow font-medium">
+                    <CardDescription className="text-hornet-secondary font-medium">
                       {platform.releaseWindow}
                     </CardDescription>
                   )}
@@ -280,7 +286,7 @@ export default function PlatformsPage() {
                 <CardContent>
                   <p className="text-muted-foreground mb-4">{platform.description}</p>
                   {platform.officialUrl && (
-                    <Button variant="outline" size="sm" asChild>
+                    <Button variant="outline" size="sm" asChild className="btn-outline-fantasy">
                       <a href={platform.officialUrl} target="_blank" rel="noopener noreferrer">
                         Visit Platform
                         <ExternalLink className="w-3 h-3 ml-1" />
@@ -298,7 +304,7 @@ export default function PlatformsPage() {
       {rumoredPlatforms.length > 0 && (
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
-            <Clock className="w-6 h-6 text-yellow-500" />
+            <Clock className="w-6 h-6 text-hornet-accent" />
             Rumored Platforms
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -306,7 +312,7 @@ export default function PlatformsPage() {
               const statusInfo = getStatusInfo(platform.status);
               
               return (
-                <Card key={platform.id} className="hover:shadow-lg transition-shadow opacity-75">
+                <Card key={platform.id} className="hover:shadow-lg transition-shadow opacity-75 card-enhanced">
                   <CardHeader>
                     <div className="flex items-center justify-between mb-2">
                       <PlatformLogo 
@@ -326,7 +332,7 @@ export default function PlatformsPage() {
                   <CardContent>
                     <p className="text-muted-foreground mb-4">{platform.description}</p>
                     {platform.officialUrl && (
-                      <Button variant="outline" size="sm" asChild>
+                      <Button variant="outline" size="sm" asChild className="btn-outline-fantasy">
                         <a href={platform.officialUrl} target="_blank" rel="noopener noreferrer">
                           Visit Platform
                           <ExternalLink className="w-3 h-3 ml-1" />
@@ -345,7 +351,7 @@ export default function PlatformsPage() {
       {unknownPlatforms.length > 0 && (
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
-            <Clock className="w-6 h-6 text-gray-500" />
+            <Clock className="w-6 h-6 text-hornet-accent/50" />
             Platform Status Unknown
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -353,7 +359,7 @@ export default function PlatformsPage() {
               const statusInfo = getStatusInfo(platform.status);
               
               return (
-                <Card key={platform.id} className="hover:shadow-lg transition-shadow opacity-60">
+                <Card key={platform.id} className="hover:shadow-lg transition-shadow opacity-60 card-enhanced">
                   <CardHeader>
                     <div className="flex items-center justify-between mb-2">
                       <PlatformLogo 
@@ -373,7 +379,7 @@ export default function PlatformsPage() {
                   <CardContent>
                     <p className="text-muted-foreground mb-4">{platform.description}</p>
                     {platform.officialUrl && (
-                      <Button variant="outline" size="sm" asChild>
+                      <Button variant="outline" size="sm" asChild className="btn-outline-fantasy">
                         <a href={platform.officialUrl} target="_blank" rel="noopener noreferrer">
                           Visit Platform
                           <ExternalLink className="w-3 h-3 ml-1" />
@@ -404,10 +410,10 @@ export default function PlatformsPage() {
       </section>
 
       {/* Statistics */}
-      <Card className="max-w-2xl mx-auto mb-8">
+      <Card className="max-w-2xl mx-auto mb-8 card-enhanced">
         <CardContent className="pt-6">
           <div className="text-center">
-            <div className="text-3xl font-bold text-primary mb-2">
+            <div className="text-3xl font-bold text-hornet-secondary mb-2">
               {confirmedPlatforms.length}
             </div>
             <div className="text-muted-foreground">Confirmed Platforms</div>
@@ -416,9 +422,9 @@ export default function PlatformsPage() {
       </Card>
 
       {/* Information Note */}
-      <Card className="max-w-2xl mx-auto border-blue-500/30">
+      <Card className="max-w-2xl mx-auto border-hornet-accent/30 card-enhanced">
         <CardContent className="pt-6">
-          <h3 className="text-lg font-semibold mb-2 text-blue-500">Platform Updates</h3>
+          <h3 className="text-lg font-semibold mb-2 text-hornet-accent">Platform Updates</h3>
           <p className="text-muted-foreground">
             Platform availability information is based on official announcements from Team Cherry. 
             We'll update this page as new platform confirmations are announced. 
@@ -426,6 +432,7 @@ export default function PlatformsPage() {
           </p>
         </CardContent>
       </Card>
+        </div>
       </div>
     </>
   );

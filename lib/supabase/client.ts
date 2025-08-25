@@ -3,9 +3,9 @@
  * Provides type-safe database access with proper error handling
  */
 
-import { createClient } from '@supabase/supabase-js';
 import { env } from '@/lib/env';
 import type { Database } from '@/types/supabase';
+import { createClient } from '@supabase/supabase-js';
 
 // Client-side Supabase client with enhanced configuration
 export const supabase = createClient<Database>(
@@ -18,23 +18,23 @@ export const supabase = createClient<Database>(
       autoRefreshToken: true,
       detectSessionInUrl: true,
       flowType: 'pkce', // Use PKCE flow for enhanced security
-      
+
       // Custom storage for SSR compatibility
       storage: typeof window !== 'undefined' ? window.localStorage : undefined,
     },
-    
+
     // Database configuration
     db: {
       schema: 'public',
     },
-    
+
     // Global configuration
     global: {
       headers: {
         'X-Client-Info': 'silk-song-archive@1.0.0',
       },
     },
-    
+
     // Realtime configuration
     realtime: {
       params: {
@@ -82,7 +82,7 @@ export async function executeQuery<T>(
 ): Promise<T> {
   try {
     const { data, error } = await queryFn();
-    
+
     if (error) {
       throw new SupabaseQueryError(
         error.message || 'Database query failed',
@@ -91,17 +91,17 @@ export async function executeQuery<T>(
         error.hint
       );
     }
-    
+
     if (data === null) {
       throw new SupabaseQueryError('Query returned null data');
     }
-    
+
     return data;
   } catch (error) {
     if (error instanceof SupabaseQueryError) {
       throw error;
     }
-    
+
     throw new SupabaseQueryError(
       `Unexpected error during database query: ${error instanceof Error ? error.message : 'Unknown error'}`
     );
@@ -118,27 +118,35 @@ export function createRealtimeSubscription<T extends Record<string, any>>(
   } = {}
 ) {
   const { filter, event = '*', schema = 'public' } = options;
-  
-  const subscription = supabase
-    .channel(`realtime:${table}`)
-    .on('postgres_changes', {
+
+  const subscription = supabase.channel(`realtime:${table}`).on(
+    'postgres_changes',
+    {
       event,
       schema,
       table,
       filter,
-    } as any, (payload: any) => {
+    } as any,
+    (payload: any) => {
       // Type-safe payload handling
       return payload;
-    });
-    
+    }
+  );
+
   return {
     subscribe: (callback: (payload: any) => void) => {
-      return subscription.on('postgres_changes', { 
-        event, 
-        schema, 
-        table, 
-        filter 
-      } as any, callback).subscribe();
+      return subscription
+        .on(
+          'postgres_changes',
+          {
+            event,
+            schema,
+            table,
+            filter,
+          } as any,
+          callback
+        )
+        .subscribe();
     },
     unsubscribe: () => subscription.unsubscribe(),
   };
@@ -152,16 +160,16 @@ export async function checkDatabaseHealth(): Promise<{
 }> {
   try {
     const startTime = Date.now();
-    
+
     // Simple health check query
     const { error } = await supabase
       .from('email_subscriptions')
       .select('count')
       .limit(1)
       .maybeSingle();
-    
+
     const latency = Date.now() - startTime;
-    
+
     if (error) {
       return {
         isHealthy: false,
@@ -169,7 +177,7 @@ export async function checkDatabaseHealth(): Promise<{
         latency,
       };
     }
-    
+
     return {
       isHealthy: true,
       latency,
@@ -195,7 +203,7 @@ export const auth = {
       return null;
     }
   },
-  
+
   // Get current user with error handling
   async getUser() {
     try {
@@ -207,7 +215,7 @@ export const auth = {
       return null;
     }
   },
-  
+
   // Sign out with error handling
   async signOut() {
     try {
@@ -223,9 +231,9 @@ export const auth = {
 
 // Export types for convenience
 export type { Database } from '@/types/supabase';
-export type Tables<T extends keyof Database['public']['Tables']> = 
+export type Tables<T extends keyof Database['public']['Tables']> =
   Database['public']['Tables'][T]['Row'];
-export type Inserts<T extends keyof Database['public']['Tables']> = 
+export type Inserts<T extends keyof Database['public']['Tables']> =
   Database['public']['Tables'][T]['Insert'];
-export type Updates<T extends keyof Database['public']['Tables']> = 
+export type Updates<T extends keyof Database['public']['Tables']> =
   Database['public']['Tables'][T]['Update'];

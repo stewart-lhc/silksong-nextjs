@@ -37,7 +37,7 @@ const LazyImage = memo(({ src, alt, className }: { src: string; alt: string; cla
       {isInView && (
         <>
           {!isLoaded && (
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-800/80 to-slate-600/60 animate-pulse" />
+            <div className="absolute inset-0 bg-gradient-to-br from-background/80 to-muted/60 animate-pulse" />
           )}
           <Image
             src={src}
@@ -53,7 +53,7 @@ const LazyImage = memo(({ src, alt, className }: { src: string; alt: string; cla
         </>
       )}
       {!isInView && (
-        <div className="w-full h-full bg-gradient-to-br from-slate-800/40 to-slate-600/20" />
+        <div className="w-full h-full bg-gradient-to-br from-background/40 to-muted/20" />
       )}
     </div>
   );
@@ -86,7 +86,7 @@ export const StorySection = memo(() => {
           {/* Content */}
           <div className="space-y-6">
             <div className="space-y-4">
-              <h3 className="text-2xl md:text-3xl font-bold text-amber-400">
+              <h3 className="text-2xl md:text-3xl font-bold fantasy-text">
                 Captured and Taken to a Distant Land
               </h3>
               

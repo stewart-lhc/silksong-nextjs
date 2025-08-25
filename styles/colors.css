@@ -1,0 +1,212 @@
+/**
+ * Hornet 色彩系统 - CSS 变量定义
+ * 基于主色调 #C43444 设计的完整色彩系统
+ */
+
+:root {
+  /* 主色板 - 基于 #C43444 (Hornet品牌色) */
+  --hornet-primary-50: #fdf2f3;
+  --hornet-primary-100: #fce5e7;
+  --hornet-primary-200: #f8ccd0;
+  --hornet-primary-300: #f2a6ad;
+  --hornet-primary-400: #e77a85;
+  --hornet-primary-500: #c43444; /* 主色 */
+  --hornet-primary-600: #b02c3b;
+  --hornet-primary-700: #8e2430;
+  --hornet-primary-800: #72232c;
+  --hornet-primary-900: #5e1f26;
+
+  /* 辅助色 - 蓝色 */
+  --hornet-blue-50: #eff6ff;
+  --hornet-blue-100: #dbeafe;
+  --hornet-blue-200: #bfdbfe;
+  --hornet-blue-300: #93c5fd;
+  --hornet-blue-400: #60a5fa;
+  --hornet-blue-500: #3b82f6;
+  --hornet-blue-600: #2563eb;
+  --hornet-blue-700: #1d4ed8;
+  --hornet-blue-800: #1e40af;
+  --hornet-blue-900: #1e3a8a;
+
+  /* 辅助色 - 橙色 */
+  --hornet-orange-50: #fff7ed;
+  --hornet-orange-100: #ffedd5;
+  --hornet-orange-200: #fed7aa;
+  --hornet-orange-300: #fdba74;
+  --hornet-orange-400: #fb923c;
+  --hornet-orange-500: #f59e0b;
+  --hornet-orange-600: #ea580c;
+  --hornet-orange-700: #c2410c;
+  --hornet-orange-800: #9a3412;
+  --hornet-orange-900: #7c2d12;
+
+  /* 辅助色 - 紫色 */
+  --hornet-purple-50: #faf5ff;
+  --hornet-purple-100: #f3e8ff;
+  --hornet-purple-200: #e9d5ff;
+  --hornet-purple-300: #d8b4fe;
+  --hornet-purple-400: #c084fc;
+  --hornet-purple-500: #a855f7;
+  --hornet-purple-600: #9333ea;
+  --hornet-purple-700: #7c3aed;
+  --hornet-purple-800: #6d28d9;
+  --hornet-purple-900: #581c87;
+
+  /* 中性色 */
+  --hornet-neutral-50: #fafafa;
+  --hornet-neutral-100: #f5f5f5;
+  --hornet-neutral-200: #e5e5e5;
+  --hornet-neutral-300: #d4d4d4;
+  --hornet-neutral-400: #a3a3a3;
+  --hornet-neutral-500: #737373;
+  --hornet-neutral-600: #525252;
+  --hornet-neutral-700: #404040;
+  --hornet-neutral-800: #262626;
+  --hornet-neutral-900: #171717;
+
+  /* 功能色 - 成功 */
+  --hornet-success-50: #ecfdf5;
+  --hornet-success-100: #d1fae5;
+  --hornet-success-200: #a7f3d0;
+  --hornet-success-300: #6ee7b7;
+  --hornet-success-400: #34d399;
+  --hornet-success-500: #10b981;
+  --hornet-success-600: #059669;
+  --hornet-success-700: #047857;
+  --hornet-success-800: #065f46;
+  --hornet-success-900: #064e3b;
+
+  /* 功能色 - 警告 */
+  --hornet-warning-50: #fffbeb;
+  --hornet-warning-100: #fef3c7;
+  --hornet-warning-200: #fde68a;
+  --hornet-warning-300: #fcd34d;
+  --hornet-warning-400: #fbbf24;
+  --hornet-warning-500: #f59e0b;
+  --hornet-warning-600: #d97706;
+  --hornet-warning-700: #b45309;
+  --hornet-warning-800: #92400e;
+  --hornet-warning-900: #78350f;
+
+  /* 功能色 - 错误 */
+  --hornet-error-50: #fef2f2;
+  --hornet-error-100: #fee2e2;
+  --hornet-error-200: #fecaca;
+  --hornet-error-300: #fca5a5;
+  --hornet-error-400: #f87171;
+  --hornet-error-500: #ef4444;
+  --hornet-error-600: #dc2626;
+  --hornet-error-700: #b91c1c;
+  --hornet-error-800: #991b1b;
+  --hornet-error-900: #7f1d1d;
+
+  /* 功能色 - 信息 */
+  --hornet-info-50: #eff6ff;
+  --hornet-info-100: #dbeafe;
+  --hornet-info-200: #bfdbfe;
+  --hornet-info-300: #93c5fd;
+  --hornet-info-400: #60a5fa;
+  --hornet-info-500: #3b82f6;
+  --hornet-info-600: #2563eb;
+  --hornet-info-700: #1d4ed8;
+  --hornet-info-800: #1e40af;
+  --hornet-info-900: #1e3a8a;
+
+  /* 基础色 */
+  --hornet-white: #ffffff;
+  --hornet-black: #000000;
+
+  /* 明亮模式下的语义颜色 */
+  --hornet-background: var(--hornet-white);
+  --hornet-foreground: var(--hornet-neutral-900);
+  --hornet-muted: var(--hornet-neutral-100);
+  --hornet-muted-foreground: var(--hornet-neutral-500);
+  --hornet-border: var(--hornet-neutral-200);
+  --hornet-input: var(--hornet-neutral-200);
+  --hornet-ring: var(--hornet-primary-500);
+
+  /* 按钮状态色 */
+  --hornet-button-primary: var(--hornet-primary-500);
+  --hornet-button-primary-hover: var(--hornet-primary-600);
+  --hornet-button-primary-active: var(--hornet-primary-700);
+  --hornet-button-primary-text: var(--hornet-white);
+
+  --hornet-button-secondary: var(--hornet-neutral-200);
+  --hornet-button-secondary-hover: var(--hornet-neutral-300);
+  --hornet-button-secondary-active: var(--hornet-neutral-400);
+  --hornet-button-secondary-text: var(--hornet-neutral-900);
+
+  --hornet-button-destructive: var(--hornet-error-500);
+  --hornet-button-destructive-hover: var(--hornet-error-600);
+  --hornet-button-destructive-active: var(--hornet-error-700);
+  --hornet-button-destructive-text: var(--hornet-white);
+
+  /* 表单元素样式 */
+  --hornet-input-border: var(--hornet-neutral-200);
+  --hornet-input-bg: var(--hornet-white);
+  --hornet-input-text: var(--hornet-neutral-900);
+  --hornet-input-placeholder: var(--hornet-neutral-400);
+  --hornet-input-focus-border: var(--hornet-primary-500);
+  --hornet-input-focus-ring: rgba(196, 52, 68, 0.2); /* 主色带透明度 */
+
+  /* 状态颜色 */
+  --hornet-success: var(--hornet-success-500);
+  --hornet-warning: var(--hornet-warning-500);
+  --hornet-error: var(--hornet-error-500);
+  --hornet-info: var(--hornet-info-500);
+}
+
+/* 暗黑模式 */
+.dark {
+  /* 明亮模式下的语义颜色 */
+  --hornet-background: var(--hornet-neutral-900);
+  --hornet-foreground: var(--hornet-neutral-50);
+  --hornet-muted: var(--hornet-neutral-800);
+  --hornet-muted-foreground: var(--hornet-neutral-400);
+  --hornet-border: var(--hornet-neutral-800);
+  --hornet-input: var(--hornet-neutral-800);
+  --hornet-ring: var(--hornet-primary-400);
+
+  /* 按钮状态色 */
+  --hornet-button-primary: var(--hornet-primary-500);
+  --hornet-button-primary-hover: var(--hornet-primary-400);
+  --hornet-button-primary-active: var(--hornet-primary-300);
+  --hornet-button-primary-text: var(--hornet-white);
+
+  --hornet-button-secondary: var(--hornet-neutral-800);
+  --hornet-button-secondary-hover: var(--hornet-neutral-700);
+  --hornet-button-secondary-active: var(--hornet-neutral-600);
+  --hornet-button-secondary-text: var(--hornet-neutral-50);
+
+  --hornet-button-destructive: var(--hornet-error-500);
+  --hornet-button-destructive-hover: var(--hornet-error-400);
+  --hornet-button-destructive-active: var(--hornet-error-300);
+  --hornet-button-destructive-text: var(--hornet-white);
+
+  /* 表单元素样式 */
+  --hornet-input-border: var(--hornet-neutral-700);
+  --hornet-input-bg: var(--hornet-neutral-900);
+  --hornet-input-text: var(--hornet-neutral-50);
+  --hornet-input-placeholder: var(--hornet-neutral-500);
+  --hornet-input-focus-border: var(--hornet-primary-400);
+  --hornet-input-focus-ring: rgba(231, 122, 133, 0.2); /* 主色400带透明度 */
+}
+
+/* 无障碍高对比度模式 */
+@media (prefers-contrast: more) {
+  :root {
+    --hornet-primary-500: #b02c3b; /* 更深的主色，提高对比度 */
+    --hornet-foreground: #000000;
+    --hornet-background: #ffffff;
+    --hornet-muted-foreground: #3d3d3d; /* 更深的次要文本 */
+    --hornet-border: #000000;
+  }
+
+  .dark {
+    --hornet-primary-500: #f2a6ad; /* 更亮的主色，提高对比度 */
+    --hornet-foreground: #ffffff;
+    --hornet-background: #000000;
+    --hornet-muted-foreground: #d4d4d4; /* 更亮的次要文本 */
+    --hornet-border: #ffffff;
+  }
+}

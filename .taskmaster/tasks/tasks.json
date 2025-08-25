@@ -1,0 +1,102 @@
+{
+  "tags": {
+    "master": {
+      "name": "master",
+      "description": "主要开发任务",
+      "createdAt": "2025-01-27T12:00:00.000Z",
+      "tasks": [
+        {
+          "id": 1,
+          "title": "优化网站性能和Web Vitals",
+          "description": "改进现有网站的性能指标，确保符合Core Web Vitals标准",
+          "status": "pending",
+          "priority": "high",
+          "dependencies": [],
+          "details": "- 分析当前性能瓶颈\n- 优化图片加载和懒加载实现\n- 改进代码分割和bundling\n- 监控和测量性能指标",
+          "testStrategy": "使用Lighthouse和Web Vitals工具进行性能测试，确保LCP < 2.5s, FID < 100ms, CLS < 0.1"
+        },
+        {
+          "id": 2,
+          "title": "增强SEO优化和结构化数据",
+          "description": "完善网站的SEO元数据和结构化数据实现",
+          "status": "pending",
+          "priority": "high",
+          "dependencies": [],
+          "details": "- 审查和优化现有meta标签\n- 完善Open Graph和Twitter Card元数据\n- 增强结构化数据（JSON-LD）\n- 改进sitemap和robots.txt",
+          "testStrategy": "使用Google Search Console和结构化数据测试工具验证实现"
+        },
+        {
+          "id": 3,
+          "title": "完善邮件订阅系统",
+          "description": "优化现有的Supabase邮件订阅功能，增加错误处理和用户体验",
+          "status": "pending",
+          "priority": "medium",
+          "dependencies": [],
+          "details": "- 改进订阅表单的用户体验\n- 增加订阅确认和错误处理\n- 实现邮件验证功能\n- 添加订阅管理功能",
+          "testStrategy": "测试订阅流程，验证错误处理和确认邮件发送"
+        },
+        {
+          "id": 4,
+          "title": "增强互动功能和小工具",
+          "description": "开发更多互动功能，如倒计时器、嵌入式工具等",
+          "status": "pending",
+          "priority": "medium",
+          "dependencies": [],
+          "details": "- 完善倒计时器功能\n- 创建更多嵌入式小工具\n- 改进现有的清单功能\n- 添加用户交互反馈",
+          "testStrategy": "测试各种交互功能的响应性和用户体验"
+        },
+        {
+          "id": 5,
+          "title": "完善无障碍访问(WCAG)支持",
+          "description": "确保网站完全符合WCAG 2.1 AA标准",
+          "status": "pending",
+          "priority": "medium",
+          "dependencies": [],
+          "details": "- 审查现有的颜色对比度\n- 改进键盘导航支持\n- 添加必要的ARIA标签\n- 优化屏幕阅读器兼容性",
+          "testStrategy": "使用无障碍访问测试工具和屏幕阅读器进行测试"
+        },
+        {
+          "id": 6,
+          "title": "扩展内容管理功能",
+          "description": "改进现有的内容管理，包括FAQ、时间线、平台信息等",
+          "status": "pending",
+          "priority": "low",
+          "dependencies": [],
+          "details": "- 优化FAQ系统的搜索和分类功能\n- 增强时间线的交互性\n- 完善平台比较工具\n- 添加内容更新通知",
+          "testStrategy": "验证内容展示的准确性和用户查找信息的便利性"
+        },
+        {
+          "id": 7,
+          "title": "实现PWA功能",
+          "description": "将网站转换为渐进式Web应用",
+          "status": "pending",
+          "priority": "low",
+          "dependencies": [],
+          "details": "- 实现Service Worker\n- 添加离线支持\n- 创建应用清单文件\n- 添加安装提示功能",
+          "testStrategy": "测试PWA安装和离线功能，验证在不同设备上的表现"
+        },
+        {
+          "id": 8,
+          "title": "增强分析和监控",
+          "description": "完善网站分析和性能监控系统",
+          "status": "pending",
+          "priority": "low",
+          "dependencies": [],
+          "details": "- 集成更详细的用户行为分析\n- 实现实时性能监控\n- 添加错误追踪和报告\n- 创建分析仪表板",
+          "testStrategy": "验证分析数据的准确性和监控系统的响应能力"
+        }
+      ]
+    }
+  },
+  "global": {
+    "currentTag": "master",
+    "lastSwitched": "2025-01-27T12:00:00.000Z",
+    "defaultTag": "master"
+  },
+  "project": {
+    "name": "Silksong NextJS Website",
+    "description": "Comprehensive fan website for Hollow Knight: Silksong with latest updates and interactive features",
+    "version": "1.0.0",
+    "author": "超哥"
+  }
+}

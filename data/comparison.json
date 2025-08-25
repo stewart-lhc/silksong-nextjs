@@ -2,83 +2,145 @@
   "comparisonData": [
     {
       "dimension": "Protagonist",
-      "hollowKnight": "The Knight (Silent vessel)",
-      "silksong": "Hornet (Princess-protector)",
+      "hollowKnight": "The Knight: A silent, stoic vessel.",
+      "silksong": "Hornet: A voiced, faster, and more acrobatic princess-protector.",
       "status": "confirmed",
-      "source": "Official trailer and gameplay reveals"
+      "source": {
+        "label": "Official Reveal Trailer",
+        "url": "https://www.youtube.com/watch?v=yQxwbZsL14Y"
+      }
     },
     {
       "dimension": "Setting",
-      "hollowKnight": "Kingdom of Hallownest",
-      "silksong": "Kingdom of Pharloom",
+      "hollowKnight": "The decaying, underground Kingdom of Hallownest.",
+      "silksong": "The vast, haunted Kingdom of Pharloom, ruled by Silk and Song.",
       "status": "confirmed",
-      "source": "Team Cherry development blogs"
+      "source": {
+        "label": "Team Cherry Development Blog",
+        "url": "https://www.teamcherry.com.au/blog/hollow-knight-silksong-revealed"
+      }
     },
     {
-      "dimension": "Combat System",
-      "hollowKnight": "Nail-based melee combat",
-      "silksong": "Needle and thread combat with tools",
+      "dimension": "Core Movement",
+      "hollowKnight": "Standard dash and vertical 'pogo' bounce off enemies.",
+      "silksong": "Faster base speed, a diagonal downward dash (no pogo), and the ability to mantle ledges.",
       "status": "confirmed",
-      "source": "Official gameplay demonstrations"
+      "source": {
+        "label": "Eurogamer Hands-On Preview",
+        "url": "https://www.eurogamer.net/not-only-is-hollow-knight-silksong-real-ive-played-it-and-its-harder-and-faster-than-the-original-but-is-it-better"
+      }
     },
     {
-      "dimension": "Movement",
-      "hollowKnight": "Wall jump, dash, double jump",
-      "silksong": "Thread abilities, enhanced mobility",
+      "dimension": "Healing Mechanic",
+      "hollowKnight": "Uses SOUL to slowly 'Focus' and heal one mask at a time.",
+      "silksong": "Uses a Silk meter. When full, Hornet can instantly heal three masks.",
       "status": "confirmed",
-      "source": "Gameplay footage analysis"
+      "source": {
+        "label": "IGN Hands-On Preview",
+        "url": "https://www.ign.com/articles/hollow-knight-silksong-we-played-it-gamescom-2025"
+      }
     },
     {
-      "dimension": "Magic System",
-      "hollowKnight": "Soul-based spells",
-      "silksong": "Silk and thread-based abilities",
-      "status": "hinted",
-      "source": "Trailer implications and dev interviews"
+      "dimension": "Customization System",
+      "hollowKnight": "Charm System: Equip found charms to gain passive abilities and buffs.",
+      "silksong": "Tool Crafting System: Craft and equip a variety of tools like bombs, traps, and spiked balls for active use.",
+      "status": "confirmed",
+      "source": {
+        "label": "Xbox Wire Hands-On Preview",
+        "url": "https://news.xbox.com/en-us/2025/08/20/hollow-knight-silksong-hands-on-demo-preview/"
+      }
     },
     {
-      "dimension": "World Size",
-      "hollowKnight": "~15 major areas",
-      "silksong": "Expanded interconnected world",
-      "status": "hinted",
-      "source": "Developer statements about scope"
+      "dimension": "World Structure",
+      "hollowKnight": "Centered around a single primary hub town, Dirtmouth.",
+      "silksong": "Features multiple towns and settlements, creating a more populated world.",
+      "status": "confirmed",
+      "source": {
+        "label": "Times of India - What to Expect",
+        "url": "https://timesofindia.indiatimes.com/sports/esports/news/hollow-knight-silksong-release-date-confirmed-what-awaits-fans-in-the-long-anticipated-sequel/articleshow/123441863.cms"
+      }
     },
     {
-      "dimension": "Boss Count",
-      "hollowKnight": "47+ boss encounters",
-      "silksong": "New roster of challenging bosses",
-      "status": "tba",
-      "source": "Speculation from community"
+      "dimension": "Quest System",
+      "hollowKnight": "Organic and unmarked, relying on player memory.",
+      "silksong": "A formal, trackable quest log with categories (Gather, Wayfarer, Hunt).",
+      "status": "confirmed",
+      "source": {
+        "label": "Official Website Details",
+        "url": "https://www.hollowknightsilksong.com/"
+      }
     },
     {
-      "dimension": "Story Length",
-      "hollowKnight": "20-40 hours main story",
-      "silksong": "Similar or expanded length",
-      "status": "tba",
-      "source": "Team Cherry hints about scope"
+      "dimension": "Boss Count (at launch)",
+      "hollowKnight": "Over 30 bosses in the base game.",
+      "silksong": "Over 40 new bosses.",
+      "status": "confirmed",
+      "source": {
+        "label": "Official Release Date Trailer",
+        "url": "https://www.youtube.com/watch?v=EGfxuH-vUr4"
+      }
+    },
+    {
+      "dimension": "Enemy Count (at launch)",
+      "hollowKnight": "Over 140 enemies in the base game.",
+      "silksong": "Over 150 new enemies.",
+      "status": "confirmed",
+      "source": {
+        "label": "Official Release Date Trailer",
+        "url": "https://www.youtube.com/watch?v=EGfxuH-vUr4"
+      }
     },
     {
       "dimension": "Art Style",
-      "hollowKnight": "Hand-drawn 2D animation",
-      "silksong": "Enhanced hand-drawn animation",
+      "hollowKnight": "Hand-drawn 2D animation with a darker, more muted palette.",
+      "silksong": "Enhanced hand-drawn animation with a more vibrant and diverse color palette.",
       "status": "confirmed",
-      "source": "Visual comparisons from trailers"
+      "source": {
+        "label": "GameSpot Hands-On Preview",
+        "url": "https://www.gamespot.com/articles/hollow-knight-silksong-is-real-and-i-played-it/1100-6534147/"
+      }
     },
     {
-      "dimension": "Music",
-      "hollowKnight": "Christopher Larkin orchestral",
-      "silksong": "Christopher Larkin composition",
+      "dimension": "Music Composer",
+      "hollowKnight": "Christopher Larkin",
+      "silksong": "Christopher Larkin returns to compose the score.",
       "status": "confirmed",
-      "source": "Official soundtrack samples released"
+      "source": {
+        "label": "Christopher Larkin on Bandcamp",
+        "url": "https://christopherlarkin.bandcamp.com/album/hollow-knight-silksong-original-soundtrack-sample"
+      }
+    },
+    {
+      "dimension": "Post-Launch Support",
+      "hollowKnight": "Received multiple free major content packs (Gods & Glory, etc.).",
+      "silksong": "Team Cherry has ambitious plans for content after launch.",
+      "status": "confirmed",
+      "source": {
+        "label": "Eurogamer (citing Bloomberg interview)",
+        "url": "https://www.eurogamer.net/hollow-knight-silksong-will-be-supported-with-extra-content-for-years-to-come"
+      }
     }
   ],
   "unconfirmedExpectations": [
-    "Co-op multiplayer mode",
-    "New Game+ with additional content",
-    "Photo mode for capturing moments",
-    "Achievement/trophy system expansion",
-    "Accessibility options improvements",
-    "Additional language localizations",
-    "Post-launch content updates",
-    "Cross-platform progression save"
+    {
+      "expectation": "Co-op multiplayer mode",
+      "rationale": "A highly requested community feature since the first game."
+    },
+    {
+      "expectation": "New Game+ with additional content",
+      "rationale": "A common feature in the genre to extend replayability."
+    },
+    {
+      "expectation": "Expanded accessibility options",
+      "rationale": "Growing industry trend to make games playable for a wider audience."
+    },
+    {
+      "expectation": "Photo mode",
+      "rationale": "The game's art style is highly praised, making it a perfect candidate for a photo mode."
+    },
+    {
+      "expectation": "Cross-platform progression/saves",
+      "rationale": "A modern convenience feature for players who own multiple platforms."
+    }
   ]
 }

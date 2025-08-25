@@ -3,9 +3,9 @@
  * Provides system health status and database connectivity checks
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { supabase, checkDatabaseHealth } from '@/lib/supabase/client';
 import { env } from '@/lib/env';
+import { checkDatabaseHealth, supabase } from '@/lib/supabase/client';
+import { NextRequest, NextResponse } from 'next/server';
 
 interface HealthStatus {
   status: 'healthy' | 'degraded' | 'unhealthy';
@@ -31,24 +31,24 @@ interface HealthStatus {
  */
 export async function GET(request: NextRequest) {
   const startTime = Date.now();
-  
+
   try {
     // Check database connectivity and performance
     const dbHealth = await checkDatabaseHealth();
-    
+
     // Check Supabase connection
     let supabaseStatus: HealthStatus['checks']['supabase'] = {
       status: 'healthy',
       connected: true,
     };
-    
+
     try {
       // Simple connectivity test
       const { error } = await supabase
         .from('email_subscriptions')
         .select('count')
         .limit(0);
-      
+
       if (error) {
         supabaseStatus = {
           status: 'unhealthy',
@@ -60,13 +60,14 @@ export async function GET(request: NextRequest) {
       supabaseStatus = {
         status: 'unhealthy',
         connected: false,
-        error: error instanceof Error ? error.message : 'Unknown connection error',
+        error:
+          error instanceof Error ? error.message : 'Unknown connection error',
       };
     }
 
     // Determine overall status
     let overallStatus: HealthStatus['status'] = 'healthy';
-    
+
     if (!dbHealth.isHealthy || supabaseStatus.status === 'unhealthy') {
       overallStatus = 'unhealthy';
     } else if (dbHealth.latency && dbHealth.latency > 1000) {
@@ -90,8 +91,13 @@ export async function GET(request: NextRequest) {
     };
 
     // Set appropriate HTTP status code
-    const httpStatus = overallStatus === 'healthy' ? 200 : overallStatus === 'degraded' ? 200 : 503;
-    
+    const httpStatus =
+      overallStatus === 'healthy'
+        ? 200
+        : overallStatus === 'degraded'
+          ? 200
+          : 503;
+
     return NextResponse.json(healthStatus, {
       status: httpStatus,
       headers: {
@@ -101,7 +107,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Health check failed:', error);
-    
+
     const errorStatus: HealthStatus = {
       status: 'unhealthy',
       timestamp: new Date().toISOString(),
@@ -140,7 +146,7 @@ export async function HEAD(request: NextRequest) {
       .from('email_subscriptions')
       .select('count')
       .limit(0);
-    
+
     if (error) {
       return new NextResponse(null, {
         status: 503,

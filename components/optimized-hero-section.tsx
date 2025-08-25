@@ -67,7 +67,7 @@ function CountdownDisplay({ endDate }: { endDate: Date }) {
             <div className="text-2xl md:text-4xl font-bold text-white font-mono">
               {value.toString().padStart(2, '0')}
             </div>
-            <div className="text-xs md:text-sm text-gray-300 uppercase tracking-wider">
+            <div className="text-xs md:text-sm text-muted-foreground uppercase tracking-wider">
               {unit}
             </div>
           </div>
@@ -156,7 +156,7 @@ export function OptimizedHeroSection() {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: `url(/assets/hero-background.jpg)`,
+            backgroundImage: `url(/pressKit/Hornet_mid_shot.webp)`,
             opacity: videoLoaded ? 0 : 1,
             transition: 'opacity 0.5s ease-in-out'
           }}
@@ -164,8 +164,8 @@ export function OptimizedHeroSection() {
         
         {/* Loading skeleton */}
         {!videoLoaded && !videoError && (
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/80 to-purple-900/60 animate-pulse">
-            <div className="absolute inset-0 bg-purple-500/10 animate-pulse" />
+          <div className="absolute inset-0 bg-gradient-to-br from-background/80 to-primary/20 animate-pulse">
+            <div className="absolute inset-0 bg-primary/10 animate-pulse" />
           </div>
         )}
         
@@ -197,7 +197,7 @@ export function OptimizedHeroSection() {
         {/* Title */}
         <div className="space-y-4">
           <h1 className="font-poppins text-4xl md:text-7xl font-bold text-white">HOLLOW KNIGHT</h1>
-          <h2 className="font-poppins text-6xl md:text-9xl font-bold text-white tracking-wider">
+          <h2 className="font-poppins text-6xl md:text-9xl font-bold fantasy-text tracking-wider">
             SILKSONG
           </h2>
         </div>
@@ -210,10 +210,10 @@ export function OptimizedHeroSection() {
           <div className="mb-6">
             <CountdownDisplay endDate={new Date("2025-09-04T00:00:00")} />
           </div>
-          <p className="text-gray-300 text-sm mb-4">Get Release Reminder</p>
+          <p className="text-muted-foreground text-sm mb-4">Get Release Reminder</p>
           
           {isSubscribed ? (
-            <div className="text-green-400 font-semibold">✓ Successfully subscribed!</div>
+            <div className="text-primary font-semibold">✓ Successfully subscribed!</div>
           ) : (
             <form onSubmit={handleSubscribe} className="flex gap-2">
               <Input 
@@ -228,7 +228,7 @@ export function OptimizedHeroSection() {
               />
               <Button 
                 type="submit" 
-                className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-2 rounded-lg transition-all duration-200 shadow-lg" 
+                className="btn-fantasy" 
                 disabled={isSubmitting || !email.trim()}
               >
                 {isSubmitting ? "..." : "Subscribe"}
@@ -241,7 +241,7 @@ export function OptimizedHeroSection() {
         <div className="mt-8 flex justify-center">
           <Dialog open={isStreamOpen} onOpenChange={setIsStreamOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 text-lg font-semibold flex items-center gap-2">
+              <Button className="btn-fantasy px-8 py-3 text-lg font-semibold flex items-center gap-2">
                 <Video className="w-5 h-5" />
                 Release Trailer
               </Button>
