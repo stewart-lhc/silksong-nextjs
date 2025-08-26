@@ -11,8 +11,8 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   
   // Application Configuration (Required)
-  NEXT_PUBLIC_APP_URL: z.string().url('Invalid APP_URL format'),
-  NEXT_PUBLIC_APP_NAME: z.string().min(1, 'APP_NAME is required'),
+  NEXT_PUBLIC_APP_URL: z.string().url('Invalid APP_URL format').optional().default('https://hollowknightsilksong.org'),
+  NEXT_PUBLIC_APP_NAME: z.string().min(1, 'APP_NAME is required').optional().default('Silk Song Archive'),
   NEXT_PUBLIC_APP_VERSION: z.string().optional().default('1.0.0'),
   
   // Supabase Configuration (Required for database functionality)
@@ -21,8 +21,8 @@ const envSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   
   // SEO Configuration (Required for proper SEO)
-  NEXT_PUBLIC_SITE_DESCRIPTION: z.string().min(50, 'Site description should be at least 50 characters'),
-  NEXT_PUBLIC_KEYWORDS: z.string().min(1, 'Keywords are required for SEO'),
+  NEXT_PUBLIC_SITE_DESCRIPTION: z.string().min(50, 'Site description should be at least 50 characters').optional().default('Official archive site for Hollow Knight: Silksong. Get the latest news, media, and release information for Team Cherry\'s highly anticipated sequel.'),
+  NEXT_PUBLIC_KEYWORDS: z.string().min(1, 'Keywords are required for SEO').optional().default('Hollow Knight,Silksong,Team Cherry,Metroidvania,indie games,video games,gaming news'),
   NEXT_PUBLIC_CANONICAL_URL: z.string().url().optional(),
   
   // Analytics (Optional)
@@ -136,9 +136,14 @@ function validateEnv(): Env {
         (err) => `${err.path.join('.')}: ${err.message}`
       );
       
+      const isVercel = process.env.VERCEL === '1';
+      const envSource = isVercel 
+        ? 'Vercel environment variables dashboard' 
+        : '.env.local file';
+      
       throw new Error(
         `Environment validation failed:\n${errorMessages.join('\n')}\n\n` +
-        `Please check your .env.local file and ensure all required variables are set correctly.`
+        `Please check your ${envSource} and ensure all required variables are set correctly.`
       );
     }
     
