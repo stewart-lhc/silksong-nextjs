@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { useState, useEffect } from 'react';
 import { Video } from 'lucide-react';
 import gameInfo from '@/data/gameInfo.json';
+import { useEmailSubscription } from '@/hooks/use-email-subscription';
 
 // Email validation and sanitization utility
 const validateAndSanitizeEmail = (email: string): { isValid: boolean; sanitized: string; error?: string } => {
@@ -80,17 +81,19 @@ function CountdownDisplay({ endDate }: { endDate: Date }) {
 export function OptimizedHeroSection() {
   const [isStreamOpen, setIsStreamOpen] = useState(false);
   const [email, setEmail] = useState("");
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [subscriberCount, setSubscriberCount] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [lastSubmissionTime, setLastSubmissionTime] = useState(0);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
 
-  useEffect(() => {
-    // Initialize subscriber count from gameInfo
-    setSubscriberCount(gameInfo.subscribers);
-  }, []);
+  // Use the real email subscription hook
+  const {
+    subscriberCount,
+    isSubscribed,
+    isSubmitting,
+    isLoading,
+    error,
+    subscribe,
+    validateEmail,
+  } = useEmailSubscription();
 
   // Optimize video loading without DOM manipulation
   useEffect(() => {
@@ -107,45 +110,16 @@ export function OptimizedHeroSection() {
     }
   }, []);
 
-  const handleSubscribe = async (e: React.FormEvent) => {
+  const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Rate limiting - prevent spam submissions
-    const now = Date.now();
-    const minTimeBetweenSubmissions = 5000; // 5 seconds
-    
-    if (now - lastSubmissionTime < minTimeBetweenSubmissions) {
-      alert("Please wait a moment before subscribing again.");
+    if (!email.trim()) {
       return;
     }
-    
-    if (isSubmitting) return;
-    
-    // Validate and sanitize email
-    const validation = validateAndSanitizeEmail(email);
-    if (!validation.isValid) {
-      alert(validation.error);
-      return;
-    }
-    
-    setIsSubmitting(true);
-    setLastSubmissionTime(now);
-    
-    try {
-      // Simulate subscription (replace with actual implementation)
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setSubscriberCount(prev => prev + 1);
-      setIsSubscribed(true);
-      setEmail("");
-      setTimeout(() => setIsSubscribed(false), 3000);
-      alert("Successfully subscribed! You'll be notified when Silksong releases.");
-    } catch (error) {
-      console.error('Subscription error:', error);
-      alert("Failed to subscribe. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
+
+    // Use the real subscription function
+    subscribe(email.trim());
+    setEmail(''); // Clear email field on successful submission
   };
 
   return (
@@ -213,7 +187,12 @@ export function OptimizedHeroSection() {
           <p className="text-muted-foreground text-sm mb-4">Get Release Reminder</p>
           
           {isSubscribed ? (
-            <div className="text-primary font-semibold">✓ Successfully subscribed!</div>
+            <div className="text-primary font-semibold flex items-center justify-center gap-2">
+              <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                ✓
+              </div>
+              Successfully subscribed!
+            </div>
           ) : (
             <form onSubmit={handleSubscribe} className="flex gap-2">
               <Input 
@@ -234,6 +213,12 @@ export function OptimizedHeroSection() {
                 {isSubmitting ? "..." : "Subscribe"}
               </Button>
             </form>
+          )}
+          
+          {!isLoading && typeof subscriberCount === 'number' && subscriberCount > 0 && (
+            <p className="text-xs text-muted-foreground mt-4">
+              Join {subscriberCount.toLocaleString()} other subscribers
+            </p>
           )}
         </div>
         
