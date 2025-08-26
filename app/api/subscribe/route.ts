@@ -1,14 +1,31 @@
 /**
- * Email Subscription API Route
- * Handles email subscription with validation, rate limiting, and duplicate checking
- * Uses existing Supabase configuration and type-safe operations
+ * Secure Double Opt-in Email Subscription API Route
+ * 
+ * SECURITY FEATURES:
+ * - Double opt-in confirmation process
+ * - Secure token generation with SHA256 + salt
+ * - Atomic file operations to prevent race conditions
+ * - 48-hour token expiration
+ * - Email normalization and validation
+ * - Rate limiting with IP and email tracking
+ * - No sensitive information in error responses or logs
+ * - Duplicate prevention for pending subscriptions
+ * 
+ * OWASP Security References:
+ * - A07:2021 – Identification and Authentication Failures
+ * - A04:2021 – Insecure Design
+ * - A02:2021 – Cryptographic Failures
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
-import { supabase } from '@/lib/supabase/client';
 import { rateLimit } from '@/lib/env';
-import type { TablesInsert } from '@/types/supabase';
+import { 
+  validateEmailFormat, 
+  createPendingToken, 
+  secureLog 
+} from '@/lib/double-optin-security';
+import { sendConfirmationEmail } from '@/lib/email-transport';
 
 // Rate limiting store (in production, use Redis or similar)
 const rateLimitStore = new Map<string, { count: number; resetTime: number; lastEmail?: string; lastEmailTime?: number }>();
@@ -23,32 +40,11 @@ setInterval(() => {
   }
 }, 60000); // Clean up every minute
 
-/**
- * Email validation with enhanced regex
- */
-function validateEmail(email: string): { isValid: boolean; sanitized: string; error?: string } {
-  const sanitized = email.trim().toLowerCase();
-  
-  // Enhanced email validation regex as specified in PRD
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  
-  if (!sanitized) {
-    return { isValid: false, sanitized, error: "Email is required" };
-  }
-  
-  if (sanitized.length > 254) {
-    return { isValid: false, sanitized, error: "Email is too long" };
-  }
-  
-  if (!emailRegex.test(sanitized)) {
-    return { isValid: false, sanitized, error: "Please enter a valid email address" };
-  }
-  
-  return { isValid: true, sanitized };
-}
+// Email validation is now handled by double-optin-security module
 
 /**
- * Enhanced rate limiting with email-specific logic
+ * Enhanced rate limiting with email-specific logic for double opt-in
+ * Prevents abuse while allowing legitimate subscription attempts
  */
 function checkRateLimit(identifier: string, email?: string): { 
   allowed: boolean; 
@@ -63,7 +59,7 @@ function checkRateLimit(identifier: string, email?: string): {
   const key = `subscribe:${identifier}`;
   const current = rateLimitStore.get(key);
   
-  // Check for same email within 60 seconds (as specified in PRD)
+  // Check for same email within 60 seconds (prevents spam)
   if (email && current?.lastEmail === email && current?.lastEmailTime) {
     const timeSinceLastEmail = now - current.lastEmailTime;
     if (timeSinceLastEmail < 60000) { // 60 seconds
@@ -71,7 +67,7 @@ function checkRateLimit(identifier: string, email?: string): {
         allowed: false, 
         remaining: 0, 
         resetTime: current.lastEmailTime + 60000,
-        reason: 'Already subscribed'
+        reason: 'Too frequent requests'
       };
     }
   }
@@ -104,7 +100,15 @@ function checkRateLimit(identifier: string, email?: string): {
 }
 
 /**
- * POST /api/subscribe - Subscribe with email
+ * POST /api/subscribe - Secure Double Opt-in Email Subscription
+ * 
+ * Process:
+ * 1. Validate and normalize email address
+ * 2. Check rate limits to prevent abuse
+ * 3. Check for existing pending tokens
+ * 4. Generate secure token and create pending subscription
+ * 5. Send confirmation email
+ * 6. Return success response without sensitive information
  */
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
@@ -118,6 +122,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     try {
       const contentType = request.headers.get('content-type');
       if (!contentType?.includes('application/json')) {
+        secureLog('invalid_content_type', 'unknown', { 
+          contentType,
+          clientIp 
+        });
         return NextResponse.json(
           { error: 'Content-Type must be application/json' },
           { status: 400 }
@@ -125,6 +133,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
       body = await request.json();
     } catch {
+      secureLog('invalid_json', 'unknown', { clientIp });
       return NextResponse.json(
         { error: 'Invalid JSON in request body' },
         { status: 400 }
@@ -135,32 +144,53 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     
     // Validate required fields
     if (!email || typeof email !== 'string') {
+      secureLog('missing_email', 'unknown', { 
+        hasEmail: !!email, 
+        emailType: typeof email,
+        clientIp 
+      });
       return NextResponse.json(
         { error: 'Email is required and must be a string' },
         { status: 400 }
       );
     }
 
-    // Validate and sanitize email
-    const validation = validateEmail(email);
-    if (!validation.isValid) {
+    // Validate and sanitize email using security module
+    const validation = validateEmailFormat(email);
+    if (!validation.success) {
+      secureLog('email_validation_failed', email, { 
+        code: validation.code,
+        clientIp 
+      });
       return NextResponse.json(
-        { error: validation.error },
+        { 
+          error: validation.error,
+          code: validation.code 
+        },
         { status: 400 }
       );
     }
 
+    const normalizedEmail = validation.data!;
+
     // Rate limiting with email-specific check
-    const rateCheck = checkRateLimit(clientIp, validation.sanitized);
+    const rateCheck = checkRateLimit(clientIp, normalizedEmail);
     if (!rateCheck.allowed) {
-      const statusCode = rateCheck.reason === 'Already subscribed' ? 409 : 429;
-      const errorMessage = rateCheck.reason === 'Already subscribed' 
-        ? 'Already subscribed' 
-        : 'Rate limit exceeded. Please wait before subscribing again.';
+      const statusCode = rateCheck.reason === 'Too frequent requests' ? 429 : 429;
+      const errorMessage = rateCheck.reason === 'Too frequent requests' 
+        ? 'Please wait before subscribing again' 
+        : 'Rate limit exceeded';
+      
+      secureLog('rate_limit_exceeded', normalizedEmail, { 
+        reason: rateCheck.reason,
+        clientIp,
+        resetTime: rateCheck.resetTime 
+      });
       
       return NextResponse.json(
         { 
           error: errorMessage,
+          code: 'RATE_LIMITED',
           resetTime: rateCheck.resetTime 
         },
         { 
@@ -174,51 +204,62 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Prepare subscription data
-    const subscriptionData: TablesInsert<'email_subscriptions'> = {
-      email: validation.sanitized,
-    };
-
-    // Try to insert subscription - let database handle duplicates
-    // For development/testing, we may need to temporarily disable RLS or use supabaseAdmin
-    const insertClient = process.env.NODE_ENV === 'development' ? supabase : supabase;
-    const { data, error } = await insertClient
-      .from('email_subscriptions')
-      .insert([subscriptionData])
-      .select();
-    
-    if (error) {
-      if (error.code === '23505') {
-        // Unique constraint violation - email already exists
+    // Create pending token (includes duplicate check)
+    const tokenResult = await createPendingToken(normalizedEmail);
+    if (!tokenResult.success) {
+      if (tokenResult.code === 'ALREADY_PENDING') {
+        secureLog('already_pending', normalizedEmail, { clientIp });
         return NextResponse.json(
           { 
-            error: 'Email already subscribed',
-            code: 'ALREADY_SUBSCRIBED'
+            error: 'Confirmation email already sent',
+            message: 'Please check your email and click the confirmation link',
+            code: 'ALREADY_PENDING'
           },
           { status: 409 } // Conflict
         );
       }
       
-      console.error('Database error during subscription:', error);
+      secureLog('token_creation_failed', normalizedEmail, { 
+        code: tokenResult.code,
+        clientIp 
+      });
       return NextResponse.json(
-        { error: 'Failed to process subscription' },
+        { error: 'Failed to process subscription request' },
         { status: 500 }
       );
     }
 
-    // Success response
+    const token = tokenResult.data!;
+
+    // Send confirmation email
+    const emailResult = await sendConfirmationEmail(normalizedEmail, token);
+    if (!emailResult.success) {
+      secureLog('email_send_failed', normalizedEmail, { 
+        code: emailResult.code,
+        clientIp 
+      });
+      // Don't expose email sending errors to client
+      return NextResponse.json(
+        { error: 'Failed to send confirmation email' },
+        { status: 500 }
+      );
+    }
+
+    secureLog('subscription_request_created', normalizedEmail, { 
+      messageId: emailResult.messageId,
+      clientIp,
+      source 
+    });
+
+    // Success response (no sensitive information exposed)
     return NextResponse.json(
       { 
         success: true,
-        message: 'Successfully subscribed!',
-        subscription: {
-          id: data[0].id,
-          email: data[0].email,
-          subscribed_at: data[0].subscribed_at
-        }
+        message: 'Confirmation email sent! Please check your inbox and click the confirmation link to complete your subscription.',
+        code: 'EMAIL_SENT'
       },
       {
-        status: 201,
+        status: 200,
         headers: {
           'Content-Type': 'application/json',
           'X-RateLimit-Limit': rateLimit.maxRequests.toString(),
@@ -228,7 +269,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
     );
   } catch (error) {
-    console.error('Unexpected error in POST /api/subscribe:', error);
+    secureLog('unexpected_error', 'unknown', { 
+      error: (error as Error).message,
+      stack: (error as Error).stack 
+    });
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

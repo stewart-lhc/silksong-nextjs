@@ -1,0 +1,233 @@
+{
+  "nav": {
+    "home": "首页",
+    "timeline": "时间轴",
+    "faq": "常见问题", 
+    "platforms": "平台",
+    "checklist": "清单",
+    "compare": "对比",
+    "tools": "工具",
+    "developers": "开发者",
+    "followTeamCherry": "关注 Team Cherry"
+  },
+  "hero": {
+    "title": "空洞骑士：丝之歌",
+    "subtitle": "备受期待的获奖作品《空洞骑士》续作",
+    "description": "扮演法鲁姆王国的公主守护者大黄蜂，探索充满致命敌人、奇特角色和古老秘密的全新王国。",
+    "subscribe": "订阅更新",
+    "watchTrailer": "观看预告片",
+    "releaseDate": "发布日期：待定",
+    "developers": "由 Team Cherry 开发",
+    "platforms": "支持 PC、Nintendo Switch、PlayStation、Xbox 平台"
+  },
+  "features": {
+    "title": "游戏特色",
+    "subtitle": "探索法鲁姆王国的奥秘",
+    "combat": {
+      "title": "快节奏战斗",
+      "description": "在激烈的技巧型战斗中掌握大黄蜂的针线技能。"
+    },
+    "exploration": {
+      "title": "广阔王国",
+      "description": "探索法鲁姆王国中超过150个全新区域，体验诡异而美丽的世界。"
+    },
+    "story": {
+      "title": "丰富剧情",
+      "description": "揭开法鲁姆的奥秘和大黄蜂作为公主守护者的命运。"
+    }
+  },
+  "story": {
+    "title": "故事背景",
+    "subtitle": "丝与钢的传说",
+    "content": "被俘虏并带到陌生土地的大黄蜂，必须在通往由丝绸与歌声统治的巨大幽灵王国顶峰的旅程中，与敌人战斗并解开谜题。",
+    "characters": {
+      "title": "全新角色",
+      "description": "在法鲁姆的旅程中邂逅超过165个全新敌人、BOSS和角色。"
+    },
+    "world": {
+      "title": "美丽世界",
+      "description": "体验手绘视觉效果和氛围音乐，让法鲁姆王国栩栩如生。"
+    }
+  },
+  "soundtrack": {
+    "title": "原创音乐",
+    "subtitle": "Christopher Larkin 作曲",
+    "composer": "Christopher Larkin",
+    "description": "沉浸在定义丝之歌世界的令人难忘的旋律中。",
+    "nowPlaying": "正在播放",
+    "play": "播放",
+    "pause": "暂停"
+  },
+  "timeline": {
+    "title": "开发时间轴",
+    "description": "追踪《空洞骑士：丝之歌》从公布到发布的历程",
+    "pageTitle": "空洞骑士：丝之歌 - 开发时间轴",
+    "pageDescription": "《空洞骑士：丝之歌》开发里程碑、公告和 Team Cherry 更新的完整时间轴。",
+    "announced": "已公布",
+    "development": "开发中", 
+    "showcased": "已展示",
+    "updates": "更新",
+    "release": "发布"
+  },
+  "faq": {
+    "title": "常见问题",
+    "description": "找到关于《空洞骑士：丝之歌》常见问题的答案",
+    "pageTitle": "空洞骑士：丝之歌 - 常见问题",
+    "pageDescription": "关于《空洞骑士：丝之歌》的常见问题和答案，包括发布日期、平台和游戏信息。"
+  },
+  "platforms": {
+    "title": "支持平台",
+    "description": "在您首选的游戏平台上游玩《空洞骑士：丝之歌》",
+    "pageTitle": "空洞骑士：丝之歌 - 平台与系统需求",
+    "pageDescription": "《空洞骑士：丝之歌》平台、系统需求、定价和在 PC、Nintendo Switch、PlayStation 和 Xbox 上的可用性完整指南。",
+    "availability": "可用性",
+    "pricing": "定价",
+    "requirements": "系统需求"
+  },
+  "checklist": {
+    "title": "丝之歌准备清单",
+    "subtitle": "为终极的空洞骑士：丝之歌体验做好准备",
+    "description": "追踪您对《空洞骑士：丝之歌》发布的准备情况",
+    "pageTitle": "空洞骑士：丝之歌 - 发布前清单",
+    "pageDescription": "为《空洞骑士：丝之歌》发布做准备的完整清单，包括平台设置、成就和社区活动。",
+    "completed": "已完成",
+    "pending": "待完成",
+    "progress": "进度",
+    "overallProgress": "总体进度",
+    "userProgress": "{name}的进度",
+    "usernamePlaceholder": "输入您的姓名...",
+    "loading": "正在加载清单...",
+    "error": "加载清单数据失败",
+    "retry": "重试",
+    "resetConfirm": "您确定要重置所有进度吗？此操作无法撤销。",
+    "shareProgress": "{name}的丝之歌准备进度：{progress}%完成！🦋\n\n使用这个综合清单为空洞骑士：丝之歌做好准备。",
+    "shareProgressAnonymous": "丝之歌准备进度：{progress}%完成！🦋\n\n使用这个综合清单为空洞骑士：丝之歌做好准备。",
+    "shareCopied": "分享链接已复制到剪贴板！",
+    "tooltips": {
+      "print": "打印清单",
+      "share": "分享进度",
+      "reset": "重置进度",
+      "filter": "筛选分类",
+      "language": "切换语言"
+    },
+    "summary": {
+      "title": "清单摘要",
+      "userTitle": "{name}的清单摘要",
+      "subtitle": "跟踪您的准备进度，确保您为丝之歌的发布做好准备！"
+    },
+    "categories": {
+      "all": "所有分类",
+      "account": {
+        "title": "账户设置",
+        "description": "为丝之歌发布准备您的游戏账户",
+        "icon": "👤"
+      },
+      "lore": {
+        "title": "传说与故事准备",
+        "description": "复习空洞骑士世界和故事的知识",
+        "icon": "📚"
+      },
+      "hardware": {
+        "title": "硬件与设置",
+        "description": "确保您的游戏设备为终极丝之歌体验做好准备",
+        "icon": "⚙️"
+      },
+      "community": {
+        "title": "社区参与",
+        "description": "与空洞骑士社区一起踏上丝之歌之旅",
+        "icon": "👥"
+      }
+    },
+    "filters": {
+      "all": "全部",
+      "completed": "已完成",
+      "pending": "待完成",
+      "showCompleted": "显示已完成",
+      "hideCompleted": "隐藏已完成"
+    },
+    "stats": {
+      "totalItems": "总项目数",
+      "completedItems": "已完成",
+      "remainingItems": "剩余",
+      "completionRate": "完成率"
+    }
+  },
+  "compare": {
+    "title": "空洞骑士 vs 丝之歌",
+    "description": "比较《空洞骑士》和《丝之歌》的特色和差异",
+    "pageTitle": "空洞骑士 vs 丝之歌 - 完整对比",
+    "pageDescription": "《空洞骑士》和《空洞骑士：丝之歌》的详细比较，突出游戏玩法、故事和特色的差异。",
+    "hollowKnight": "空洞骑士",
+    "silksong": "丝之歌",
+    "differences": "主要差异",
+    "similarities": "相似之处"
+  },
+  "tools": {
+    "title": "开发者工具",
+    "description": "《空洞骑士：丝之歌》实用工具和资源",
+    "pageTitle": "空洞骑士：丝之歌 - 开发者工具",
+    "pageDescription": "为《空洞骑士：丝之歌》粉丝网站和社区提供的开发者工具、可嵌入小部件和资源集合。",
+    "embed": {
+      "title": "可嵌入小部件",
+      "description": "为您的网站添加丝之歌小部件",
+      "countdown": {
+        "title": "倒计时器",
+        "description": "丝之歌发布倒计时的可嵌入计时器"
+      }
+    }
+  },
+  "developers": {
+    "title": "关于 Team Cherry",
+    "description": "认识《空洞骑士：丝之歌》的开发者",
+    "pageTitle": "Team Cherry - 空洞骑士：丝之歌的开发者",
+    "pageDescription": "了解 Team Cherry，《空洞骑士》和《空洞骑士：丝之歌》背后的独立游戏开发工作室。",
+    "teamCherry": "Team Cherry",
+    "about": "Team Cherry 是由 Ari Gibson 和 William Pellen 创立的独立游戏开发工作室，是备受好评的《空洞骑士》系列的创作者。"
+  },
+  "footer": {
+    "copyright": "© 2024 空洞骑士：丝之歌粉丝网站。保留所有权利。",
+    "credits": "《空洞骑士：丝之歌》由 Team Cherry 开发。",
+    "links": {
+      "privacy": "隐私政策",
+      "terms": "服务条款", 
+      "contact": "联系我们"
+    }
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "发生错误",
+    "retry": "重试",
+    "close": "关闭",
+    "open": "打开",
+    "more": "更多",
+    "less": "收起",
+    "back": "返回",
+    "next": "下一个",
+    "previous": "上一个",
+    "language": "语言",
+    "switchLanguage": "切换语言",
+    "save": "保存",
+    "cancel": "取消",
+    "submit": "提交",
+    "search": "搜索",
+    "filter": "筛选",
+    "share": "分享",
+    "copy": "复制",
+    "copied": "已复制！",
+    "reset": "重置",
+    "confirm": "确认",
+    "ok": "好的",
+    "email": "输入您的邮箱",
+    "emailRequired": "邮箱为必填项",
+    "emailInvalid": "请输入有效的邮箱地址",
+    "emailTooLong": "邮箱地址过长",
+    "subscribedSuccess": "订阅成功！",
+    "subscriptionFailed": "订阅失败，请重试。",
+    "rateLimitExceeded": "请稍候再试订阅。"
+  },
+  "meta": {
+    "siteName": "空洞骑士：丝之歌",
+    "siteDescription": "《空洞骑士：丝之歌》终极粉丝网站 - 追踪开发进度，探索功能特色，为获奖作品《空洞骑士》的续作做好准备。",
+    "keywords": "空洞骑士丝之歌, Team Cherry, 大黄蜂, 法鲁姆, 独立游戏, 银河战士恶魔城, Nintendo Switch, PC游戏"
+  }
+}

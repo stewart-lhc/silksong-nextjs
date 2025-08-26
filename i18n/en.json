@@ -1,0 +1,233 @@
+{
+  "nav": {
+    "home": "Home",
+    "timeline": "Timeline",
+    "faq": "FAQ", 
+    "platforms": "Platforms",
+    "checklist": "Checklist",
+    "compare": "Compare",
+    "tools": "Tools",
+    "developers": "Developers",
+    "followTeamCherry": "Follow Team Cherry"
+  },
+  "hero": {
+    "title": "Hollow Knight: Silksong",
+    "subtitle": "The eagerly awaited sequel to the award-winning Hollow Knight",
+    "description": "Play as Hornet, princess-protector of Pharloom, and discover a whole new kingdom filled with deadly enemies, strange characters, and ancient secrets.",
+    "subscribe": "Subscribe for Updates",
+    "watchTrailer": "Watch Trailer",
+    "releaseDate": "Release Date: TBA",
+    "developers": "Developed by Team Cherry",
+    "platforms": "Available on PC, Nintendo Switch, PlayStation, Xbox"
+  },
+  "features": {
+    "title": "Game Features",
+    "subtitle": "Discover what awaits in the kingdom of Pharloom",
+    "combat": {
+      "title": "Fast-Paced Combat",
+      "description": "Master Hornet's needle and thread abilities in intense, skill-based combat encounters."
+    },
+    "exploration": {
+      "title": "Vast Kingdom",
+      "description": "Explore over 150 new areas across the haunting, beautiful kingdom of Pharloom."
+    },
+    "story": {
+      "title": "Rich Storyline",
+      "description": "Uncover the mysteries of Pharloom and Hornet's destiny as princess-protector."
+    }
+  },
+  "story": {
+    "title": "The Story",
+    "subtitle": "A tale of silk and steel",
+    "content": "Captured and brought to an unfamiliar land, Hornet must battle foes and solve mysteries as she ascends to the peak of a vast, haunted kingdom ruled by silk and song.",
+    "characters": {
+      "title": "New Characters",
+      "description": "Meet a cast of over 165 new enemies, bosses, and characters in your journey through Pharloom."
+    },
+    "world": {
+      "title": "Beautiful World",
+      "description": "Experience hand-drawn visuals and atmospheric music that brings the kingdom of Pharloom to life."
+    }
+  },
+  "soundtrack": {
+    "title": "Original Soundtrack",
+    "subtitle": "Music by Christopher Larkin",
+    "composer": "Christopher Larkin",
+    "description": "Immerse yourself in the haunting melodies that define the world of Silksong.",
+    "nowPlaying": "Now Playing",
+    "play": "Play",
+    "pause": "Pause"
+  },
+  "timeline": {
+    "title": "Development Timeline",
+    "description": "Track the journey of Hollow Knight: Silksong from announcement to release",
+    "pageTitle": "Hollow Knight: Silksong - Development Timeline",
+    "pageDescription": "Complete timeline of Hollow Knight: Silksong development milestones, announcements, and updates from Team Cherry.",
+    "announced": "Announced",
+    "development": "In Development", 
+    "showcased": "Showcased",
+    "updates": "Updates",
+    "release": "Release"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "description": "Find answers to common questions about Hollow Knight: Silksong",
+    "pageTitle": "Hollow Knight: Silksong - FAQ",
+    "pageDescription": "Frequently asked questions and answers about Hollow Knight: Silksong, including release date, platforms, and gameplay information."
+  },
+  "platforms": {
+    "title": "Available Platforms",
+    "description": "Play Hollow Knight: Silksong on your preferred gaming platform",
+    "pageTitle": "Hollow Knight: Silksong - Platforms & System Requirements",
+    "pageDescription": "Complete guide to Hollow Knight: Silksong platforms, system requirements, pricing, and availability across PC, Nintendo Switch, PlayStation, and Xbox.",
+    "availability": "Availability",
+    "pricing": "Pricing",
+    "requirements": "System Requirements"
+  },
+  "checklist": {
+    "title": "Silksong Readiness Checklist",
+    "subtitle": "Prepare yourself for the ultimate Hollow Knight: Silksong experience",
+    "description": "Track your preparation for Hollow Knight: Silksong's release",
+    "pageTitle": "Hollow Knight: Silksong - Pre-Release Checklist",
+    "pageDescription": "Complete checklist to prepare for Hollow Knight: Silksong release, including platform setup, achievements, and community activities.",
+    "completed": "completed",
+    "pending": "Pending",
+    "progress": "Progress",
+    "overallProgress": "Overall Progress",
+    "userProgress": "{name}'s Progress",
+    "usernamePlaceholder": "Enter your name...",
+    "loading": "Loading checklist...",
+    "error": "Failed to load checklist data",
+    "retry": "Retry",
+    "resetConfirm": "Are you sure you want to reset all progress? This action cannot be undone.",
+    "shareProgress": "{name}'s Silksong Readiness Progress: {progress}% complete! 🦋\n\nGet ready for Hollow Knight: Silksong with this comprehensive checklist.",
+    "shareProgressAnonymous": "Silksong Readiness Progress: {progress}% complete! 🦋\n\nGet ready for Hollow Knight: Silksong with this comprehensive checklist.",
+    "shareCopied": "Share link copied to clipboard!",
+    "tooltips": {
+      "print": "Print Checklist",
+      "share": "Share Progress",
+      "reset": "Reset Progress",
+      "filter": "Filter Categories",
+      "language": "Switch Language"
+    },
+    "summary": {
+      "title": "Checklist Summary",
+      "userTitle": "{name}'s Checklist Summary",
+      "subtitle": "Keep track of your preparation progress and ensure you're ready for Silksong's release!"
+    },
+    "categories": {
+      "all": "All Categories",
+      "account": {
+        "title": "Account Setup",
+        "description": "Prepare your gaming accounts for Silksong's release",
+        "icon": "👤"
+      },
+      "lore": {
+        "title": "Lore & Story Preparation", 
+        "description": "Refresh your knowledge of Hollow Knight's world and story",
+        "icon": "📚"
+      },
+      "hardware": {
+        "title": "Hardware & Setup",
+        "description": "Ensure your gaming setup is ready for the ultimate Silksong experience",
+        "icon": "⚙️"
+      },
+      "community": {
+        "title": "Community Engagement",
+        "description": "Connect with the Hollow Knight community for the Silksong journey",
+        "icon": "👥"
+      }
+    },
+    "filters": {
+      "all": "All",
+      "completed": "Completed",
+      "pending": "Pending",
+      "showCompleted": "Show Completed",
+      "hideCompleted": "Hide Completed"
+    },
+    "stats": {
+      "totalItems": "Total Items",
+      "completedItems": "Completed",
+      "remainingItems": "Remaining",
+      "completionRate": "Completion Rate"
+    }
+  },
+  "compare": {
+    "title": "Hollow Knight vs Silksong",
+    "description": "Compare features and differences between Hollow Knight and Silksong",
+    "pageTitle": "Hollow Knight vs Silksong - Complete Comparison",
+    "pageDescription": "Detailed comparison between Hollow Knight and Hollow Knight: Silksong, highlighting differences in gameplay, story, and features.",
+    "hollowKnight": "Hollow Knight",
+    "silksong": "Silksong",
+    "differences": "Key Differences",
+    "similarities": "Similarities"
+  },
+  "tools": {
+    "title": "Developer Tools",
+    "description": "Useful tools and resources for Hollow Knight: Silksong",
+    "pageTitle": "Hollow Knight: Silksong - Developer Tools",
+    "pageDescription": "Collection of developer tools, embeddable widgets, and resources for Hollow Knight: Silksong fan sites and communities.",
+    "embed": {
+      "title": "Embeddable Widgets",
+      "description": "Add Silksong widgets to your website",
+      "countdown": {
+        "title": "Countdown Timer",
+        "description": "Embeddable countdown timer for Silksong release"
+      }
+    }
+  },
+  "developers": {
+    "title": "About Team Cherry",
+    "description": "Meet the developers behind Hollow Knight: Silksong",
+    "pageTitle": "Team Cherry - Developers of Hollow Knight: Silksong",
+    "pageDescription": "Learn about Team Cherry, the indie game development studio behind Hollow Knight and Hollow Knight: Silksong.",
+    "teamCherry": "Team Cherry",
+    "about": "Team Cherry is an independent game development studio founded by Ari Gibson and William Pellen, creators of the critically acclaimed Hollow Knight series."
+  },
+  "footer": {
+    "copyright": "© 2024 Hollow Knight: Silksong Fan Site. All rights reserved.",
+    "credits": "Hollow Knight: Silksong is developed by Team Cherry.",
+    "links": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service", 
+      "contact": "Contact"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "close": "Close",
+    "open": "Open",
+    "more": "More",
+    "less": "Less",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "language": "Language",
+    "switchLanguage": "Switch Language",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "search": "Search",
+    "filter": "Filter",
+    "share": "Share",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "reset": "Reset",
+    "confirm": "Confirm",
+    "ok": "OK",
+    "email": "Enter your email",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email address",
+    "emailTooLong": "Email is too long",
+    "subscribedSuccess": "Successfully subscribed!",
+    "subscriptionFailed": "Failed to subscribe. Please try again.",
+    "rateLimitExceeded": "Please wait a moment before subscribing again."
+  },
+  "meta": {
+    "siteName": "Hollow Knight: Silksong",
+    "siteDescription": "The ultimate fan site for Hollow Knight: Silksong - Track development progress, explore features, and get ready for the sequel to the award-winning Hollow Knight.",
+    "keywords": "Hollow Knight Silksong, Team Cherry, Hornet, Pharloom, indie game, metroidvania, Nintendo Switch, PC gaming"
+  }
+}

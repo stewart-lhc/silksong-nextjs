@@ -1,0 +1,422 @@
+import { ImageResponse } from 'next/og';
+import { NextRequest } from 'next/server';
+import { env } from '@/lib/env';
+
+// OG图片尺寸配置
+const OG_WIDTH = 1200;
+const OG_HEIGHT = 630;
+
+// 类型定义
+type Language = 'en' | 'zh';
+type OGVariant = 'default' | 'countdown' | 'released' | 'news';
+
+/**
+ * 验证和规范化语言参数
+ */
+function normalizeLanguage(lang?: string): Language {
+  if (lang === 'zh' || lang === 'zh-CN' || lang === 'zh-TW') return 'zh';
+  return 'en'; // 默认英文
+}
+
+/**
+ * 根据语言获取文本
+ */
+function getLocalizedText(lang: Language) {
+  const texts = {
+    en: {
+      title: 'Hollow Knight: Silksong',
+      subtitle: 'The eagerly awaited sequel',
+      releasedText: 'Now Available!',
+      comingSoonText: 'Coming Soon',
+      daysText: 'days remaining',
+      hoursText: 'hours remaining',
+      minutesText: 'minutes remaining',
+    },
+    zh: {
+      title: '空洞骑士：丝之歌',
+      subtitle: '万众期待的续作',
+      releasedText: '现已发售！',
+      comingSoonText: '即将发售',
+      daysText: '天后发售',
+      hoursText: '小时后发售',
+      minutesText: '分钟后发售',
+    }
+  };
+  
+  return texts[lang];
+}
+
+/**
+ * 计算倒计时文本
+ */
+function getCountdownText(lang: Language): string {
+  const releaseDate = new Date(env.SILKSONG_RELEASE_ISO);
+  const now = new Date();
+  const diff = releaseDate.getTime() - now.getTime();
+  
+  const texts = getLocalizedText(lang);
+  
+  if (diff <= 0) {
+    return texts.releasedText;
+  }
+  
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  
+  if (days > 0) {
+    return `${days} ${texts.daysText}`;
+  } else if (hours > 0) {
+    return `${hours} ${texts.hoursText}`;
+  } else {
+    return `${minutes} ${texts.minutesText}`;
+  }
+}
+
+/**
+ * 生成OG图片的JSX内容
+ */
+function generateOGContent({
+  title,
+  subtitle,
+  countdownText,
+  isReleased,
+  variant,
+  lang,
+}: {
+  title: string;
+  subtitle: string;
+  countdownText: string;
+  isReleased: boolean;
+  variant: OGVariant;
+  lang: Language;
+}) {
+  const bgColor = isReleased ? '#1a5f3f' : '#2a1810';
+  const textColor = '#ffffff';
+  const accentColor = isReleased ? '#4ade80' : '#f59e0b';
+
+  return (
+    <div
+      style={{
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: bgColor,
+        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(0,0,0,0.1) 100%)',
+        fontFamily: `${env.OG_FONT_PRIMARY}, ${env.OG_FONT_FALLBACK || 'sans-serif'}`,
+        position: 'relative',
+      }}
+    >
+      {/* Logo区域 */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: '32px',
+        }}
+      >
+        <div
+          style={{
+            width: '80px',
+            height: '80px',
+            borderRadius: '50%',
+            backgroundColor: 'rgba(255,255,255,0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '32px',
+            marginRight: '24px',
+          }}
+        >
+          🦋
+        </div>
+      </div>
+
+      {/* 标题区域 */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+          marginBottom: '48px',
+        }}
+      >
+        <h1
+          style={{
+            fontSize: lang === 'zh' ? '48px' : '56px',
+            fontWeight: 800,
+            color: textColor,
+            margin: 0,
+            marginBottom: '16px',
+            textShadow: '0 4px 8px rgba(0,0,0,0.3)',
+          }}
+        >
+          {title}
+        </h1>
+        <p
+          style={{
+            fontSize: lang === 'zh' ? '20px' : '24px',
+            color: textColor,
+            margin: 0,
+            opacity: 0.9,
+          }}
+        >
+          {subtitle}
+        </p>
+      </div>
+
+      {/* 倒计时区域 */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          backgroundColor: accentColor,
+          borderRadius: '16px',
+          padding: '24px 48px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+        }}
+      >
+        <p
+          style={{
+            fontSize: lang === 'zh' ? '36px' : '40px',
+            fontWeight: 700,
+            color: '#000000',
+            textAlign: 'center',
+            margin: 0,
+          }}
+        >
+          {countdownText}
+        </p>
+      </div>
+
+      {/* 品牌信息 */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '32px',
+          right: '48px',
+          display: 'flex',
+          alignItems: 'center',
+          color: textColor,
+          opacity: 0.7,
+          fontSize: '18px',
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: 'rgba(255,255,255,0.1)',
+            borderRadius: '8px',
+            padding: '8px 16px',
+            fontSize: '14px',
+            color: textColor,
+            fontWeight: 600,
+            textTransform: 'uppercase',
+          }}
+        >
+          {lang}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * GET请求处理器
+ */
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    
+    // 获取参数
+    const title = searchParams.get('title') || '';
+    const subtitle = searchParams.get('subtitle') || '';
+    const lang = normalizeLanguage(searchParams.get('lang') || 'en');
+    const variant = (searchParams.get('variant') || 'default') as OGVariant;
+    
+    // 生成本地化文本
+    const texts = getLocalizedText(lang);
+    const finalTitle = title || texts.title;
+    const finalSubtitle = subtitle || texts.subtitle;
+    const countdownText = getCountdownText(lang);
+    
+    // 检查是否已发布
+    const releaseDate = new Date(env.SILKSONG_RELEASE_ISO);
+    const isReleased = Date.now() >= releaseDate.getTime();
+    
+    // 生成ETag用于缓存
+    const etag = `"${Buffer.from(`${finalTitle}-${finalSubtitle}-${countdownText}-${variant}-${lang}-${isReleased}`).toString('base64')}"`;
+    
+    // 检查If-None-Match头
+    const ifNoneMatch = request.headers.get('If-None-Match');
+    if (ifNoneMatch === etag) {
+      return new Response(null, { status: 304 });
+    }
+    
+    // 生成图片
+    const imageResponse = new ImageResponse(
+      generateOGContent({
+        title: finalTitle,
+        subtitle: finalSubtitle,
+        countdownText,
+        isReleased,
+        variant,
+        lang,
+      }),
+      {
+        width: OG_WIDTH,
+        height: OG_HEIGHT,
+        fonts: await loadFonts(),
+      }
+    );
+    
+    // 设置缓存头
+    const headers = new Headers();
+    headers.set('Content-Type', 'image/png');
+    headers.set('Cache-Control', 'public, max-age=3600, s-maxage=3600');
+    headers.set('ETag', etag);
+    headers.set('Vary', 'Accept-Language');
+    
+    return new Response(imageResponse.body, {
+      status: 200,
+      headers,
+    });
+    
+  } catch (error) {
+    console.error('OG image generation error:', error);
+    
+    // 返回错误信息
+    return new Response(
+      JSON.stringify({
+        error: 'Failed to generate OG image',
+        message: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString(),
+      }),
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+  }
+}
+
+/**
+ * 加载字体
+ */
+async function loadFonts() {
+  try {
+    const fonts = [];
+    
+    // 尝试加载主要字体
+    try {
+      const primaryFontData = await fetch(
+        new URL(`https://fonts.googleapis.com/css2?family=${env.OG_FONT_PRIMARY}:wght@400;600;700;800&display=swap`)
+      ).then((res) => res.arrayBuffer());
+      
+      fonts.push({
+        name: env.OG_FONT_PRIMARY,
+        data: primaryFontData,
+        style: 'normal' as const,
+      });
+    } catch (fontError) {
+      console.warn(`Failed to load primary font ${env.OG_FONT_PRIMARY}:`, fontError);
+      
+      // 如果设置了在字体缺失时失败
+      if (env.FAIL_ON_OG_FONT_MISSING === 'true') {
+        throw new Error(`Primary font ${env.OG_FONT_PRIMARY} is required but failed to load`);
+      }
+    }
+    
+    // 尝试加载后备字体
+    if (env.OG_FONT_FALLBACK && fonts.length === 0) {
+      try {
+        const fallbackFontData = await fetch(
+          new URL(`https://fonts.googleapis.com/css2?family=${env.OG_FONT_FALLBACK}:wght@400;600;700;800&display=swap`)
+        ).then((res) => res.arrayBuffer());
+        
+        fonts.push({
+          name: env.OG_FONT_FALLBACK,
+          data: fallbackFontData,
+          style: 'normal' as const,
+        });
+      } catch (fallbackError) {
+        console.warn(`Failed to load fallback font ${env.OG_FONT_FALLBACK}:`, fallbackError);
+      }
+    }
+    
+    // 如果没有字体可用，使用系统默认字体
+    if (fonts.length === 0) {
+      console.warn('No fonts loaded, using system defaults');
+    }
+    
+    return fonts;
+    
+  } catch (error) {
+    console.error('Font loading error:', error);
+    return [];
+  }
+}
+
+/**
+ * POST请求处理器 - 用于预热缓存
+ */
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { variants = ['default'], languages = ['en', 'zh'] } = body;
+    
+    const results = [];
+    
+    for (const variant of variants) {
+      for (const lang of languages) {
+        try {
+          // 生成预热请求
+          const searchParams = new URLSearchParams({
+            variant,
+            lang,
+          });
+          
+          const warmupUrl = new URL(`/api/og?${searchParams}`, request.url);
+          const warmupResponse = await fetch(warmupUrl);
+          
+          results.push({
+            variant,
+            lang,
+            status: warmupResponse.status,
+            cached: warmupResponse.headers.get('x-cache') === 'HIT',
+          });
+        } catch (error) {
+          results.push({
+            variant,
+            lang,
+            error: error instanceof Error ? error.message : 'Unknown error',
+          });
+        }
+      }
+    }
+    
+    return Response.json({
+      message: 'Cache warmup completed',
+      results,
+      timestamp: new Date().toISOString(),
+    });
+    
+  } catch (error) {
+    console.error('Cache warmup error:', error);
+    
+    return Response.json(
+      {
+        error: 'Cache warmup failed',
+        message: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString(),
+      },
+      { status: 500 }
+    );
+  }
+}

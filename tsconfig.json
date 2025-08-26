@@ -18,7 +18,7 @@
     /* Path Mapping - 路径别名配置 */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./app/*", "./components/*", "./lib/*", "./data/*"],
+      "@/*": ["./app/*", "./components/*", "./lib/*", "./data/*", "./i18n/*"],
       "@/components/*": ["./components/*"],
       "@/components/ui/*": ["./components/ui/*"],
       "@/lib/*": ["./lib/*"],
@@ -26,7 +26,8 @@
       "@/hooks/*": ["./app/hooks/*", "./hooks/*"],
       "@/utils/*": ["./lib/utils/*"],
       "@/types/*": ["./types/*"],
-      "@/data/*": ["./data/*"]
+      "@/data/*": ["./data/*"],
+      "@/i18n/*": ["./i18n/*"]
     },
     
     /* Type Checking */
@@ -51,7 +52,8 @@
     "styles/**/*",
     "hooks/**/*",
     "types/**/*",
-    "data/**/*"
+    "data/**/*",
+    "i18n/**/*"
   ],
   "exclude": [
     "node_modules",
