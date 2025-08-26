@@ -6,7 +6,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
-import { supabase } from '@/lib/supabase/client';
+import { supabase, supabaseAdmin } from '@/lib/supabase/client';
 import { rateLimit } from '@/lib/env';
 import type { TablesInsert } from '@/types/supabase';
 
@@ -180,8 +180,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     };
 
     // Try to insert subscription - let database handle duplicates
-    // For development/testing, we may need to temporarily disable RLS or use supabaseAdmin
-    const insertClient = process.env.NODE_ENV === 'development' ? supabase : supabase;
+    // Use supabaseAdmin for server-side operations to bypass RLS
+    const insertClient = supabaseAdmin || supabase;
     const { data, error } = await insertClient
       .from('email_subscriptions')
       .insert([subscriptionData])
@@ -200,8 +200,23 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       }
       
       console.error('Database error during subscription:', error);
+      console.error('Error details:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint
+      });
+      
       return NextResponse.json(
-        { error: 'Failed to process subscription' },
+        { 
+          error: 'Failed to process subscription',
+          debug: process.env.NODE_ENV === 'development' ? {
+            code: error.code,
+            message: error.message,
+            details: error.details,
+            hint: error.hint
+          } : undefined
+        },
         { status: 500 }
       );
     }

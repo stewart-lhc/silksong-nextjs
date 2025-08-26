@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { OptimizedHeroSection } from '@/components/optimized-hero-section';
+import { HeroSection } from '@/components/hero-section';
 import { StorySection } from '@/components/story-section';
 import { FeaturesSection } from '@/components/features-section';
 import { TrailerSection } from '@/components/trailer-section';
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <div className="-mt-20"> {/* Offset for fixed navigation */}
-      <OptimizedHeroSection />
+      <HeroSection />
       <StorySection />
       <FeaturesSection />
       <TrailerSection />
