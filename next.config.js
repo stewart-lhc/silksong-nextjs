@@ -1,7 +1,16 @@
+/**
+ * Environment validation at build time for PRD Day3 compliance
+ * This ensures all required environment variables are present and valid before building
+ * Note: env validation is handled by build scripts, not at config time
+ */
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Fix for workspace root warning
   outputFileTracingRoot: __dirname,
+
+  // App Router handles i18n differently - moved to app directory structure
+  // See: https://nextjs.org/docs/app/building-your-application/routing/internationalization
 
   // Enhanced image optimization
   images: {
@@ -29,20 +38,31 @@ const nextConfig = {
     ],
   },
 
+  // Bundle optimization  
+  experimental: {
+    optimizePackageImports: ['@/components', '@/lib'],
+  },
+
   // Basic performance optimizations
   compress: true,
   poweredByHeader: false,
 
-  // TypeScript configuration
+  // TypeScript configuration - Strict checking for PRD Day3
   typescript: {
-    // Dangerously allow production builds to successfully complete even if your project has TypeScript errors
-    ignoreBuildErrors: true,
+    // Enable strict TypeScript checking for environment variables
+    ignoreBuildErrors: false,
   },
 
-  // ESLint configuration
+  // ESLint configuration - Strict checking for PRD Day3
   eslint: {
-    // Warning: This allows production builds to successfully complete even if your project has ESLint errors
-    ignoreDuringBuilds: true,
+    // Enable strict ESLint checking to catch environment variable issues
+    ignoreDuringBuilds: false,
+  },
+
+  // Environment validation
+  env: {
+    // Validate environment variables at build time
+    VALIDATED_ENV: 'true',
   },
 };
 

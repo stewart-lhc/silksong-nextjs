@@ -7,42 +7,24 @@ import { useCallback, useMemo, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { LanguageSwitcher, LanguageSwitcherCompact } from '@/components/ui/language-switcher';
+import { useI18n } from '@/hooks/use-i18n';
 import { cn } from '@/lib/utils';
 
 interface NavItem {
-  label: string;
+  key: string;
   path: string;
-  description?: string;
+  descriptionKey: string;
 }
 
 const navItems: NavItem[] = [
-  { label: 'Home', path: '/', description: 'Latest news and countdown' },
-  {
-    label: 'Timelines',
-    path: '/timeline',
-    description: 'Official statements timeline',
-  },
-  {
-    label: 'Platforms',
-    path: '/platforms',
-    description: 'Available platforms and FAQ',
-  },
-  {
-    label: 'Checklist',
-    path: '/checklist',
-    description: 'Player preparation guide',
-  },
-  {
-    label: 'HK Differences',
-    path: '/compare-hollow-knight',
-    description: 'Silksong vs Hollow Knight comparison',
-  },
-  { label: 'FAQ', path: '/faq', description: 'Frequently asked questions' },
-  {
-    label: 'Tools',
-    path: '/tools',
-    description: 'Countdown embed generator and other tools',
-  },
+  { key: 'nav.home', path: '/', descriptionKey: 'hero.description' },
+  { key: 'nav.timeline', path: '/timeline', descriptionKey: 'timeline.description' },
+  { key: 'nav.platforms', path: '/platforms', descriptionKey: 'platforms.description' },
+  { key: 'nav.checklist', path: '/checklist', descriptionKey: 'checklist.description' },
+  { key: 'nav.compare', path: '/compare-hollow-knight', descriptionKey: 'compare.description' },
+  { key: 'nav.faq', path: '/faq', descriptionKey: 'faq.description' },
+  { key: 'nav.tools', path: '/tools', descriptionKey: 'tools.description' },
 ];
 
 // X (formerly Twitter) logo component
@@ -76,6 +58,8 @@ function NavLinks({
   onItemClick?: () => void; 
   currentPath: string;
 }) {
+  const { t } = useI18n();
+  
   const isActive = useCallback(
     (path: string) => currentPath === path,
     [currentPath]
@@ -104,15 +88,13 @@ function NavLinks({
         >
           {mobile ? (
             <div>
-              <div>{item.label}</div>
-              {item.description && (
-                <div className='mt-1 text-xs text-foreground/60'>
-                  {item.description}
-                </div>
-              )}
+              <div>{t(item.key)}</div>
+              <div className='mt-1 text-xs text-foreground/60'>
+                {t(item.descriptionKey)}
+              </div>
             </div>
           ) : (
-            item.label
+            t(item.key)
           )}
         </Link>
       ))}
@@ -148,10 +130,12 @@ function SocialLinks() {
 
 // Memoized Mobile Social Links component
 function MobileSocialLinks() {
+  const { t } = useI18n();
+  
   return (
     <div className='border-t border-border/50 pt-4'>
       <div className='mb-3 text-sm font-medium text-primary-600'>
-        Follow Team Cherry
+        {t('nav.followTeamCherry', 'Follow Team Cherry')}
       </div>
       <div className='flex items-center space-x-3'>
         {socialLinks.map(({ Icon, href, label }) => (
@@ -209,6 +193,9 @@ export function Navigation() {
               <NavLinks currentPath={currentPath} />
             </div>
             
+            {/* Language Switcher */}
+            <LanguageSwitcherCompact />
+            
             {/* Social Links */}
             <SocialLinks />
           </div>
@@ -246,6 +233,11 @@ export function Navigation() {
                       onItemClick={handleClose}
                       currentPath={currentPath}
                     />
+                  </div>
+                  
+                  {/* Language Switcher */}
+                  <div className='border-t border-border/50 pt-4 pb-4'>
+                    <LanguageSwitcher variant="outline" showText={true} />
                   </div>
                   
                   {/* Social Links */}

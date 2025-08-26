@@ -9,6 +9,24 @@
     }
   },
   {
+    "platform": "Mac (Steam)",
+    "status": "confirmed",
+    "notes": "Compatible with Big Sur 11 or newer, supports Intel and Apple M1",
+    "source": {
+      "label": "Steam Store Page",
+      "url": "https://store.steampowered.com/app/1030300/Hollow_Knight_Silksong/"
+    }
+  },
+  {
+    "platform": "Linux (Steam)",
+    "status": "confirmed",
+    "notes": "Supports Ubuntu 22.04, Ubuntu 24.04 (64-bit)",
+    "source": {
+      "label": "Steam Store Page",
+      "url": "https://store.steampowered.com/app/1030300/Hollow_Knight_Silksong/"
+    }
+  },
+  {
     "platform": "Xbox Series X/S",
     "status": "confirmed",
     "notes": "Optimized for Xbox Series consoles",

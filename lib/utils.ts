@@ -109,3 +109,35 @@ export function throttle<T extends (...args: any[]) => any>(
     }
   }
 }
+
+/**
+ * 字符串插值函数，用于 i18n
+ * @param template - 包含占位符的模板字符串
+ * @param values - 替换值对象
+ * @returns 插值后的字符串
+ */
+export function interpolate(template: string, values: Record<string, any>): string {
+  return template.replace(/\{([^}]+)\}/g, (match, key) => {
+    return values[key] !== undefined ? String(values[key]) : match
+  })
+}
+
+/**
+ * 数字格式化工具函数
+ * @param num - 数字
+ * @param locale - 区域设置
+ * @returns 格式化的数字字符串
+ */
+export function formatNumber(num: number, locale: string = 'en-US'): string {
+  return new Intl.NumberFormat(locale).format(num)
+}
+
+/**
+ * 百分比格式化工具函数
+ * @param value - 值（0-100）
+ * @param decimals - 小数位数
+ * @returns 格式化的百分比字符串
+ */
+export function formatPercentage(value: number, decimals: number = 0): string {
+  return `${value.toFixed(decimals)}%`
+}

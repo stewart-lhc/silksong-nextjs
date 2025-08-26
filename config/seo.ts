@@ -458,7 +458,7 @@ export { SITE_NAME, BASE_URL, GAME_RELEASE_DATE, BASE_KEYWORDS };
 
 // Additional SEO utilities
 export const DEFAULT_LOCALE = 'en';
-export const SUPPORTED_LOCALES = ['en'];
+export const SUPPORTED_LOCALES = ['en', 'zh']; // Added Chinese language support per PRD Day3
 export const DOMAIN_VERIFICATION = {
   google: 'your-google-verification-code',
   bing: 'your-bing-verification-code',

@@ -5,10 +5,11 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { useState, useEffect } from 'react';
 import { Video } from 'lucide-react';
+import { useI18n } from '@/hooks/use-i18n';
 import gameInfo from '@/data/gameInfo.json';
 
 // Email validation and sanitization utility
-const validateAndSanitizeEmail = (email: string): { isValid: boolean; sanitized: string; error?: string } => {
+const validateAndSanitizeEmail = (email: string, t: (key: string) => string): { isValid: boolean; sanitized: string; error?: string } => {
   // Basic sanitization - trim whitespace and convert to lowercase
   const sanitized = email.trim().toLowerCase();
   
@@ -16,15 +17,15 @@ const validateAndSanitizeEmail = (email: string): { isValid: boolean; sanitized:
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
   
   if (!sanitized) {
-    return { isValid: false, sanitized, error: "Email is required" };
+    return { isValid: false, sanitized, error: t('common.emailRequired') };
   }
   
   if (sanitized.length > 254) {
-    return { isValid: false, sanitized, error: "Email is too long" };
+    return { isValid: false, sanitized, error: t('common.emailTooLong') };
   }
   
   if (!emailRegex.test(sanitized)) {
-    return { isValid: false, sanitized, error: "Please enter a valid email address" };
+    return { isValid: false, sanitized, error: t('common.emailInvalid') };
   }
   
   return { isValid: true, sanitized };
@@ -78,6 +79,7 @@ function CountdownDisplay({ endDate }: { endDate: Date }) {
 }
 
 export function OptimizedHeroSection() {
+  const { t } = useI18n();
   const [isStreamOpen, setIsStreamOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -115,14 +117,14 @@ export function OptimizedHeroSection() {
     const minTimeBetweenSubmissions = 5000; // 5 seconds
     
     if (now - lastSubmissionTime < minTimeBetweenSubmissions) {
-      alert("Please wait a moment before subscribing again.");
+      alert(t('common.rateLimitExceeded'));
       return;
     }
     
     if (isSubmitting) return;
     
     // Validate and sanitize email
-    const validation = validateAndSanitizeEmail(email);
+    const validation = validateAndSanitizeEmail(email, t);
     if (!validation.isValid) {
       alert(validation.error);
       return;
@@ -139,10 +141,10 @@ export function OptimizedHeroSection() {
       setIsSubscribed(true);
       setEmail("");
       setTimeout(() => setIsSubscribed(false), 3000);
-      alert("Successfully subscribed! You'll be notified when Silksong releases.");
+      alert(t('common.subscribedSuccess'));
     } catch (error) {
       console.error('Subscription error:', error);
-      alert("Failed to subscribe. Please try again.");
+      alert(t('common.subscriptionFailed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -196,7 +198,7 @@ export function OptimizedHeroSection() {
       <div className="relative z-10 text-center space-y-8 px-6">
         {/* Title */}
         <div className="space-y-4">
-          <h1 className="font-poppins text-4xl md:text-7xl font-bold text-white">HOLLOW KNIGHT</h1>
+          <h1 className="font-poppins text-4xl md:text-7xl font-bold text-white">{t('hero.title')}</h1>
           <h2 className="font-poppins text-6xl md:text-9xl font-bold fantasy-text tracking-wider">
             SILKSONG
           </h2>
@@ -205,20 +207,20 @@ export function OptimizedHeroSection() {
         {/* Countdown and Email Subscription */}
         <div className="bg-black/40 backdrop-blur-sm border border-white/20 rounded-lg p-6 max-w-2xl mx-auto">
           <h3 className="text-white text-xl md:text-2xl font-bold mb-4">
-            Official countdown, platform details, and pre-launch prep
+            {t('hero.subtitle')}
           </h3>
           <div className="mb-6">
             <CountdownDisplay endDate={new Date("2025-09-04T00:00:00")} />
           </div>
-          <p className="text-muted-foreground text-sm mb-4">Get Release Reminder</p>
+          <p className="text-muted-foreground text-sm mb-4">{t('hero.subscribe')}</p>
           
           {isSubscribed ? (
-            <div className="text-primary font-semibold">✓ Successfully subscribed!</div>
+            <div className="text-primary font-semibold">✓ {t('common.ok')} {t('hero.subscribe')}!</div>
           ) : (
             <form onSubmit={handleSubscribe} className="flex gap-2">
               <Input 
                 type="email" 
-                placeholder="Enter your email" 
+                placeholder={t('common.email', 'Enter your email')} 
                 value={email} 
                 onChange={e => setEmail(e.target.value)} 
                 className="flex-1 bg-white/10 border-white/30 text-white placeholder-white/70" 
@@ -231,7 +233,7 @@ export function OptimizedHeroSection() {
                 className="btn-fantasy" 
                 disabled={isSubmitting || !email.trim()}
               >
-                {isSubmitting ? "..." : "Subscribe"}
+                {isSubmitting ? "..." : t('hero.subscribe')}
               </Button>
             </form>
           )}
@@ -243,7 +245,7 @@ export function OptimizedHeroSection() {
             <DialogTrigger asChild>
               <Button className="btn-fantasy px-8 py-3 text-lg font-semibold flex items-center gap-2">
                 <Video className="w-5 h-5" />
-                Release Trailer
+                {t('hero.watchTrailer')}
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-4xl w-full h-[80vh] p-0">

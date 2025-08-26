@@ -1,0 +1,122 @@
+import { NextRequest, NextResponse } from 'next/server';
+import timelineData from '@/data/timeline.json';
+
+interface TimelineItem {
+  id: string;
+  date: string;
+  title: string;
+  description: string;
+  type: string;
+  source: string;
+  category: string;
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const after = searchParams.get('after');
+    const limit = parseInt(searchParams.get('limit') || '10', 10);
+    const type = searchParams.get('type');
+    const category = searchParams.get('category');
+
+    // Validate limit
+    const validLimit = Math.min(Math.max(limit, 1), 50); // Between 1-50
+
+    // Sort timeline data by date (newest first)
+    let sortedTimeline = [...timelineData].sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+
+    // Filter by type if provided
+    if (type) {
+      sortedTimeline = sortedTimeline.filter(item => 
+        item.type.toLowerCase() === type.toLowerCase()
+      );
+    }
+
+    // Filter by category if provided
+    if (category) {
+      sortedTimeline = sortedTimeline.filter(item => 
+        item.category.toLowerCase() === category.toLowerCase()
+      );
+    }
+
+    // Find starting index if 'after' parameter is provided
+    let startIndex = 0;
+    if (after) {
+      const afterIndex = sortedTimeline.findIndex(item => item.id === after);
+      if (afterIndex !== -1) {
+        startIndex = afterIndex + 1;
+      }
+    }
+
+    // Get paginated results
+    const paginatedResults = sortedTimeline.slice(startIndex, startIndex + validLimit);
+    
+    // Check if there are more items
+    const hasMore = startIndex + validLimit < sortedTimeline.length;
+    const nextAfter = hasMore && paginatedResults.length > 0 
+      ? paginatedResults[paginatedResults.length - 1].id 
+      : null;
+
+    // Build response
+    const response = {
+      data: paginatedResults,
+      pagination: {
+        limit: validLimit,
+        after: after || null,
+        hasMore,
+        nextAfter,
+        total: sortedTimeline.length,
+      },
+      filters: {
+        type: type || null,
+        category: category || null,
+      },
+      meta: {
+        timestamp: new Date().toISOString(),
+        version: '1.0',
+      }
+    };
+
+    return NextResponse.json(response, {
+      status: 200,
+      headers: {
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        'Content-Type': 'application/json',
+      },
+    });
+
+  } catch (error) {
+    console.error('Timeline API error:', error);
+    
+    return NextResponse.json(
+      { 
+        error: 'Internal server error',
+        message: 'Failed to fetch timeline data',
+        timestamp: new Date().toISOString(),
+      },
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+  }
+}
+
+// OPTIONS method for CORS support
+export async function OPTIONS() {
+  return NextResponse.json(
+    {},
+    {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    }
+  );
+}
