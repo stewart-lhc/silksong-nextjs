@@ -91,8 +91,8 @@ export default function EmbedCountdownPage() {
 
   const t = translations[lang as keyof typeof translations] || translations.en;
 
-  // Target release date - using PRD specified date
-  const targetDate = new Date('2025-09-04T00:00:00Z').getTime();
+  // Target release date - using PRD specified date at 14:00:00 UTC
+  const targetDate = new Date('2025-09-04T14:00:00Z').getTime();
 
   const themeStyles =
     theme === 'dark'
@@ -178,25 +178,27 @@ export default function EmbedCountdownPage() {
               minWidth: '140px',
             }}
           >
-            <h3
+            <a
+              href="https://hollowknightsilksong.org"
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
-                margin: '0 0 4px 0',
-                fontSize: '14px',
-                fontWeight: '600',
-                color: themeStyles.accent,
+                textDecoration: 'none',
+                color: 'inherit',
               }}
             >
-              {t.title}
-            </h3>
-            <p
-              style={{
-                margin: '0',
-                fontSize: '12px',
-                color: themeStyles.muted,
-              }}
-            >
-              {t.subtitle}
-            </p>
+              <h3
+                style={{
+                  margin: '0',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: themeStyles.accent,
+                  cursor: 'pointer',
+                }}
+              >
+                {t.title}
+              </h3>
+            </a>
           </div>
         )}
 
@@ -212,34 +214,59 @@ export default function EmbedCountdownPage() {
             {t.released}
           </div>
         ) : (
-          <div
-            style={{
-              display: 'flex',
-              gap: layout === 'vertical' ? '8px' : '12px',
-              flexDirection: layout === 'vertical' ? 'column' : 'row',
-              alignItems: 'center',
-            }}
-          >
-            <CountdownUnit
-              value={countdown.days}
-              label={t.days}
-              themeStyles={themeStyles}
-            />
-            <CountdownUnit
-              value={countdown.hours}
-              label={t.hours}
-              themeStyles={themeStyles}
-            />
-            <CountdownUnit
-              value={countdown.minutes}
-              label={t.minutes}
-              themeStyles={themeStyles}
-            />
-            <CountdownUnit
-              value={countdown.seconds}
-              label={t.seconds}
-              themeStyles={themeStyles}
-            />
+          <div>
+            {/* Date and time info above countdown */}
+            <div
+              style={{
+                textAlign: 'center',
+                marginBottom: '12px',
+              }}
+            >
+              <a
+                href="https://steamdb.info/app/1030300"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: themeStyles.muted,
+                  textDecoration: 'none',
+                  fontSize: '11px',
+                  display: 'block',
+                }}
+              >
+                {t.subtitle} - 14:00:00 UTC
+              </a>
+            </div>
+            
+            {/* Countdown numbers */}
+            <div
+              style={{
+                display: 'flex',
+                gap: layout === 'vertical' ? '8px' : '12px',
+                flexDirection: layout === 'vertical' ? 'column' : 'row',
+                alignItems: 'center',
+              }}
+            >
+              <CountdownUnit
+                value={countdown.days}
+                label={t.days}
+                themeStyles={themeStyles}
+              />
+              <CountdownUnit
+                value={countdown.hours}
+                label={t.hours}
+                themeStyles={themeStyles}
+              />
+              <CountdownUnit
+                value={countdown.minutes}
+                label={t.minutes}
+                themeStyles={themeStyles}
+              />
+              <CountdownUnit
+                value={countdown.seconds}
+                label={t.seconds}
+                themeStyles={themeStyles}
+              />
+            </div>
           </div>
         )}
       </div>

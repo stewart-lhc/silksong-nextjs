@@ -6,25 +6,29 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase, executeQuery, SupabaseQueryError } from '@/lib/supabase/client';
-import type { TablesInsert } from '@/types/supabase';
 
 /**
- * Hook for fetching subscription count
+ * Hook for fetching subscription count via API route
  */
 export function useSubscriptionCount() {
   return useQuery({
     queryKey: ['subscription-count'],
     queryFn: async (): Promise<number> => {
       try {
-        const { data, error } = await supabase.rpc('get_subscription_count');
-        
-        if (error) {
-          console.error('Error fetching subscriber count:', error);
+        const response = await fetch('/api/subscriptions', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          console.error(`Failed to fetch subscription count: ${response.status}`);
           return 0;
         }
-        
-        return data || 0;
+
+        const data = await response.json();
+        return data.count || 0;
       } catch (error) {
         console.error('Unexpected error fetching subscriber count:', error);
         return 0;
@@ -38,32 +42,44 @@ export function useSubscriptionCount() {
 }
 
 /**
- * Hook for inserting email subscriptions
+ * Hook for inserting email subscriptions via API route
  */
 export function useEmailSubscriptionMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (email: string): Promise<{ email: string; count: number }> => {
-      const subscriptionData: TablesInsert<'email_subscriptions'> = {
-        email: email.trim().toLowerCase(),
-      };
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+        }),
+      });
 
-      const { data, error } = await supabase
-        .from('email_subscriptions')
-        .insert([subscriptionData])
-        .select();
-      
-      if (error) {
-        throw new SupabaseQueryError(error.message, error.code, error.details, error.hint);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
       }
 
-      // Get updated count
-      const { data: countData } = await supabase.rpc('get_subscription_count');
-      const newCount = countData || 1;
+      const data = await response.json();
+      
+      // Get updated subscription count via API
+      const countResponse = await fetch('/api/subscriptions', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      
+      let newCount = 1;
+      if (countResponse.ok) {
+        const countData = await countResponse.json();
+        newCount = countData.count || 1;
+      }
 
       return {
-        email: subscriptionData.email,
+        email: data.subscription.email,
         count: newCount,
       };
     },

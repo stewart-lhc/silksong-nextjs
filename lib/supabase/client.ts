@@ -3,14 +3,14 @@
  * Provides type-safe database access with proper error handling
  */
 
-import { env } from '@/lib/env';
+import { clientEnv } from '@/lib/env.client';
 import type { Database } from '@/types/supabase';
 import { createClient } from '@supabase/supabase-js';
 
 // Client-side Supabase client with enhanced configuration
 export const supabase = createClient<Database>(
-  env.NEXT_PUBLIC_SUPABASE_URL,
-  env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  clientEnv.NEXT_PUBLIC_SUPABASE_URL,
+  clientEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   {
     auth: {
       // Enhanced auth configuration for Next.js
@@ -44,24 +44,7 @@ export const supabase = createClient<Database>(
   }
 );
 
-// Server-side client with service role key (for API routes only)
-export const supabaseAdmin = env.SUPABASE_SERVICE_ROLE_KEY
-  ? createClient<Database>(
-      env.NEXT_PUBLIC_SUPABASE_URL,
-      env.SUPABASE_SERVICE_ROLE_KEY,
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false,
-        },
-        global: {
-          headers: {
-            'X-Client-Info': 'silk-song-archive-admin@1.0.0',
-          },
-        },
-      }
-    )
-  : null;
+// Server-side admin client is now in @/lib/supabase/server for API routes
 
 // Type-safe query helpers with error handling
 export class SupabaseQueryError extends Error {

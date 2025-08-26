@@ -1,12 +1,12 @@
 /**
- * Email Subscription API Route
- * Handles email subscription with validation, rate limiting, and duplicate checking
- * Uses existing Supabase configuration and type-safe operations
+ * IMPROVED Email Subscription API Route
+ * This version fixes the RLS policy violations by using the service role when available
+ * and provides better error handling for RLS-related issues
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
-import { supabaseAdmin } from '@/lib/supabase/server';
+import { supabase, supabaseAdmin } from '@/lib/supabase/client';
 import { rateLimit } from '@/lib/env';
 import type { TablesInsert } from '@/types/supabase';
 
@@ -104,6 +104,22 @@ function checkRateLimit(identifier: string, email?: string): {
 }
 
 /**
+ * Get the appropriate Supabase client for database operations
+ * Uses service role client when available, falls back to anon client
+ */
+function getDatabaseClient() {
+  // Use service role client if available (bypasses RLS)
+  if (supabaseAdmin) {
+    console.log('Using service role client for database operations');
+    return { client: supabaseAdmin, usingServiceRole: true };
+  }
+  
+  // Fall back to anon client (requires proper RLS policies)
+  console.log('Using anon client for database operations - RLS policies must be configured');
+  return { client: supabase, usingServiceRole: false };
+}
+
+/**
  * POST /api/subscribe - Subscribe with email
  */
 export async function POST(request: NextRequest): Promise<NextResponse> {
@@ -179,22 +195,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       email: validation.sanitized,
     };
 
-    // Try to insert subscription - let database handle duplicates
-    // Use supabaseAdmin to bypass RLS policies for API routes
-    if (!supabaseAdmin) {
-      console.error('Supabase admin client not available - SERVICE_ROLE_KEY missing');
-      return NextResponse.json(
-        { error: 'Database configuration error' },
-        { status: 500 }
-      );
-    }
-
-    const { data, error } = await supabaseAdmin
+    // Get appropriate database client
+    const { client: insertClient, usingServiceRole } = getDatabaseClient();
+    
+    // Try to insert subscription
+    const { data, error } = await insertClient
       .from('email_subscriptions')
       .insert([subscriptionData])
       .select();
     
     if (error) {
+      // Handle different types of errors
       if (error.code === '23505') {
         // Unique constraint violation - email already exists
         return NextResponse.json(
@@ -206,9 +217,28 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         );
       }
       
+      // Handle RLS policy violations
+      if (error.code === '42501' || error.message.includes('row-level security')) {
+        console.error('RLS Policy Violation:', error);
+        return NextResponse.json(
+          { 
+            error: 'Database access denied. Please contact support.',
+            code: 'RLS_VIOLATION',
+            hint: usingServiceRole 
+              ? 'Service role client failed - check RLS policies' 
+              : 'Anonymous client failed - RLS policies may be missing'
+          },
+          { status: 500 }
+        );
+      }
+      
       console.error('Database error during subscription:', error);
       return NextResponse.json(
-        { error: 'Failed to process subscription' },
+        { 
+          error: 'Failed to process subscription',
+          code: 'DATABASE_ERROR',
+          debug: process.env.NODE_ENV === 'development' ? error.message : undefined
+        },
         { status: 500 }
       );
     }
@@ -222,7 +252,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
           id: data[0].id,
           email: data[0].email,
           subscribed_at: data[0].subscribed_at
-        }
+        },
+        debug: process.env.NODE_ENV === 'development' ? {
+          usedServiceRole: usingServiceRole,
+          clientType: usingServiceRole ? 'service_role' : 'anon'
+        } : undefined
       },
       {
         status: 201,
@@ -237,7 +271,10 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   } catch (error) {
     console.error('Unexpected error in POST /api/subscribe:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        error: 'Internal server error',
+        debug: process.env.NODE_ENV === 'development' ? (error as Error).message : undefined
+      },
       { status: 500 }
     );
   }

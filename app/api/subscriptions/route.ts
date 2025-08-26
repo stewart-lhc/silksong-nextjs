@@ -1,17 +1,16 @@
 /**
  * Email Subscriptions API Route
- * Handles email subscription operations with enhanced security and validation
- * Server-side Supabase operations for sensitive data handling
+ * Handles email subscription management with proper error handling and rate limiting
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
-import { supabase, supabaseAdmin, SupabaseQueryError } from '@/lib/supabase/client';
+import { supabaseAdmin } from '@/lib/supabase/server';
 import { rateLimit } from '@/lib/env';
 import type { TablesInsert } from '@/types/supabase';
 
 // Rate limiting store (in production, use Redis or similar)
-const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+const rateLimitStore = new Map<string, { count: number; resetTime: number; lastEmail?: string; lastEmailTime?: number }>();
 
 // Clean up expired rate limit entries
 setInterval(() => {
@@ -24,42 +23,60 @@ setInterval(() => {
 }, 60000); // Clean up every minute
 
 /**
- * Rate limiting middleware
+ * Rate limiting implementation
  */
-function checkRateLimit(identifier: string): { allowed: boolean; remaining: number; resetTime: number } {
+function checkRateLimit(clientIp: string, email?: string): { 
+  allowed: boolean; 
+  remaining: number; 
+  resetTime: number; 
+} {
   const now = Date.now();
   const windowMs = rateLimit.windowMs;
   const maxRequests = rateLimit.maxRequests;
   
-  const key = `subscription:${identifier}`;
-  const current = rateLimitStore.get(key);
+  const key = clientIp;
+  const current = rateLimitStore.get(key) || { 
+    count: 0, 
+    resetTime: now + windowMs,
+    lastEmail: undefined,
+    lastEmailTime: undefined
+  };
   
-  if (!current || now > current.resetTime) {
-    // Reset or initialize
-    const resetTime = now + windowMs;
-    rateLimitStore.set(key, { count: 1, resetTime });
-    return { allowed: true, remaining: maxRequests - 1, resetTime };
+  // Reset window if expired
+  if (now > current.resetTime) {
+    current.count = 0;
+    current.resetTime = now + windowMs;
+    current.lastEmail = undefined;
+    current.lastEmailTime = undefined;
+  }
+  
+  // Check for duplicate email within 60 seconds (additional protection)
+  if (email && current.lastEmail === email && current.lastEmailTime && (now - current.lastEmailTime) < 60000) {
+    return { allowed: false, remaining: 0, resetTime: current.resetTime };
   }
   
   if (current.count >= maxRequests) {
     return { allowed: false, remaining: 0, resetTime: current.resetTime };
   }
   
-  // Increment count
+  // Increment count and update email info
   current.count += 1;
+  if (email) {
+    current.lastEmail = email;
+    current.lastEmailTime = now;
+  }
   rateLimitStore.set(key, current);
   
   return { allowed: true, remaining: maxRequests - current.count, resetTime: current.resetTime };
 }
 
 /**
- * Email validation utility
+ * Email validation
  */
 function validateEmail(email: string): { isValid: boolean; sanitized: string; error?: string } {
   const sanitized = email.trim().toLowerCase();
   
-  // Enhanced email validation regex
-  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   
   if (!sanitized) {
     return { isValid: false, sanitized, error: "Email is required" };
@@ -102,8 +119,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    if (!supabaseAdmin) {
+      return NextResponse.json(
+        { error: 'Database configuration error' },
+        { status: 500 }
+      );
+    }
+
     // Get subscription count using the secure RPC function
-    const { data, error } = await supabase.rpc('get_subscription_count');
+    const { data, error } = await supabaseAdmin.rpc('get_subscription_count');
     
     if (error) {
       console.error('Error fetching subscription count:', error);
@@ -114,17 +138,11 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(
+      { count: data || 0 },
       { 
-        count: data || 0,
-        timestamp: new Date().toISOString()
-      },
-      {
         status: 200,
         headers: {
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600', // Cache for 5 minutes
-          'X-RateLimit-Limit': rateLimit.maxRequests.toString(),
-          'X-RateLimit-Remaining': rateCheck.remaining.toString(),
-          'X-RateLimit-Reset': Math.ceil(rateCheck.resetTime / 1000).toString(),
+          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600'
         }
       }
     );
@@ -147,22 +165,6 @@ export async function POST(request: NextRequest) {
     const realIp = headersList.get('x-real-ip');
     const clientIp = forwardedFor?.split(',')[0] || realIp || 'unknown';
     
-    // Rate limiting (more strict for POST)
-    const rateCheck = checkRateLimit(`${clientIp}:post`);
-    if (!rateCheck.allowed) {
-      return NextResponse.json(
-        { error: 'Rate limit exceeded. Please wait before subscribing again.', resetTime: rateCheck.resetTime },
-        { 
-          status: 429,
-          headers: {
-            'X-RateLimit-Limit': rateLimit.maxRequests.toString(),
-            'X-RateLimit-Remaining': rateCheck.remaining.toString(),
-            'X-RateLimit-Reset': Math.ceil(rateCheck.resetTime / 1000).toString(),
-          }
-        }
-      );
-    }
-
     // Parse and validate request body
     let body;
     try {
@@ -176,6 +178,7 @@ export async function POST(request: NextRequest) {
 
     const { email } = body;
     
+    // Validate required fields
     if (!email || typeof email !== 'string') {
       return NextResponse.json(
         { error: 'Email is required and must be a string' },
@@ -183,7 +186,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate and sanitize email
+    // Validate email format
     const validation = validateEmail(email);
     if (!validation.isValid) {
       return NextResponse.json(
@@ -192,12 +195,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Insert subscription using server-side client for better security
+    // Rate limiting with email-specific check
+    const rateCheck = checkRateLimit(clientIp, validation.sanitized);
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded. Please try again later.' },
+        { 
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': rateLimit.maxRequests.toString(),
+            'X-RateLimit-Remaining': rateCheck.remaining.toString(),
+            'X-RateLimit-Reset': Math.ceil(rateCheck.resetTime / 1000).toString(),
+          }
+        }
+      );
+    }
+
+    if (!supabaseAdmin) {
+      return NextResponse.json(
+        { error: 'Database configuration error' },
+        { status: 500 }
+      );
+    }
+
+    // Insert subscription using server-side client
     const subscriptionData: TablesInsert<'email_subscriptions'> = {
       email: validation.sanitized,
     };
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('email_subscriptions')
       .insert([subscriptionData])
       .select();
@@ -207,10 +233,10 @@ export async function POST(request: NextRequest) {
         // Unique constraint violation - email already exists
         return NextResponse.json(
           { 
-            error: 'This email is already subscribed',
+            error: 'Email already subscribed',
             code: 'ALREADY_SUBSCRIBED'
           },
-          { status: 409 } // Conflict
+          { status: 409 }
         );
       }
       
@@ -222,17 +248,22 @@ export async function POST(request: NextRequest) {
     }
 
     // Get updated subscription count
-    const { data: countData } = await supabase.rpc('get_subscription_count');
-    const newCount = countData || 0;
+    let newCount = 0;
+    const { data: countData } = await supabaseAdmin.rpc('get_subscription_count');
+    newCount = countData || 0;
 
     return NextResponse.json(
       { 
         success: true,
         message: 'Successfully subscribed!',
-        count: newCount,
-        subscription: data[0]
+        subscription: {
+          id: data[0].id,
+          email: data[0].email,
+          subscribed_at: data[0].subscribed_at
+        },
+        count: newCount
       },
-      {
+      { 
         status: 201,
         headers: {
           'X-RateLimit-Limit': rateLimit.maxRequests.toString(),
@@ -243,113 +274,6 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error('Unexpected error in POST /api/subscriptions:', error);
-    
-    if (error instanceof SupabaseQueryError) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 500 }
-      );
-    }
-    
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
-  }
-}
-
-/**
- * DELETE /api/subscriptions - Unsubscribe (admin only)
- */
-export async function DELETE(request: NextRequest) {
-  try {
-    // This endpoint requires authentication and admin privileges
-    if (!supabaseAdmin) {
-      return NextResponse.json(
-        { error: 'Admin operations not configured' },
-        { status: 501 }
-      );
-    }
-
-    const headersList = await headers();
-    const authorization = headersList.get('authorization');
-    
-    if (!authorization?.startsWith('Bearer ')) {
-      return NextResponse.json(
-        { error: 'Authentication required' },
-        { status: 401 }
-      );
-    }
-
-    // Verify admin token (implement your own auth logic here)
-    const token = authorization.slice(7);
-    
-    // Parse request body
-    let body;
-    try {
-      body = await request.json();
-    } catch {
-      return NextResponse.json(
-        { error: 'Invalid JSON in request body' },
-        { status: 400 }
-      );
-    }
-
-    const { email } = body;
-    
-    if (!email || typeof email !== 'string') {
-      return NextResponse.json(
-        { error: 'Email is required and must be a string' },
-        { status: 400 }
-      );
-    }
-
-    // Validate email
-    const validation = validateEmail(email);
-    if (!validation.isValid) {
-      return NextResponse.json(
-        { error: validation.error },
-        { status: 400 }
-      );
-    }
-
-    // Delete subscription using admin client
-    const { data, error } = await supabaseAdmin
-      .from('email_subscriptions')
-      .delete()
-      .eq('email', validation.sanitized)
-      .select();
-    
-    if (error) {
-      console.error('Database error during unsubscription:', error);
-      return NextResponse.json(
-        { error: 'Failed to process unsubscription' },
-        { status: 500 }
-      );
-    }
-
-    if (!data || data.length === 0) {
-      return NextResponse.json(
-        { error: 'Email not found in subscriptions' },
-        { status: 404 }
-      );
-    }
-
-    // Get updated subscription count
-    const { data: countData } = await supabase.rpc('get_subscription_count');
-    const newCount = countData || 0;
-
-    return NextResponse.json(
-      { 
-        success: true,
-        message: 'Successfully unsubscribed',
-        count: newCount,
-        removed: data[0]
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Unexpected error in DELETE /api/subscriptions:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -410,6 +410,151 @@
     color: white !important;
     text-shadow: 0 1px 2px hsl(var(--background) / 0.8);
   }
+
+  /* === HORNET SILK-THEMED COMPONENTS === */
+  
+  /* Silk thread elements */
+  .silk-thread {
+    position: absolute;
+    width: 2px;
+    height: 100vh;
+    background: linear-gradient(180deg, 
+      transparent 0%, 
+      hsl(var(--primary) / 0.3) 20%,
+      hsl(var(--primary) / 0.6) 50%,
+      hsl(var(--primary) / 0.3) 80%,
+      transparent 100%
+    );
+  }
+
+  .silk-thread-gold {
+    background: linear-gradient(180deg, 
+      transparent 0%, 
+      hsl(var(--hornet-gold) / 0.2) 20%,
+      hsl(var(--hornet-gold) / 0.4) 50%,
+      hsl(var(--hornet-gold) / 0.2) 80%,
+      transparent 100%
+    );
+  }
+
+  .silk-thread-silver {
+    background: linear-gradient(180deg, 
+      transparent 0%, 
+      hsl(var(--hornet-silver) / 0.3) 20%,
+      hsl(var(--hornet-silver) / 0.6) 50%,
+      hsl(var(--hornet-silver) / 0.3) 80%,
+      transparent 100%
+    );
+  }
+
+  /* Silk-woven text effect */
+  .silk-woven-text {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--hornet-gold)) 25%,
+      hsl(var(--mystical-glow)) 50%,
+      hsl(var(--hornet-silver)) 75%,
+      hsl(var(--primary)) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* Needle-sharp text shadows */
+    filter: drop-shadow(0 0 8px hsl(var(--primary) / 0.4))
+            drop-shadow(2px 2px 4px hsl(var(--shadow-deep) / 0.6));
+  }
+
+  /* Web pattern overlay */
+  .web-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 25% 25%, hsl(var(--primary) / 0.1) 1px, transparent 1px),
+      radial-gradient(circle at 75% 75%, hsl(var(--hornet-gold) / 0.08) 1px, transparent 1px),
+      radial-gradient(circle at 50% 10%, hsl(var(--hornet-silver) / 0.05) 2px, transparent 2px);
+    background-size: 40px 40px, 60px 60px, 80px 80px;
+    pointer-events: none;
+  }
+
+  /* Organic card shapes */
+  .silk-card {
+    @apply bg-card/90 backdrop-blur-sm border rounded-2xl;
+    border-image: linear-gradient(135deg, 
+      hsl(var(--primary) / 0.3), 
+      transparent, 
+      hsl(var(--hornet-gold) / 0.2)
+    ) 1;
+    box-shadow: 
+      0 0 20px hsl(var(--primary) / 0.2),
+      inset 0 0 20px hsl(var(--hornet-gold) / 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    clip-path: polygon(0 0, 100% 0, 98% 100%, 2% 100%);
+  }
+
+  .silk-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 
+      0 10px 40px hsl(var(--primary) / 0.4),
+      inset 0 0 30px hsl(var(--hornet-gold) / 0.1);
+  }
+
+  /* Needle-inspired buttons */
+  .needle-button {
+    @apply relative overflow-hidden;
+    background: linear-gradient(135deg, 
+      hsl(var(--primary)) 0%, 
+      hsl(var(--primary) / 0.9) 50%, 
+      hsl(var(--primary)) 100%
+    );
+    color: white;
+    border: 2px solid hsl(var(--hornet-silver) / 0.3);
+    clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+    transition: all 0.3s ease;
+  }
+
+  .needle-button:hover {
+    background: linear-gradient(135deg, 
+      hsl(var(--mystical-glow)) 0%, 
+      hsl(var(--primary)) 50%, 
+      hsl(var(--mystical-glow)) 100%
+    );
+    transform: scale(1.05);
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.6);
+  }
+
+  .needle-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--hornet-silver) / 0.3),
+      transparent
+    );
+    transition: left 0.6s;
+  }
+
+  .needle-button:hover::before {
+    left: 100%;
+  }
+
+  /* Flowing silk background */
+  .silk-flow-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, hsl(var(--primary) / 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(var(--mystical-glow) / 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, hsl(var(--hornet-gold) / 0.06) 0%, transparent 30%);
+    background-size: 100% 100%, 80% 80%, 60% 60%;
+  }
 }
 
 @layer utilities {
@@ -466,6 +611,71 @@
     }
   }
 
+  /* === HORNET SILK-THEMED ANIMATIONS === */
+  @keyframes silk-sway {
+    0%, 100% { 
+      transform: translateX(0) rotate(0deg); 
+      opacity: 0.3;
+    }
+    33% { 
+      transform: translateX(15px) rotate(2deg); 
+      opacity: 0.6;
+    }
+    66% { 
+      transform: translateX(-10px) rotate(-1deg); 
+      opacity: 0.4;
+    }
+  }
+
+  @keyframes silk-weave {
+    0% { 
+      opacity: 0;
+      transform: scale(0.8) rotate(-5deg);
+      filter: blur(4px);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.05) rotate(2deg);
+      filter: blur(1px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+      filter: blur(0);
+    }
+  }
+
+  @keyframes silk-breathe {
+    0%, 100% { 
+      transform: scale(1) translateY(0);
+      filter: drop-shadow(0 0 20px hsl(var(--primary) / 0.3));
+    }
+    50% { 
+      transform: scale(1.02) translateY(-5px);
+      filter: drop-shadow(0 5px 25px hsl(var(--primary) / 0.5));
+    }
+  }
+
+  @keyframes needle-gleam {
+    0% { 
+      background-position: -200% center;
+    }
+    100% { 
+      background-position: 200% center;
+    }
+  }
+
+  @keyframes web-pulse {
+    0%, 100% { 
+      opacity: 0.1;
+      transform: scale(1);
+    }
+    50% { 
+      opacity: 0.3;
+      transform: scale(1.05);
+    }
+  }
+
   /* 动画类 */
   .animate-glow-pulse {
     animation: glow-pulse 3s ease-in-out infinite;
@@ -488,6 +698,26 @@
     );
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
+  }
+
+  .animate-silk-sway {
+    animation: silk-sway 8s ease-in-out infinite;
+  }
+
+  .animate-silk-weave {
+    animation: silk-weave 1.2s ease-out;
+  }
+
+  .animate-silk-breathe {
+    animation: silk-breathe 6s ease-in-out infinite;
+  }
+
+  .animate-needle-gleam {
+    animation: needle-gleam 8s ease-in-out infinite;
+  }
+
+  .animate-web-pulse {
+    animation: web-pulse 4s ease-in-out infinite;
   }
 
   /* === LAYOUT UTILITIES - 布局工具类 === */
@@ -560,6 +790,87 @@
     .silksong-cell {
       border-left-width: 1px !important;
       padding-left: 0.5rem !important;
+    }
+  }
+
+  /* === HORNET SILK-THEME MOBILE OPTIMIZATIONS === */
+  
+  /* Mobile optimizations for silk threads */
+  @media (max-width: 768px) {
+    .silk-thread {
+      width: 1px;
+      opacity: 0.3 !important;
+    }
+    
+    .silk-thread:nth-child(even) {
+      display: none; /* Hide every other thread on mobile for performance */
+    }
+    
+    .silk-card {
+      clip-path: none; /* Simplify shape on mobile */
+      border-radius: 1rem;
+    }
+    
+    .needle-button {
+      clip-path: none;
+      border-radius: 0.5rem;
+    }
+    
+    .web-pattern {
+      background-size: 80px 80px, 120px 120px, 160px 160px;
+      opacity: 0.3;
+    }
+  }
+  
+  /* Reduced motion support for Hornet theme */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-silk-sway,
+    .animate-silk-breathe,
+    .animate-needle-gleam,
+    .animate-web-pulse,
+    .animate-silk-weave {
+      animation: none !important;
+    }
+    
+    .silk-woven-text {
+      background-size: 100% 100% !important;
+    }
+    
+    .needle-button::before {
+      transition: none !important;
+    }
+  }
+  
+  /* Touch device optimizations */
+  @media (hover: none) and (pointer: coarse) {
+    .needle-button:hover::before {
+      left: 100%;
+    }
+    
+    .silk-card:hover {
+      transform: none;
+    }
+  }
+  
+  /* High contrast mode support for silk theme */
+  @media (prefers-contrast: high) {
+    .silk-thread {
+      background: linear-gradient(180deg, 
+        transparent 0%, 
+        hsl(var(--foreground) / 0.8) 20%,
+        hsl(var(--foreground)) 50%,
+        hsl(var(--foreground) / 0.8) 80%,
+        transparent 100%
+      );
+    }
+    
+    .silk-woven-text {
+      color: hsl(var(--foreground)) !important;
+      -webkit-text-fill-color: hsl(var(--foreground)) !important;
+    }
+    
+    .web-pattern {
+      display: none;
     }
   }
 }

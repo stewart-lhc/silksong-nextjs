@@ -129,8 +129,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       return new NextResponse(null, { status: 304 });
     }
 
-    // Configuration for release date (September 4, 2025)
-    const releaseDate = new Date('2025-09-04T00:00:00Z');
+    // Configuration for release date (September 4, 2025 at 14:00:00 UTC)
+    const releaseDate = new Date('2025-09-04T14:00:00Z');
     const serverTime = new Date();
 
     // Calculate time remaining
