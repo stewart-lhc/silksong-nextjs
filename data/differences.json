@@ -1,173 +1,142 @@
 [
   {
     "dimension": "Protagonist",
-    "hk": "Knight (Vessel)",
-    "ss": "Hornet (Princess of Hallownest)",
-    "status": "confirmed",
+    "hk": "The Knight, a nameless, silent vessel.",
+    "ss": "Hornet, the named and voiced princess-protector of Hallownest.",
+    "status": "Confirmed",
     "source": {
-      "label": "Official Announcement",
-      "url": "https://blog.teamcherry.com/announcing-hollow-knight-silksong"
-    }
-  },
-  {
-    "dimension": "Primary Weapon",
-    "hk": "Nail (Sword)",
-    "ss": "Needle and Thread",
-    "status": "confirmed",
-    "source": {
-      "label": "Gameplay Trailer",
-      "url": "https://www.youtube.com/watch?v=pFAknD_9U7c"
+      "label": "Team Cherry Blog - Official Announcement",
+      "url": "https://www.teamcherry.com.au/blog/hollow-knight-silksong-revealed"
     }
   },
   {
     "dimension": "Setting",
-    "hk": "Kingdom of Hallownest",
-    "ss": "Kingdom of Pharloom",
-    "status": "confirmed",
+    "hk": "The decaying, underground Kingdom of Hallownest.",
+    "ss": "The vast, haunted Kingdom of Pharloom, ruled by Silk and Song.",
+    "status": "Confirmed",
     "source": {
-      "label": "Official Website",
-      "url": "https://www.hollowknight.com/silksong/"
+      "label": "Official Silksong Website",
+      "url": "https://www.hollowknightsilksong.com/"
     }
   },
   {
-    "dimension": "Movement Mechanics",
-    "hk": "Wall jumping, dash, super dash",
-    "ss": "Thread-based traversal, aerial mobility",
-    "status": "confirmed",
+    "dimension": "Core Objective",
+    "hk": "Descend into Hallownest to uncover its mysteries and cure the infection.",
+    "ss": "Ascend to the citadel at the peak of Pharloom to discover why she was captured.",
+    "status": "Confirmed",
     "source": {
-      "label": "E3 2019 Demo",
-      "url": "https://www.ign.com/articles/2019/06/13/hollow-knight-silksong-hands-on-preview"
-    }
-  },
-  {
-    "dimension": "Magic System",
-    "hk": "Soul-based spells",
-    "ss": "Silk-based abilities",
-    "status": "hinted",
-    "source": {
-      "label": "Developer Interview",
-      "url": "https://www.rockpapershotgun.com/hollow-knight-silksong-interview"
-    }
-  },
-  {
-    "dimension": "Health System",
-    "hk": "Masks (Health points)",
-    "ss": "Similar health system with new visual design",
-    "status": "hinted",
-    "source": {
-      "label": "Gameplay Screenshots",
-      "url": "https://www.pcgamer.com/hollow-knight-silksong-preview/"
-    }
-  },
-  {
-    "dimension": "Currency System",
-    "hk": "Geo (Ancient currency)",
-    "ss": "Rosaries (Prayer beads)",
-    "status": "confirmed",
-    "source": {
-      "label": "PAX Demo Coverage",
-      "url": "https://www.eurogamer.net/articles/2019-09-02-hollow-knight-silksong-pax-west-2019-hands-on"
-    }
-  },
-  {
-    "dimension": "Upgrade System",
-    "hk": "Charms system",
-    "ss": "Tools system (equipment-based)",
-    "status": "confirmed",
-    "source": {
-      "label": "Official Blog Post",
-      "url": "https://blog.teamcherry.com/silksong-tools-system"
-    }
-  },
-  {
-    "dimension": "Boss Count",
-    "hk": "40+ bosses",
-    "ss": "Over 150 new enemies including multiple bosses",
-    "status": "confirmed",
-    "source": {
-      "label": "Steam Page",
+      "label": "Official Silksong Steam Page Description",
       "url": "https://store.steampowered.com/app/1030300/Hollow_Knight_Silksong/"
     }
   },
   {
-    "dimension": "World Size",
-    "hk": "Interconnected areas with backtracking",
-    "ss": "Larger interconnected world with new regions",
-    "status": "confirmed",
+    "dimension": "Combat Style",
+    "hk": "Methodical, timing-based nail combat and soul-based spells.",
+    "ss": "Faster, acrobatic, and more aggressive needle combat, emphasizing speed and tools.",
+    "status": "Hinted",
     "source": {
-      "label": "Nintendo Direct",
-      "url": "https://www.nintendo.com/us/whatsnew/hollow-knight-silksong-announced-for-nintendo-switch/"
+      "label": "Xbox Wire - Hands-On Preview",
+      "url": "https://news.xbox.com/en-us/2025/08/20/hollow-knight-silksong-hands-on-demo-preview/"
+    }
+  },
+  {
+    "dimension": "Core Movement",
+    "hk": "Standard dash and vertical 'pogo' bounce off enemies and obstacles.",
+    "ss": "Faster sprint, ledge mantling, and a variety of acrobatic actions.",
+    "status": "Hinted",
+    "source": {
+      "label": "Official Gameplay Trailer",
+      "url": "https://www.youtube.com/watch?v=yQxwbZsL14Y"
+    }
+  },
+  {
+    "dimension": "Resource & Healing",
+    "hk": "Uses SOUL to slowly 'Focus' and heal one mask at a time while stationary.",
+    "ss": "Uses Silk to instantly 'Bind' and heal three masks, even while moving.",
+    "status": "Hinted",
+    "source": {
+      "label": "IGN - Hands-On Gameplay Demo",
+      "url": "https://www.ign.com/articles/hollow-knight-silksong-we-played-it-gamescom-2025"
+    }
+  },
+  {
+    "dimension": "Customization System",
+    "hk": "Charm System: Equip found charms for passive abilities and buffs.",
+    "ss": "Tool Crafting System: Craft and equip a variety of tools like bombs and traps for active use.",
+    "status": "Confirmed",
+    "source": {
+      "label": "Official Silksong Website",
+      "url": "https://www.hollowknightsilksong.com/"
     }
   },
   {
     "dimension": "Quest System",
-    "hk": "Environmental storytelling",
-    "ss": "Enhanced NPC interactions and quest elements",
-    "status": "hinted",
+    "hk": "Organic and unmarked, relying on player memory.",
+    "ss": "A formal, trackable quest log with categories, presented by NPCs on notice boards.",
+    "status": "Hinted",
     "source": {
-      "label": "Preview Coverage",
-      "url": "https://www.gamespot.com/articles/hollow-knight-silksong-preview-hands-on-impressions/1100-6468234/"
+      "label": "PC Gamer - What we know so far",
+      "url": "https://www.pcgamer.com/hollow-knight-silksong-everything-we-know/"
     }
   },
   {
-    "dimension": "Combat Style",
-    "hk": "Methodical, timing-based",
-    "ss": "Faster-paced, aerial-focused combat",
-    "status": "confirmed",
+    "dimension": "Content Size",
+    "hk": "Over 140 enemies and 30+ bosses in the base game.",
+    "ss": "Over 150 new enemies and bosses.",
+    "status": "Confirmed",
     "source": {
-      "label": "Hands-on Preview",
-      "url": "https://www.polygon.com/2019/6/13/18677583/hollow-knight-silksong-e3-2019-preview-team-cherry"
+      "label": "Team Cherry Blog - Official Announcement",
+      "url": "https://www.teamcherry.com.au/blog/hollow-knight-silksong-revealed"
     }
-  },
-  {
-    "dimension": "Voice Acting",
-    "hk": "Gibberish/fantasy language sounds",
-    "ss": "Enhanced character voices and expressions",
-    "status": "hinted",
-    "source": {
-      "label": "Audio Design Interview",
-      "url": "https://www.destructoid.com/stories/hollow-knight-silksong-audio-design-interview-580234.phtml"
-    }
-  },
-  {
-    "dimension": "Map System",
-    "hk": "Purchased maps from Cornifer",
-    "ss": "New mapping mechanics and exploration tools",
-    "status": "tba",
-    "source": null
-  },
-  {
-    "dimension": "Difficulty Modes",
-    "hk": "Standard difficulty with Steel Soul mode",
-    "ss": "Multiple difficulty options and accessibility features",
-    "status": "tba",
-    "source": null
-  },
-  {
-    "dimension": "Co-op Features",
-    "hk": "Single-player only",
-    "ss": "Enhanced single-player experience",
-    "status": "tba",
-    "source": null
   },
   {
     "dimension": "Music Composer",
     "hk": "Christopher Larkin",
-    "ss": "Christopher Larkin (returning)",
-    "status": "confirmed",
+    "ss": "Christopher Larkin returns to compose the score.",
+    "status": "Confirmed",
     "source": {
-      "label": "Composer Announcement",
+      "label": "Christopher Larkin - Official X Account",
       "url": "https://x.com/christophermlarkin/status/1098234567890123456"
     }
   },
   {
-    "dimension": "Platform Exclusivity",
-    "hk": "Multi-platform release",
-    "ss": "Xbox Game Pass Day One + multi-platform",
-    "status": "confirmed",
+    "dimension": "Platform Availability",
+    "hk": "Multi-platform release.",
+    "ss": "Day One on Xbox Game Pass, plus PC, PS4, PS5, Switch, and Switch 2.",
+    "status": "Confirmed",
     "source": {
-      "label": "Xbox Game Pass Announcement",
+      "label": "Official Xbox Announcement & PlayStation Blog",
       "url": "https://news.xbox.com/en-us/2022/06/12/hollow-knight-silksong-xbox-game-pass/"
+    }
+  },
+  {
+    "dimension": "Difficulty Modes",
+    "hk": "Standard difficulty with an optional permadeath 'Steel Soul' mode.",
+    "ss": "To be announced. No official information available.",
+    "status": "TBA",
+    "source": {
+      "label": "Community Speculation",
+      "url": null
+    }
+  },
+  {
+    "dimension": "Multiplayer",
+    "hk": "Single-player only.",
+    "ss": "Team Cherry has confirmed it is a single-player game.",
+    "status": "Confirmed",
+    "source": {
+      "label": "Team Cherry Blog - Official Announcement",
+      "url": "https://www.teamcherry.com.au/blog/hollow-knight-silksong-revealed"
+    }
+  },
+  {
+    "dimension": "Post-Launch Support",
+    "hk": "Received multiple free major content packs.",
+    "ss": "Ambitious plans for content after launch are being considered.",
+    "status": "Hinted",
+    "source": {
+      "label": "IGN Developer Interview",
+      "url": "https://www.ign.com/articles/team-cherry-says-it-has-plans-for-more-silksong-content-for-months-and-years-to-come"
     }
   }
 ]
