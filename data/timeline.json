@@ -42,7 +42,7 @@
     "description": "Matthew Griffin, head of marketing and publishing at Team Cherry, confirmed that Silksong was originally planned for release in the first half of 2023 but was delayed to ensure quality.",
     "type": "Development Update",
     "source": "https://twitter.com/griffinmatta/status/1656093223819149312",
-    "category": "release_date"
+    "category": "release date"
   },
   {
     "id": "6",
@@ -97,5 +97,14 @@
     "type": "Developer Update",
     "source": "https://www.gamespot.com/articles/first-hollow-knight-kickstarter-update-in-6-years-promises-backers-silksong-codes/1100-6534211/",
     "category": "development"
+  },
+  {
+    "id": "12",
+    "date": "2025-08-26",
+    "title": "Community and Industry Reaction",
+    "description": "Following the release date announcement, the original Hollow Knight's player count on Steam surged to a new all-time high. Several indie games announced they were delaying their releases to avoid launching alongside Silksong.",
+    "type": "Community",
+    "source": "https://www.gamespot.com/articles/the-latest-silksong-induced-game-delay-doesnt-hide-its-reasoning-in-new-trailer/1100-6534273/",
+    "category": "community"
   }
 ]

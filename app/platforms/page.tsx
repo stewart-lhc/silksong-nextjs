@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Clock, CheckCircle, Monitor, Smartphone, Gamepad2, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import { ExternalLink, Clock, CheckCircle, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 import { PlatformLogo } from '@/components/platform-logo';
 import faqData from '@/data/platforms-faq.json';
+import platformsData from '@/data/platforms.json';
 
 // Note: Metadata is handled by the parent layout since this is a client component
 
@@ -37,7 +37,7 @@ function FAQAccordionItem({ item, isOpen, onToggle }: {
         className="w-full px-4 py-3 text-left flex items-center justify-between hover:bg-muted/50 transition-colors"
         onClick={onToggle}
         aria-expanded={isOpen}
-        aria-controls={`faq-answer-${item.question}`}
+        aria-controls={`faq-answer-${item.question.replace(/\s+/g, '-').toLowerCase()}`}
       >
         <span className="font-medium">{item.question}</span>
         {isOpen ? (
@@ -47,7 +47,7 @@ function FAQAccordionItem({ item, isOpen, onToggle }: {
         )}
       </button>
       <div
-        id={`faq-answer-${item.question}`}
+        id={`faq-answer-${item.question.replace(/\s+/g, '-').toLowerCase()}`}
         className={`px-4 pb-3 text-muted-foreground ${isOpen ? 'block' : 'hidden'}`}
       >
         {item.answer}
@@ -56,106 +56,7 @@ function FAQAccordionItem({ item, isOpen, onToggle }: {
   );
 }
 
-const platforms: Platform[] = [
-  {
-    id: "steam",
-    name: "Steam (PC)",
-    status: "confirmed",
-    releaseWindow: "Day One",
-    description: "The classic PC gaming platform where Hollow Knight first found its audience.",
-    officialUrl: "https://store.steampowered.com/app/1030300",
-    gamePassIncluded: false
-  },
-  {
-    id: "xbox",
-    name: "Xbox Series X|S",
-    status: "confirmed", 
-    releaseWindow: "Day One",
-    description: "Next-gen Xbox consoles with Game Pass availability confirmed.",
-    officialUrl: "https://www.xbox.com/en-us/games/store/hollow-knight-silksong/9n116v0599hb",
-    gamePassIncluded: true
-  },
-  {
-    id: "xbox-one",
-    name: "Xbox One",
-    status: "confirmed",
-    releaseWindow: "Day One", 
-    description: "Previous generation Xbox console support confirmed.",
-    officialUrl: "https://www.xbox.com/en-us/games/store/hollow-knight-silksong/9n116v0599hb",
-    gamePassIncluded: true
-  },
-  {
-    id: "windows",
-    name: "Windows Store",
-    status: "confirmed",
-    releaseWindow: "Day One",
-    description: "Microsoft's Windows Store with Game Pass for PC integration.",
-    officialUrl: "https://www.xbox.com/en-us/games/store/hollow-knight-silksong/9n116v0599hb",
-    gamePassIncluded: true
-  },
-  {
-    id: "nintendo-switch",
-    name: "Nintendo Switch",
-    status: "confirmed",
-    releaseWindow: "Day One",
-    description: "The beloved portable gaming platform where Hollow Knight found great success.",
-    officialUrl: "https://www.nintendo.com/games/detail/hollow-knight-silksong-switch/",
-    gamePassIncluded: false
-  },
-  {
-    id: "nintendo-switch-2",
-    name: "Nintendo Switch 2",
-    status: "confirmed",
-    releaseWindow: "Day One",
-    description: "Nintendo's next-generation console platform confirmed for Silksong.",
-    officialUrl: "https://www.nintendo.com/games/detail/hollow-knight-silksong-switch/",
-    gamePassIncluded: false
-  },
-  {
-    id: "playstation-4",
-    name: "PlayStation 4",
-    status: "confirmed",
-    releaseWindow: "Day One",
-    description: "Sony's PlayStation 4 console platform confirmed for purchase.",
-    officialUrl: "https://store.playstation.com/en-us/concept/10005908",
-    gamePassIncluded: false
-  },
-  {
-    id: "playstation-5",
-    name: "PlayStation 5",
-    status: "confirmed",
-    releaseWindow: "Day One",
-    description: "Sony's next-generation PlayStation 5 console platform confirmed.",
-    officialUrl: "https://store.playstation.com/en-us/concept/10005908",
-    gamePassIncluded: false
-  },
-  {
-    id: "gog",
-    name: "GoG",
-    status: "confirmed",
-    releaseWindow: "Day One",
-    description: "DRM-free gaming platform for PC gamers who prefer digital ownership.",
-    officialUrl: "https://www.gog.com/game/hollow_knight_silksong",
-    gamePassIncluded: false
-  },
-  {
-    id: "humble-bundle",
-    name: "Humble Bundle",
-    status: "confirmed",
-    releaseWindow: "Day One",
-    description: "Digital game store supporting charity with every purchase.",
-    officialUrl: "https://www.humblebundle.com/store/hollow-knight-silksong",
-    gamePassIncluded: false
-  },
-  {
-    id: "mac-linux",
-    name: "Mac & Linux",
-    status: "unknown",
-    releaseWindow: "TBA",
-    description: "No official word on Mac or Linux support, though the original game supported these platforms.",
-    officialUrl: "https://store.steampowered.com/app/1030300"
-  }
-];
+const platforms: Platform[] = platformsData as Platform[];
 
 const getStatusInfo = (status: Platform["status"]) => {
   switch (status) {
@@ -427,7 +328,7 @@ export default function PlatformsPage() {
           <h3 className="text-lg font-semibold mb-2 text-hornet-accent">Platform Updates</h3>
           <p className="text-muted-foreground">
             Platform availability information is based on official announcements from Team Cherry. 
-            We'll update this page as new platform confirmations are announced. 
+            We&apos;ll update this page as new platform confirmations are announced. 
             Keep checking back for the latest updates!
           </p>
         </CardContent>

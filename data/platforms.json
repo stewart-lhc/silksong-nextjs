@@ -1,98 +1,101 @@
 [
   {
-    "platform": "PC (Steam)",
+    "id": "steam",
+    "name": "Steam (PC)",
     "status": "confirmed",
-    "notes": "Available for pre-purchase and wishlist",
-    "source": {
-      "label": "Steam Store Page",
-      "url": "https://store.steampowered.com/app/1030300/Hollow_Knight_Silksong/"
-    }
+    "releaseWindow": "Day One",
+    "description": "The classic PC gaming platform where Hollow Knight first found its audience.",
+    "officialUrl": "https://store.steampowered.com/app/1030300",
+    "gamePassIncluded": false
   },
   {
-    "platform": "Xbox Series X/S",
+    "id": "xbox",
+    "name": "Xbox Series X|S",
+    "status": "confirmed", 
+    "releaseWindow": "Day One",
+    "description": "Next-gen Xbox consoles with Game Pass availability confirmed.",
+    "officialUrl": "https://www.xbox.com/en-us/games/store/hollow-knight-silksong/9n116v0599hb",
+    "gamePassIncluded": true
+  },
+  {
+    "id": "xbox-one",
+    "name": "Xbox One",
     "status": "confirmed",
-    "notes": "Optimized for Xbox Series consoles",
-    "source": {
-      "label": "Xbox Wire",
-      "url": "https://news.xbox.com/en-us/2022/06/12/xbox-games-showcase-2022-recap/"
-    }
+    "releaseWindow": "Day One", 
+    "description": "Previous generation Xbox console support confirmed.",
+    "officialUrl": "https://www.xbox.com/en-us/games/store/hollow-knight-silksong/9n116v0599hb",
+    "gamePassIncluded": true
   },
   {
-    "platform": "Xbox One",
+    "id": "windows",
+    "name": "Windows Store",
     "status": "confirmed",
-    "notes": "Backward compatible support",
-    "source": {
-      "label": "Xbox Store",
-      "url": "https://www.xbox.com/en-us/games/hollow-knight-silksong"
-    }
+    "releaseWindow": "Day One",
+    "description": "Microsoft's Windows Store with Game Pass for PC integration.",
+    "officialUrl": "https://www.xbox.com/en-us/games/store/hollow-knight-silksong/9n116v0599hb",
+    "gamePassIncluded": true
   },
   {
-    "platform": "PlayStation 5",
+    "id": "nintendo-switch",
+    "name": "Nintendo Switch",
     "status": "confirmed",
-    "notes": "Enhanced for PS5 hardware",
-    "source": {
-      "label": "PlayStation Blog",
-      "url": "https://blog.playstation.com/2022/06/12/hollow-knight-silksong-coming-to-playstation/"
-    }
+    "releaseWindow": "Day One",
+    "description": "The beloved portable gaming platform where Hollow Knight found great success.",
+    "officialUrl": "https://www.nintendo.com/games/detail/hollow-knight-silksong-switch/",
+    "gamePassIncluded": false
   },
   {
-    "platform": "PlayStation 4",
+    "id": "nintendo-switch-2",
+    "name": "Nintendo Switch 2",
     "status": "confirmed",
-    "notes": "Standard PS4 support with PS5 upgrades available",
-    "source": {
-      "label": "PlayStation Store",
-      "url": "https://www.playstation.com/en-us/games/hollow-knight-silksong/"
-    }
+    "releaseWindow": "Day One",
+    "description": "Nintendo's next-generation console platform confirmed for Silksong.",
+    "officialUrl": "https://www.nintendo.com/games/detail/hollow-knight-silksong-switch/",
+    "gamePassIncluded": false
   },
   {
-    "platform": "Nintendo Switch",
+    "id": "playstation-4",
+    "name": "PlayStation 4",
     "status": "confirmed",
-    "notes": "Handheld and docked mode support",
-    "source": {
-      "label": "Nintendo eShop",
-      "url": "https://www.nintendo.com/us/store/products/hollow-knight-silksong-switch/"
-    }
+    "releaseWindow": "Day One",
+    "description": "Sony's PlayStation 4 console platform confirmed for purchase.",
+    "officialUrl": "https://store.playstation.com/en-us/concept/10005908",
+    "gamePassIncluded": false
   },
   {
-    "platform": "PC (GOG)",
+    "id": "playstation-5",
+    "name": "PlayStation 5",
     "status": "confirmed",
-    "notes": "DRM-free version available",
-    "source": {
-      "label": "GOG Store Page",
-      "url": "https://www.gog.com/game/hollow_knight_silksong"
-    }
+    "releaseWindow": "Day One",
+    "description": "Sony's next-generation PlayStation 5 console platform confirmed.",
+    "officialUrl": "https://store.playstation.com/en-us/concept/10005908",
+    "gamePassIncluded": false
   },
   {
-    "platform": "Game Pass (Day One)",
+    "id": "gog",
+    "name": "GoG",
     "status": "confirmed",
-    "notes": "Available on Xbox Game Pass and PC Game Pass from launch day",
-    "source": {
-      "label": "Xbox Game Pass Announcement",
-      "url": "https://news.xbox.com/en-us/2022/06/12/hollow-knight-silksong-xbox-game-pass/"
-    }
+    "releaseWindow": "Day One",
+    "description": "DRM-free gaming platform for PC gamers who prefer digital ownership.",
+    "officialUrl": "https://www.gog.com/game/hollow_knight_silksong",
+    "gamePassIncluded": false
   },
   {
-    "platform": "Epic Games Store",
-    "status": "tba",
-    "notes": "No official confirmation yet",
-    "source": null
+    "id": "humble-bundle",
+    "name": "Humble Bundle",
+    "status": "confirmed",
+    "releaseWindow": "Day One",
+    "description": "Digital game store supporting charity with every purchase.",
+    "officialUrl": "https://www.humblebundle.com/store/hollow-knight-silksong",
+    "gamePassIncluded": false
   },
   {
-    "platform": "Nintendo Switch 2",
-    "status": "unannounced",
-    "notes": "Next-generation Nintendo console compatibility",
-    "source": null
-  },
-  {
-    "platform": "PC (Humble Store)",
-    "status": "tba",
-    "notes": "Third-party PC distribution",
-    "source": null
-  },
-  {
-    "platform": "Mobile (iOS/Android)",
-    "status": "unannounced",
-    "notes": "Mobile platform adaptation",
-    "source": null
+    "id": "mac-linux",
+    "name": "Mac & Linux",
+    "status": "confirmed",
+    "releaseWindow": "Day One",
+    "description": "Mac and SteamOS+Linux support confirmed via Steam platform.",
+    "officialUrl": "https://store.steampowered.com/app/1030300",
+    "gamePassIncluded": false
   }
 ]

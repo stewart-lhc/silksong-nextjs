@@ -10,46 +10,51 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { useEmailSubscription } from '@/hooks/use-email-subscription';
 
-// Background Video Component
-function BackgroundVideo({ onVideoReady }: { onVideoReady: (loaded: boolean) => void }) {
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [videoPlaying, setVideoPlaying] = useState(false);
+// Simple Background with Image and Video
+function BackgroundVideo() {
+  const [showVideo, setShowVideo] = useState(false);
   
   useEffect(() => {
-    // Start loading video after a short delay
-    const loadTimer = setTimeout(() => {
-      setVideoLoaded(true);
-    }, 1000);
-
-    // Assume video is playing after additional delay
-    const playTimer = setTimeout(() => {
-      setVideoPlaying(true);
-      onVideoReady(true);
-    }, 3000); // 3 seconds for video to start playing
-    
-    return () => {
-      clearTimeout(loadTimer);
-      clearTimeout(playTimer);
-    };
-  }, [onVideoReady]);
-
-  if (!videoLoaded) {
-    return null;
-  }
-
+    const timer = setTimeout(() => {
+      setShowVideo(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+  
   return (
-    <div className={`absolute inset-0 overflow-hidden transition-opacity duration-1000 ${videoPlaying ? 'opacity-100' : 'opacity-0'}`}>
+    <div className="absolute inset-0 z-0">
+      {/* Background Image */}
+      <div 
+        className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ${
+          showVideo ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{
+          backgroundImage: 'url(/pressKit/Hornet_mid_shot.webp)',
+          filter: 'brightness(0.6) contrast(1.1)'
+        }}
+      />
+      
+      {/* YouTube Video */}
       <iframe
-        src="https://www.youtube.com/embed/0BqVbQ6nUXE?autoplay=1&mute=1&loop=1&playlist=0BqVbQ6nUXE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&start=1"
-        className="absolute inset-0 w-full h-full object-cover scale-125 pointer-events-none"
+        src="https://www.youtube.com/embed/0BqVbQ6nUXE?autoplay=1&mute=1&loop=1&playlist=0BqVbQ6nUXE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&start=1&playsinline=1&enablejsapi=1"
+        className="absolute pointer-events-none transition-opacity duration-1000"
         style={{
           filter: 'brightness(0.6) contrast(1.1)',
+          opacity: showVideo ? 1 : 0,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '120vw',
+          height: '67.5vw', // 16:9 ratio
+          minWidth: '213.3vh',
+          minHeight: '120vh'
         }}
-        allow="autoplay; encrypted-media"
+        allow="autoplay; fullscreen; encrypted-media; accelerometer; gyroscope; picture-in-picture"
         title="Hollow Knight Silksong Background Video"
         frameBorder="0"
       />
-      {/* Lighter overlay for readability */}
+      
+      {/* Overlay */}
       <div className="absolute inset-0 bg-black/30" />
     </div>
   );
@@ -113,7 +118,6 @@ function CountdownTimer() {
 export function HeroSection() {
   const [isTrailerOpen, setIsTrailerOpen] = useState(false);
   const [email, setEmail] = useState('');
-  const [videoReady, setVideoReady] = useState(false);
   
   const {
     subscriberCount,
@@ -136,56 +140,38 @@ export function HeroSection() {
     setEmail(''); // Clear email field on successful submission
   };
 
-  const handleVideoReady = (ready: boolean) => {
-    setVideoReady(ready);
-  };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen overflow-hidden" style={{ minHeight: '100dvh' }}>
       {/* Background Video */}
-      <BackgroundVideo onVideoReady={handleVideoReady} />
-      
-      {/* Silk Background Flow - Hidden when video loads */}
-      <div className="silk-flow-bg transition-opacity duration-1000" style={{ opacity: videoReady ? 0.1 : 0.8 }} />
-      
-      {/* Web Pattern Overlay - Reduced when video loads */}
-      <div className="web-pattern animate-web-pulse transition-opacity duration-1000" style={{ opacity: videoReady ? 0.05 : 0.3 }} />
-      
-      {/* Animated Silk Threads - Reduced when video loads */}
-      <div className="silk-thread animate-silk-sway left-[10%] transition-opacity duration-1000" style={{ opacity: videoReady ? 0.1 : 0.6, animationDelay: '0s' }} />
-      <div className="silk-thread silk-thread-gold animate-silk-sway left-[25%] transition-opacity duration-1000" style={{ opacity: videoReady ? 0.08 : 0.4, animationDelay: '1s' }} />
-      <div className="silk-thread silk-thread-silver animate-silk-sway left-[75%] transition-opacity duration-1000" style={{ opacity: videoReady ? 0.08 : 0.5, animationDelay: '2s' }} />
-      <div className="silk-thread animate-silk-sway right-[15%] transition-opacity duration-1000" style={{ opacity: videoReady ? 0.05 : 0.3, animationDelay: '3s' }} />
+      <BackgroundVideo />
       
       {/* Main Content */}
-      <div className="relative z-10 container mx-auto px-4">
+      <div className="relative z-10 container mx-auto px-4 pt-20 pb-8 md:py-8 flex items-center justify-center" style={{ minHeight: 'calc(100dvh - 4rem)' }}>
         <div className="max-w-6xl mx-auto">
           {/* Hero Title Section - Organic Layout */}
-          <div className="text-center mb-12 animate-silk-weave">
-            <div className="space-y-6">
-              <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold tracking-tight text-foreground animate-silk-breathe">
+          <div className="text-center mb-6 md:mb-12">
+            <div className="space-y-3 md:space-y-6">
+              <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold tracking-tight text-foreground leading-tight">
                 HOLLOW KNIGHT
               </h1>
-              <h2 className="text-5xl md:text-7xl lg:text-9xl font-bold tracking-wider silk-woven-text animate-needle-gleam">
+              <h2 className="text-5xl md:text-7xl lg:text-9xl font-bold tracking-wider fantasy-text leading-tight">
                 SILKSONG
               </h2>
               <div className="relative max-w-3xl mx-auto">
-                <p className="text-sm md:text-base text-muted-foreground/80 leading-relaxed">
-                  Step into Hornet's silk-woven world of Pharloom. Master the needle, weave through danger, 
-                  and ascend to become the kingdom's protector in this long-awaited sequel.
+                <p className="text-xs md:text-sm text-muted-foreground/80 leading-relaxed">
+                  Step into Hornet&apos;s silk-woven world of Pharloom. Master the needle, weave through danger, 
+                  and ascend to become the kingdom&apos;s protector in this long-awaited sequel.
                 </p>
-                {/* Decorative silk lines */}
-                <div className="absolute -left-8 top-1/2 w-16 h-px bg-gradient-to-r from-transparent to-primary/40 transform -translate-y-1/2" />
-                <div className="absolute -right-8 top-1/2 w-16 h-px bg-gradient-to-l from-transparent to-primary/40 transform -translate-y-1/2" />
               </div>
             </div>
           </div>
 
           {/* Countdown and Updates Row */}
-          <div className="grid lg:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8 items-stretch">
+          <div className="grid lg:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto mb-4 md:mb-8 items-stretch">
             {/* Countdown - 2/3 */}
             <div className="lg:col-span-2">
-              <div className="bg-card/20 backdrop-blur-sm border border-primary/20 rounded-2xl p-6 w-full h-full flex flex-col justify-center animate-silk-breathe transition-all duration-500 hover:bg-card/30" style={{ animationDelay: '0.5s' }}>
+              <div className="bg-card/20 backdrop-blur-sm border border-primary/20 rounded-2xl p-6 w-full h-full flex flex-col justify-center">
                 <div className="text-center mb-6">
                   <h3 className="text-2xl md:text-3xl font-bold text-primary/90 mb-2">
                     Release Countdown
@@ -205,7 +191,7 @@ export function HeroSection() {
 
             {/* Release Updates - 1/3 */}
             <div className="lg:col-span-1">
-              <div className="bg-card/20 backdrop-blur-sm border border-primary/20 rounded-2xl p-6 w-full h-full flex flex-col justify-center animate-silk-breathe transition-all duration-500 hover:bg-card/30" style={{ animationDelay: '1s' }}>
+              <div className="bg-card/20 backdrop-blur-sm border border-primary/20 rounded-2xl p-6 w-full h-full flex flex-col justify-center">
                 <div className="flex-grow flex flex-col justify-center">
                   <h3 className="text-lg font-bold mb-4 text-primary/90 text-center">
                     Release Updates
@@ -240,21 +226,16 @@ export function HeroSection() {
                     </form>
                   )}
                   
-                  {!isLoading && typeof subscriberCount === 'number' && subscriberCount > 0 && (
-                    <p className="text-xs text-muted-foreground/80 text-center mt-3">
-                      {subscriberCount.toLocaleString()} waiting
-                    </p>
-                  )}
                 </div>
               </div>
             </div>
           </div>
 
           {/* Action Buttons Row */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-row gap-2 sm:gap-4 justify-center items-center">
             <Dialog open={isTrailerOpen} onOpenChange={setIsTrailerOpen}>
               <DialogTrigger asChild>
-                <button className="needle-button px-8 py-3 font-semibold text-lg min-w-[200px] flex items-center justify-center gap-2">
+                <button className="px-4 sm:px-8 py-3 font-semibold text-sm sm:text-lg min-w-[140px] sm:min-w-[200px] flex items-center justify-center gap-1 sm:gap-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-colors duration-200">
                   <Video className="w-5 h-5" />
                   Release Trailer
                 </button>
@@ -273,7 +254,7 @@ export function HeroSection() {
             </Dialog>
             
             <Link href="/timeline">
-              <button className="relative overflow-hidden px-8 py-3 font-semibold text-lg min-w-[200px] flex items-center justify-center gap-2 bg-card/30 backdrop-blur-sm border-2 border-primary/40 text-primary hover:border-primary/70 hover:bg-primary/10 hover:text-primary rounded-lg transition-all duration-300" style={{ clipPath: 'polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)' }}>
+              <button className="px-4 sm:px-8 py-3 font-semibold text-sm sm:text-lg min-w-[140px] sm:min-w-[200px] flex items-center justify-center gap-1 sm:gap-2 bg-card/30 backdrop-blur-sm border-2 border-primary/40 text-primary hover:border-primary/70 hover:bg-primary/10 hover:text-primary rounded-lg transition-colors duration-200">
                 View Timeline
               </button>
             </Link>

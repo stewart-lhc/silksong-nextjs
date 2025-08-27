@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Calendar, Clock } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import timelineData from '@/data/timeline.json';
 
 // Metadata moved to layout or parent component for client component
@@ -99,7 +99,7 @@ export default function TimelinePage() {
             {/* Vertical line - Made more visible with stronger colors */}
             <div className="absolute left-4 md:left-8 top-0 bottom-0 w-2 bg-gradient-to-b from-primary to-accent opacity-90 shadow-lg"></div>
 
-            <div className="space-y-16">
+            <div className="space-y-12 md:space-y-16">
               {sortedTimeline.map((item, index) => {
                 const timelineItem = item as TimelineItem;
                 return (
@@ -107,26 +107,18 @@ export default function TimelinePage() {
                     {/* Timeline dot with better contrast */}
                     <div className="absolute left-2 md:left-6 w-5 h-5 bg-primary rounded-full border-2 border-background shadow-lg z-10 ring-2 ring-primary/30"></div>
 
-                    {/* Date positioned left of timeline to avoid overlap */}
-                    <div className="absolute left-[-120px] md:left-[-140px] top-0 w-28 md:w-32">
-                      <div className="bg-card/90 backdrop-blur-sm border border-accent/30 rounded-lg px-2 py-1.5 shadow-md hover:shadow-lg transition-shadow">
-                        <div className="text-xs font-semibold text-primary whitespace-nowrap">
-                          {formatDate(timelineItem.date)}
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-0.5 whitespace-nowrap">
-                          {getRelativeTime(timelineItem.date)}
-                        </div>
-                      </div>
-                      {/* Small arrow pointing to timeline dot */}
-                      <div className="absolute top-2 -right-1 w-2 h-2 bg-card/90 border-r border-b border-accent/30 rotate-45"></div>
-                    </div>
-
                     {/* Content */}
-                    <div className="ml-12 md:ml-20 flex-1 mt-6">
+                    <div className="ml-12 md:ml-20 flex-1">
                       <Card className="card-enhanced hover:border-primary/50 transition-all duration-300 group">
                         <CardHeader className="pb-3">
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <Badge 
+                                variant="secondary"
+                                className="shrink-0 bg-primary/10 text-primary border-primary/20"
+                              >
+                                {formatDate(timelineItem.date)}
+                              </Badge>
                               <Badge 
                                 variant={getBadgeVariant(timelineItem.type)}
                                 className="shrink-0"
@@ -135,6 +127,9 @@ export default function TimelinePage() {
                               </Badge>
                               <Badge variant="outline" className="text-xs text-muted-foreground border-muted">
                                 {timelineItem.category}
+                              </Badge>
+                              <Badge variant="outline" className="text-xs text-muted-foreground border-muted/50">
+                                {getRelativeTime(timelineItem.date)}
                               </Badge>
                             </div>
                           </div>
@@ -173,7 +168,7 @@ export default function TimelinePage() {
                     onClick={() => openExternalLink('https://teamcherry.com.au/')}
                     className="text-primary hover:text-accent underline"
                   >
-                    Team Cherry's official website
+                    Team Cherry&apos;s official website
                   </button>.
                 </p>
               </CardContent>
