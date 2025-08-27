@@ -1,122 +1,95 @@
 'use client';
 
 import { useEffect } from 'react';
-import { initWebVitals, WebVitalMetric } from '@/lib/web-vitals';
+import { onCLS, onFCP, onLCP, onINP, onTTFB, type Metric } from 'web-vitals';
 
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+    va?: (...args: any[]) => void;
+  }
+}
+
+/**
+ * Simplified Performance Monitor
+ * - Zero console output in production
+ * - Direct integration with Google Analytics and Vercel Analytics
+ * - Only tracks Core Web Vitals
+ * - No complex batching or custom APIs
+ */
 export function PerformanceMonitor() {
   useEffect(() => {
-    // Initialize web vitals monitoring
-    initWebVitals((metric: WebVitalMetric) => {
-      // Send to analytics service (example: Vercel Analytics, Google Analytics, etc.)
-      if (typeof window !== 'undefined') {
-        // Send to Google Analytics 4 (if available)
-        if ((window as any).gtag) {
-          (window as any).gtag('event', 'web_vitals', {
-            event_category: 'Web Vitals',
-            event_label: metric.name,
-            value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
-            custom_map: {
-              metric_id: metric.id,
-              metric_rating: metric.rating,
-              metric_delta: metric.delta,
-            },
-          });
-        }
+    // Only run in browser environment
+    if (typeof window === 'undefined') return;
 
-        // Send to Vercel Analytics (if available)
-        if ((window as any).va) {
-          (window as any).va('track', 'Web Vital', {
-            name: metric.name,
-            value: Math.round(metric.value),
-            rating: metric.rating,
-            delta: Math.round(metric.delta),
-            id: metric.id,
-          });
-        }
-
-        // Custom analytics endpoint (optional)
-        fetch('/api/analytics/web-vitals', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+    // Send metric to analytics services
+    function sendToAnalytics(metric: Metric) {
+      // Send to Google Analytics if available
+      if (window.gtag) {
+        window.gtag('event', 'web_vitals', {
+          event_category: 'Web Vitals',
+          event_label: metric.name,
+          value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+          custom_map: {
+            metric_id: metric.id,
+            metric_delta: metric.delta,
           },
-          body: JSON.stringify({
-            name: metric.name,
-            value: metric.value,
-            rating: metric.rating,
-            delta: metric.delta,
-            id: metric.id,
-            url: window.location.pathname,
-            userAgent: navigator.userAgent,
-            timestamp: Date.now(),
-          }),
-        }).catch((error) => {
-          console.warn('Failed to send web vitals to analytics:', error);
         });
       }
-    });
 
-    // Monitor long tasks
-    if ('PerformanceObserver' in window) {
-      try {
-        const observer = new PerformanceObserver((list) => {
-          list.getEntries().forEach((entry) => {
-            if (entry.duration > 50) { // Long task threshold
-              console.warn(`🐌 Long task detected: ${entry.name} (${entry.duration.toFixed(2)}ms)`);
-              
-              // Send long task data to analytics
-              if (typeof window !== 'undefined' && (window as any).va) {
-                (window as any).va('track', 'Long Task', {
-                  duration: Math.round(entry.duration),
-                  name: entry.name,
-                  startTime: Math.round(entry.startTime),
-                });
-              }
-            }
-          });
+      // Send to Vercel Analytics if available
+      if (window.va) {
+        window.va('track', 'Web Vital', {
+          name: metric.name,
+          value: Math.round(metric.value),
+          delta: Math.round(metric.delta),
+          id: metric.id,
         });
+      }
 
-        observer.observe({ entryTypes: ['longtask'] });
-
-        // Cleanup on unmount
-        return () => {
-          observer.disconnect();
-        };
-      } catch (error) {
-        console.warn('Long task monitoring not supported:', error);
+      // Development-only logging
+      if (process.env.NODE_ENV === 'development') {
+        const rating = getRating(metric.name, metric.value);
+        const color = rating === 'good' ? '🟢' : rating === 'needs-improvement' ? '🟡' : '🔴';
+        console.log(`${color} ${metric.name}: ${metric.value.toFixed(2)}${getUnit(metric.name)} (${rating})`);
       }
     }
 
-    // Monitor resource timing
-    if ('PerformanceObserver' in window) {
-      try {
-        const resourceObserver = new PerformanceObserver((list) => {
-          list.getEntries().forEach((entry) => {
-            const resource = entry as PerformanceResourceTiming;
-            
-            // Flag slow resources
-            if (resource.duration > 1000) { // > 1s
-              console.warn(`🐌 Slow resource: ${resource.name} (${resource.duration.toFixed(2)}ms)`);
-            }
-            
-            // Monitor failed resources
-            if (resource.transferSize === 0 && resource.decodedBodySize === 0) {
-              console.error(`❌ Failed to load resource: ${resource.name}`);
-            }
-          });
-        });
+    // Initialize Web Vitals monitoring
+    onFCP(sendToAnalytics);
+    onLCP(sendToAnalytics);
+    onINP(sendToAnalytics);
+    onCLS(sendToAnalytics);
+    onTTFB(sendToAnalytics);
 
-        resourceObserver.observe({ entryTypes: ['resource'] });
-
-        return () => {
-          resourceObserver.disconnect();
-        };
-      } catch (error) {
-        console.warn('Resource timing monitoring not supported:', error);
-      }
+    // Development-only initialization log
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🚀 Performance Monitor initialized - tracking Core Web Vitals');
     }
   }, []);
 
-  // This component doesn't render anything visible
+  // This component doesn't render anything
   return null;
+}
+
+// Helper functions for development logging
+function getRating(name: string, value: number): 'good' | 'needs-improvement' | 'poor' {
+  const thresholds: Record<string, { good: number; needsImprovement: number }> = {
+    FCP: { good: 1800, needsImprovement: 3000 },
+    LCP: { good: 2500, needsImprovement: 4000 },
+    INP: { good: 200, needsImprovement: 500 },
+    CLS: { good: 0.1, needsImprovement: 0.25 },
+    TTFB: { good: 800, needsImprovement: 1800 },
+  };
+
+  const threshold = thresholds[name];
+  if (!threshold) return 'poor';
+  
+  if (value <= threshold.good) return 'good';
+  if (value <= threshold.needsImprovement) return 'needs-improvement';
+  return 'poor';
+}
+
+function getUnit(name: string): string {
+  return name === 'CLS' ? '' : 'ms';
 }
