@@ -67,7 +67,10 @@ function mapCategory(category: string): string {
 function generateRssItem(item: TimelineItem): string {
   const pubDate = formatRssDate(item.date);
   const category = mapCategory(item.category);
-  const guid = `https://silksong-nextjs.vercel.app/timeline#${item.id}`;
+  const siteUrl = process.env.NODE_ENV === 'production' 
+    ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
+    : 'http://localhost:3000';
+  const guid = `${siteUrl}/timeline#${item.id}`;
   const link = item.source.startsWith('http') ? item.source : guid;
   
   return `    <item>
@@ -87,7 +90,9 @@ function generateRssItem(item: TimelineItem): string {
 function generateRssFeed(timelineItems: TimelineItem[]): string {
   const now = new Date();
   const buildDate = now.toUTCString();
-  const siteUrl = 'https://silksong-nextjs.vercel.app';
+  const siteUrl = process.env.NODE_ENV === 'production' 
+    ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
+    : 'http://localhost:3000';
   
   // Sort timeline by date descending and take top 30 items
   const sortedItems = timelineItems
@@ -209,7 +214,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   <channel>
     <title>Hollow Knight: Silksong - Feed Error</title>
     <description>RSS feed temporarily unavailable</description>
-    <link>https://silksong-nextjs.vercel.app</link>
+    <link>${siteUrl}</link>
     <item>
       <title>Feed Temporarily Unavailable</title>
       <description>The RSS feed is temporarily unavailable. Please try again later.</description>
@@ -218,7 +223,13 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   </channel>
 </rss>`;
 
-    return new NextResponse(errorFeed, {
+    const siteUrl = process.env.NODE_ENV === 'production' 
+      ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
+      : 'http://localhost:3000';
+    
+    const updatedErrorFeed = errorFeed.replace('https://silksong-nextjs.vercel.app', siteUrl);
+    
+    return new NextResponse(updatedErrorFeed, {
       status: 500,
       headers: {
         'Content-Type': 'application/rss+xml; charset=utf-8',

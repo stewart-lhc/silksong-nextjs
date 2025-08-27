@@ -62,6 +62,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.6,
     },
+    // Add the embed countdown route that's missing
+    {
+      url: `${BASE_URL}/embed/countdown`,
+      lastModified: recentUpdate,
+      changeFrequency: 'weekly',
+      priority: 0.4,
+    },
   ];
 
   // Add any additional routes that might be generated dynamically

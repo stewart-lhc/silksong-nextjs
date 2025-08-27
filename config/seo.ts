@@ -350,6 +350,96 @@ export const seoConfigs: Record<string, PageSEOConfig> = {
         }
       ]
     }]
+  },
+
+  // Tools Page (/tools)
+  tools: {
+    title: "Silksong Tools - Embed Widgets & Developer Resources",
+    description: "Free tools and widgets for Hollow Knight: Silksong fans. Embed countdown timers, track release progress, and access developer resources for community sites.",
+    keywords: [
+      ...BASE_KEYWORDS,
+      "tools",
+      "embed",
+      "countdown widget",
+      "developer resources",
+      "API",
+      "silksong widgets"
+    ],
+    alternates: {
+      canonical: `${BASE_URL}/tools`,
+    },
+    openGraph: {
+      title: "🛠️ Silksong Community Tools",
+      description: "Free tools and embeddable widgets for Hollow Knight: Silksong community sites. Countdown timers, progress trackers & more!",
+      type: "website",
+      url: `${BASE_URL}/tools`,
+      siteName: SITE_NAME
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "🛠️ Silksong Developer Tools",
+      description: "Free embeddable widgets and tools for Silksong fan sites. Countdown timers, APIs & community resources."
+    }
+  },
+
+  // Compare Hollow Knight Page (/compare-hollow-knight)
+  compare: {
+    title: "Silksong vs Hollow Knight - Differences & Improvements",
+    description: "Detailed comparison between Hollow Knight: Silksong and the original Hollow Knight. New mechanics, characters, world design & gameplay improvements.",
+    keywords: [
+      ...BASE_KEYWORDS,
+      "comparison",
+      "differences",
+      "improvements",
+      "versus original",
+      "new features",
+      "gameplay changes"
+    ],
+    alternates: {
+      canonical: `${BASE_URL}/compare-hollow-knight`,
+    },
+    openGraph: {
+      title: "⚔️ Silksong vs Hollow Knight Comparison",
+      description: "Comprehensive comparison showing all the new features, improvements and differences in Hollow Knight: Silksong vs the original game.",
+      type: "article",
+      url: `${BASE_URL}/compare-hollow-knight`,
+      siteName: SITE_NAME
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "⚔️ What's New in Silksong",
+      description: "Detailed breakdown of all improvements and new features in Hollow Knight: Silksong compared to the original game."
+    }
+  },
+
+  // Developers Page (/developers)
+  developers: {
+    title: "Silksong Developer API & Documentation",
+    description: "Developer resources for Hollow Knight: Silksong community projects. APIs, widgets, data feeds and technical documentation for fan sites and tools.",
+    keywords: [
+      ...BASE_KEYWORDS,
+      "API",
+      "developer",
+      "documentation",
+      "technical",
+      "community projects",
+      "data feeds"
+    ],
+    alternates: {
+      canonical: `${BASE_URL}/developers`,
+    },
+    openGraph: {
+      title: "👨‍💻 Silksong Developer Resources",
+      description: "Complete API documentation and developer resources for building Hollow Knight: Silksong community tools and integrations.",
+      type: "website",
+      url: `${BASE_URL}/developers`,
+      siteName: SITE_NAME
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "👨‍💻 Silksong API Documentation",
+      description: "Build amazing Silksong community tools with our comprehensive API and developer resources."
+    }
   }
 };
 
@@ -360,7 +450,10 @@ export const getSEOConfig = (route: string): PageSEOConfig => {
     "/timeline": "timeline", 
     "/checklist": "checklist",
     "/platforms": "platforms",
-    "/faq": "faq"
+    "/faq": "faq",
+    "/tools": "tools",
+    "/compare-hollow-knight": "compare",
+    "/developers": "developers"
   };
 
   const configKey = routeMap[route] || "home";
@@ -452,6 +545,9 @@ export const timelineSEO = seoConfigs.timeline;
 export const checklistSEO = seoConfigs.checklist;
 export const platformsSEO = seoConfigs.platforms;
 export const faqSEO = seoConfigs.faq;
+export const toolsSEO = seoConfigs.tools;
+export const compareSEO = seoConfigs.compare;
+export const developersSEO = seoConfigs.developers;
 
 // Export constants for reuse
 export { SITE_NAME, BASE_URL, GAME_RELEASE_DATE, BASE_KEYWORDS };

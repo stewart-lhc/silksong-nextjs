@@ -16,6 +16,9 @@ export default function robots(): MetadataRoute.Robots {
           '/wcag-demo', // Hide demo pages
           '/theme-demo', // Hide demo pages
           '/color-system-docs/internal', // Allow main docs but block internal
+          '/*.json$', // Block direct access to data files
+          '/database-setup/', // Block database setup files
+          '/scripts/', // Block utility scripts
         ],
       },
       {
