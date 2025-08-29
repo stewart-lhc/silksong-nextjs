@@ -1014,12 +1014,33 @@ This confirmation expires on {{expiryDate}}
 };
 
 // ========================= SILKSONG HTML FILE TEMPLATE =========================
-export const silksongHtmlTemplate: EmailTemplate = createTemplateFromHtmlFile(
-  'silksong-welcome-html',
-  'Silksong Welcome (HTML File)',
-  '🎉 You\'re In – Silksong Tracking Activated',
-  'lib/newsletter-kit/email/templates/silksong.html'
-);
+import { SILKSONG_HTML_TEMPLATE } from './silksong-embedded';
+
+// Use embedded template for reliability in all deployment environments
+export const silksongHtmlTemplate: EmailTemplate = {
+  id: 'silksong-welcome-html',
+  name: 'Silksong Welcome (Embedded)',
+  subject: '🎉 You\'re In – Silksong Tracking Activated',
+  htmlTemplate: SILKSONG_HTML_TEMPLATE,
+  variables: [
+    { name: 'URL_HOME', type: 'url', required: true, description: 'Base URL of the website' },
+    { name: 'URL_COMPARE', type: 'url', required: false, description: 'URL to the comparison page' },
+    { name: 'URL_TIMELINE', type: 'url', required: false, description: 'URL to the timeline page' },
+    { name: 'URL_EMBED', type: 'url', required: false, description: 'URL to embed tools' },
+    { name: 'URL_CHECKLIST', type: 'url', required: false, description: 'URL to the checklist page' },
+    { name: 'URL_DOCS_API', type: 'url', required: false, description: 'URL to API documentation' },
+    { name: 'URL_EMBED_IFRAME', type: 'url', required: false, description: 'URL for countdown iframe embed' },
+    { name: 'DAYS_REMAINING', type: 'number', required: true, description: 'Number of days remaining until release' },
+    { name: 'URL_UNSUBSCRIBE', type: 'url', required: true, description: 'Unsubscribe URL' },
+    { name: 'TRACKING_PIXEL_URL', type: 'url', required: false, description: 'Tracking pixel URL for analytics' },
+    { name: 'YEAR', type: 'number', required: true, description: 'Current year' },
+  ],
+  metadata: {
+    description: 'Silksong-themed welcome email template (embedded for deployment reliability)',
+    category: 'embedded',
+    created_at: new Date().toISOString(),
+  },
+};
 
 // ========================= EXPORT ALL TEMPLATES =========================
 export const defaultTemplates: EmailTemplate[] = [

@@ -12,8 +12,39 @@ import type { EmailTemplate } from '../types';
  */
 export function loadHtmlTemplate(filePath: string): string {
   try {
-    const fullPath = join(process.cwd(), filePath);
-    return readFileSync(fullPath, 'utf-8');
+    // Try multiple path resolution strategies for different deployment environments
+    let fullPath: string;
+    
+    // Strategy 1: Relative to process.cwd() (works in most cases)
+    fullPath = join(process.cwd(), filePath);
+    
+    if (require('fs').existsSync(fullPath)) {
+      return readFileSync(fullPath, 'utf-8');
+    }
+    
+    // Strategy 2: Relative to __dirname (for bundled environments like Vercel)
+    fullPath = join(__dirname, '../../../..', filePath);
+    
+    if (require('fs').existsSync(fullPath)) {
+      return readFileSync(fullPath, 'utf-8');
+    }
+    
+    // Strategy 3: Direct path relative to current module
+    fullPath = join(__dirname, '..', 'templates', 'silksong.html');
+    
+    if (require('fs').existsSync(fullPath)) {
+      return readFileSync(fullPath, 'utf-8');
+    }
+    
+    // If all strategies fail, throw error with detailed path information
+    console.error(`Failed to load template. Tried paths:
+      1. ${join(process.cwd(), filePath)}
+      2. ${join(__dirname, '../../../..', filePath)}
+      3. ${join(__dirname, '..', 'templates', 'silksong.html')}
+    `);
+    
+    throw new Error(`Template file not found at any attempted path: ${filePath}`);
+    
   } catch (error: any) {
     console.error(`Failed to load template from ${filePath}:`, error.message);
     throw new Error(`Template file not found: ${filePath}`);
