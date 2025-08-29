@@ -1,0 +1,1022 @@
+openapi: 3.0.3
+info:
+  title: Newsletter API
+  description: |
+    Complete newsletter subscription management API for Next.js applications.
+    
+    Features:
+    - Email subscription and unsubscription
+    - Double opt-in confirmation
+    - Analytics and statistics
+    - Bulk operations
+    - Multiple database backend support
+    - Rate limiting and security
+    
+    Built for modern web applications with TypeScript support.
+  version: 2.0.0
+  contact:
+    name: API Support
+    email: api-support@example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.example.com/newsletter
+    description: Production server
+  - url: https://api-staging.example.com/newsletter
+    description: Staging server
+  - url: http://localhost:3000/api/newsletter
+    description: Development server
+
+security:
+  - ApiKeyAuth: []
+  - BearerAuth: []
+  - {}
+
+paths:
+  /subscribe:
+    post:
+      tags:
+        - Subscriptions
+      summary: Subscribe to newsletter
+      description: |
+        Subscribe an email address to the newsletter. Supports additional metadata
+        and tags for categorization. Implements rate limiting and duplicate checking.
+      operationId: subscribe
+      security:
+        - {}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscribeRequest'
+            examples:
+              basic:
+                summary: Basic subscription
+                value:
+                  email: user@example.com
+              with_metadata:
+                summary: With metadata and tags
+                value:
+                  email: user@example.com
+                  source: landing_page
+                  tags: ["updates", "releases"]
+                  metadata:
+                    referrer: homepage
+                    campaign: launch_2024
+      responses:
+        '201':
+          description: Successfully subscribed
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscribeResponse'
+              examples:
+                success:
+                  summary: Successful subscription
+                  value:
+                    success: true
+                    message: "Successfully subscribed!"
+                    data:
+                      subscription:
+                        id: "123e4567-e89b-12d3-a456-426614174000"
+                        email: "user@example.com"
+                        status: "active"
+                        source: "web"
+                        tags: ["updates"]
+                        subscribed_at: "2024-01-01T00:00:00.000Z"
+                        confirmed: false
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: Email already subscribed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                already_subscribed:
+                  summary: Email already subscribed
+                  value:
+                    error: "Email already subscribed"
+                    code: "ALREADY_SUBSCRIBED"
+                    details:
+                      subscribed_at: "2024-01-01T00:00:00.000Z"
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /unsubscribe:
+    post:
+      tags:
+        - Subscriptions
+      summary: Unsubscribe from newsletter
+      description: |
+        Remove an email address from the newsletter. Can use either email address
+        or unsubscribe token. Token method is preferred for security.
+      operationId: unsubscribe
+      security:
+        - {}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnsubscribeRequest'
+            examples:
+              with_token:
+                summary: Using unsubscribe token
+                value:
+                  token: "unsubscribe-token-123"
+                  reason: "too_frequent"
+                  feedback: "Getting too many emails"
+              with_email:
+                summary: Using email address
+                value:
+                  email: "user@example.com"
+                  reason: "not_relevant"
+      responses:
+        '200':
+          description: Successfully unsubscribed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnsubscribeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: Email not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                not_found:
+                  summary: Email not found
+                  value:
+                    error: "Email not found in subscription list"
+                    code: "EMAIL_NOT_FOUND"
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /confirm:
+    post:
+      tags:
+        - Subscriptions
+      summary: Confirm subscription
+      description: |
+        Confirm a pending email subscription using the confirmation token
+        sent via email (double opt-in).
+      operationId: confirm
+      security:
+        - {}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmRequest'
+      responses:
+        '200':
+          description: Subscription confirmed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: Invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /stats:
+    get:
+      tags:
+        - Analytics
+      summary: Get subscription statistics
+      description: |
+        Retrieve detailed analytics and statistics about newsletter subscriptions.
+        Includes growth metrics, source analysis, and time-based data.
+        
+        **Requires admin authentication.**
+      operationId: getStats
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      parameters:
+        - name: period
+          in: query
+          description: Time period for statistics
+          schema:
+            type: string
+            enum: [day, week, month, year]
+            default: month
+        - name: start_date
+          in: query
+          description: Start date for custom period (ISO 8601)
+          schema:
+            type: string
+            format: date-time
+        - name: end_date
+          in: query
+          description: End date for custom period (ISO 8601)
+          schema:
+            type: string
+            format: date-time
+        - name: group_by
+          in: query
+          description: Group results by time period or category
+          schema:
+            type: string
+            enum: [day, week, month, source, tag]
+        - name: source
+          in: query
+          description: Filter by subscription source
+          schema:
+            type: string
+        - name: tag
+          in: query
+          description: Filter by tag
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Statistics retrieved successfully
+          headers:
+            Cache-Control:
+              description: Cache control header
+              schema:
+                type: string
+                example: "public, max-age=300"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /bulk:
+    post:
+      tags:
+        - Admin
+      summary: Bulk operations
+      description: |
+        Perform bulk operations on multiple email subscriptions.
+        Supports subscribe, unsubscribe, update tags, and export operations.
+        
+        **Requires admin authentication.**
+      operationId: bulkOperation
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkRequest'
+            examples:
+              bulk_subscribe:
+                summary: Bulk subscribe emails
+                value:
+                  operation: "subscribe"
+                  emails: ["user1@example.com", "user2@example.com"]
+                  source: "import"
+                  tags: ["imported", "bulk"]
+                  skip_confirmation: true
+              bulk_unsubscribe:
+                summary: Bulk unsubscribe emails
+                value:
+                  operation: "unsubscribe"
+                  emails: ["user1@example.com", "user2@example.com"]
+                  reason: "administrative"
+      responses:
+        '200':
+          description: Bulk operation completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '413':
+          description: Request too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                too_large:
+                  summary: Too many emails in bulk operation
+                  value:
+                    error: "Bulk operation limited to 1000 emails"
+                    code: "BULK_LIMIT_EXCEEDED"
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /migrate:
+    post:
+      tags:
+        - Admin
+      summary: Migrate from external systems
+      description: |
+        Import subscriptions from external newsletter systems like Mailchimp,
+        ConvertKit, or custom formats.
+        
+        **Requires admin authentication.**
+      operationId: migrate
+      security:
+        - BearerAuth: []
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MigrateRequest'
+      responses:
+        '200':
+          description: Migration completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MigrateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token for admin authentication
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for admin authentication
+
+  headers:
+    X-RateLimit-Limit:
+      description: The number of allowed requests in the current period
+      schema:
+        type: integer
+        example: 100
+    X-RateLimit-Remaining:
+      description: The number of remaining requests in the current period
+      schema:
+        type: integer
+        example: 99
+    X-RateLimit-Reset:
+      description: The time at which the current rate limit window resets (Unix timestamp)
+      schema:
+        type: integer
+        example: 1640995200
+
+  schemas:
+    SubscribeRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+          description: Valid email address to subscribe
+          example: "user@example.com"
+        source:
+          type: string
+          maxLength: 50
+          pattern: '^[a-zA-Z0-9_]+$'
+          default: "web"
+          description: Source of the subscription
+          example: "landing_page"
+        tags:
+          type: array
+          maxItems: 10
+          items:
+            type: string
+            maxLength: 30
+            pattern: '^[a-zA-Z0-9_-]+$'
+          description: Optional tags for categorization
+          example: ["updates", "releases"]
+        metadata:
+          type: object
+          description: Additional metadata (max 1KB when serialized)
+          example:
+            referrer: "homepage"
+            campaign: "launch_2024"
+            utm_source: "google"
+
+    SubscribeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Successfully subscribed!"
+        data:
+          type: object
+          properties:
+            subscription:
+              $ref: '#/components/schemas/Subscription'
+
+    UnsubscribeRequest:
+      type: object
+      oneOf:
+        - required: [token]
+        - required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+          description: Email address to unsubscribe
+          example: "user@example.com"
+        token:
+          type: string
+          description: Unsubscribe token from email
+          example: "unsubscribe-token-123"
+        reason:
+          type: string
+          enum: [too_frequent, not_relevant, never_signed_up, temporary, other]
+          description: Reason for unsubscribing
+          example: "too_frequent"
+        feedback:
+          type: string
+          maxLength: 500
+          description: Optional feedback text
+          example: "Getting too many emails"
+
+    UnsubscribeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Successfully unsubscribed"
+        data:
+          type: object
+          properties:
+            email:
+              type: string
+              example: "user@example.com"
+            unsubscribed_at:
+              type: string
+              format: date-time
+              example: "2024-01-01T00:00:00.000Z"
+            reason:
+              type: string
+              example: "too_frequent"
+            can_resubscribe:
+              type: boolean
+              example: true
+
+    ConfirmRequest:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          description: Confirmation token from email
+          example: "confirmation-token-123"
+
+    ConfirmResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Subscription confirmed successfully"
+        data:
+          type: object
+          properties:
+            email:
+              type: string
+              example: "user@example.com"
+            confirmed_at:
+              type: string
+              format: date-time
+              example: "2024-01-01T00:00:00.000Z"
+            status:
+              type: string
+              example: "active"
+
+    StatsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            summary:
+              $ref: '#/components/schemas/StatsSummary'
+            period_data:
+              type: array
+              items:
+                $ref: '#/components/schemas/PeriodData'
+            sources:
+              type: array
+              items:
+                $ref: '#/components/schemas/SourceData'
+            tags:
+              type: array
+              items:
+                $ref: '#/components/schemas/TagData'
+        meta:
+          $ref: '#/components/schemas/StatsMeta'
+
+    BulkRequest:
+      type: object
+      required:
+        - operation
+        - emails
+      properties:
+        operation:
+          type: string
+          enum: [subscribe, unsubscribe, update_tags, export]
+          description: Type of bulk operation
+          example: "subscribe"
+        emails:
+          type: array
+          maxItems: 1000
+          items:
+            type: string
+            format: email
+          description: List of email addresses
+          example: ["user1@example.com", "user2@example.com"]
+        source:
+          type: string
+          description: Source for bulk subscribe operations
+          example: "import"
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags for bulk operations
+          example: ["imported", "bulk"]
+        reason:
+          type: string
+          description: Reason for bulk unsubscribe
+          example: "administrative"
+        skip_confirmation:
+          type: boolean
+          description: Skip email confirmation for bulk subscribe
+          default: false
+
+    BulkResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            operation:
+              type: string
+              example: "subscribe"
+            processed:
+              type: integer
+              example: 100
+            successful:
+              type: integer
+              example: 95
+            failed:
+              type: integer
+              example: 5
+            results:
+              type: array
+              items:
+                $ref: '#/components/schemas/BulkResult'
+
+    MigrateRequest:
+      type: object
+      required:
+        - source_system
+        - data
+      properties:
+        source_system:
+          type: string
+          enum: [mailchimp, convertkit, custom, csv]
+          description: Source system for migration
+          example: "mailchimp"
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MigrateSubscription'
+          description: List of subscriptions to migrate
+
+    MigrateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            migrated:
+              type: integer
+              example: 1500
+            skipped:
+              type: integer
+              example: 25
+            failed:
+              type: integer
+              example: 5
+            details:
+              type: array
+              items:
+                $ref: '#/components/schemas/MigrateResult'
+
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        email:
+          type: string
+          format: email
+          example: "user@example.com"
+        status:
+          type: string
+          enum: [pending, active, unsubscribed, bounced]
+          example: "active"
+        source:
+          type: string
+          example: "web"
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["updates", "releases"]
+        metadata:
+          type: object
+          example:
+            referrer: "homepage"
+        subscribed_at:
+          type: string
+          format: date-time
+          example: "2024-01-01T00:00:00.000Z"
+        confirmed_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2024-01-01T00:05:00.000Z"
+        unsubscribed_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: null
+        confirmed:
+          type: boolean
+          example: true
+        confirmation_token:
+          type: string
+          nullable: true
+          example: "abc123xyz"
+
+    StatsSummary:
+      type: object
+      properties:
+        total_subscriptions:
+          type: integer
+          example: 15420
+        active_subscriptions:
+          type: integer
+          example: 14892
+        unsubscribed:
+          type: integer
+          example: 485
+        pending_confirmation:
+          type: integer
+          example: 43
+        growth_rate:
+          type: number
+          format: float
+          example: 12.5
+        churn_rate:
+          type: number
+          format: float
+          example: 3.2
+
+    PeriodData:
+      type: object
+      properties:
+        period:
+          type: string
+          example: "2024-01-01"
+        subscriptions:
+          type: integer
+          example: 125
+        unsubscriptions:
+          type: integer
+          example: 8
+        confirmations:
+          type: integer
+          example: 118
+        net_growth:
+          type: integer
+          example: 117
+
+    SourceData:
+      type: object
+      properties:
+        source:
+          type: string
+          example: "web"
+        count:
+          type: integer
+          example: 12450
+        percentage:
+          type: number
+          format: float
+          example: 80.8
+
+    TagData:
+      type: object
+      properties:
+        tag:
+          type: string
+          example: "updates"
+        count:
+          type: integer
+          example: 9800
+        percentage:
+          type: number
+          format: float
+          example: 63.5
+
+    StatsMeta:
+      type: object
+      properties:
+        period:
+          type: string
+          example: "month"
+        start_date:
+          type: string
+          format: date-time
+          example: "2024-01-01T00:00:00.000Z"
+        end_date:
+          type: string
+          format: date-time
+          example: "2024-01-31T23:59:59.999Z"
+        total_records:
+          type: integer
+          example: 15420
+        cache_expires_at:
+          type: string
+          format: date-time
+          example: "2024-01-01T00:05:00.000Z"
+
+    BulkResult:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "user@example.com"
+        status:
+          type: string
+          enum: [success, error, skipped]
+          example: "success"
+        id:
+          type: string
+          format: uuid
+          nullable: true
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        error:
+          type: string
+          nullable: true
+          example: "Email already subscribed"
+
+    MigrateSubscription:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          example: "user@example.com"
+        subscribed_at:
+          type: string
+          format: date-time
+          example: "2023-01-01T00:00:00.000Z"
+        confirmed:
+          type: boolean
+          default: false
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["imported"]
+        source:
+          type: string
+          example: "mailchimp"
+        metadata:
+          type: object
+          example:
+            original_id: "abc123"
+
+    MigrateResult:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "user@example.com"
+        status:
+          type: string
+          enum: [migrated, skipped, failed]
+          example: "migrated"
+        reason:
+          type: string
+          nullable: true
+          example: "Already exists"
+        id:
+          type: string
+          format: uuid
+          nullable: true
+          example: "123e4567-e89b-12d3-a456-426614174000"
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Human-readable error message
+          example: "Validation failed"
+        code:
+          type: string
+          description: Machine-readable error code
+          example: "VALIDATION_ERROR"
+        details:
+          type: object
+          description: Additional error details
+          example:
+            field: "email"
+            message: "Please enter a valid email address"
+        timestamp:
+          type: string
+          format: date-time
+          description: When the error occurred
+          example: "2024-01-01T00:00:00.000Z"
+        path:
+          type: string
+          description: Request path that caused the error
+          example: "/api/newsletter/subscribe"
+
+  responses:
+    BadRequest:
+      description: Bad request - validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            validation_error:
+              summary: Validation error
+              value:
+                error: "Validation failed"
+                code: "VALIDATION_ERROR"
+                details:
+                  email: "Please enter a valid email address"
+                timestamp: "2024-01-01T00:00:00.000Z"
+                path: "/api/newsletter/subscribe"
+
+    Unauthorized:
+      description: Unauthorized - authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            unauthorized:
+              summary: Authentication required
+              value:
+                error: "Authentication required"
+                code: "UNAUTHORIZED"
+                timestamp: "2024-01-01T00:00:00.000Z"
+                path: "/api/newsletter/stats"
+
+    Forbidden:
+      description: Forbidden - insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            forbidden:
+              summary: Insufficient permissions
+              value:
+                error: "Insufficient permissions"
+                code: "FORBIDDEN"
+                timestamp: "2024-01-01T00:00:00.000Z"
+                path: "/api/newsletter/bulk"
+
+    RateLimitExceeded:
+      description: Rate limit exceeded
+      headers:
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+            example: 0
+        X-RateLimit-Reset:
+          $ref: '#/components/headers/X-RateLimit-Reset'
+        Retry-After:
+          description: Number of seconds to wait before retrying
+          schema:
+            type: integer
+            example: 300
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            rate_limit:
+              summary: Rate limit exceeded
+              value:
+                error: "Rate limit exceeded. Please wait before trying again."
+                code: "RATE_LIMIT_EXCEEDED"
+                details:
+                  reset_time: 1640995200
+                  retry_after: 300
+                timestamp: "2024-01-01T00:00:00.000Z"
+                path: "/api/newsletter/subscribe"
+
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            internal_error:
+              summary: Internal server error
+              value:
+                error: "Internal server error"
+                code: "INTERNAL_ERROR"
+                timestamp: "2024-01-01T00:00:00.000Z"
+                path: "/api/newsletter/subscribe"
+
+tags:
+  - name: Subscriptions
+    description: Email subscription management
+  - name: Analytics
+    description: Statistics and analytics
+  - name: Admin
+    description: Administrative operations (requires authentication)
+
+externalDocs:
+  description: Find more info here
+  url: https://docs.example.com/newsletter-api

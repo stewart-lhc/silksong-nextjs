@@ -1,170 +1,152 @@
 /**
- * Jest Configuration for Silk Song Archive Next.js
- * Comprehensive testing setup with TypeScript and React Testing Library
+ * Jest Configuration for Newsletter Kit Testing
+ * Optimized for Next.js 15 with comprehensive test coverage
  */
 
-const nextJest = require('next/jest');
+const nextJest = require('next/jest')
 
-// Create Jest configuration with Next.js setup
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files
   dir: './',
-});
+})
 
-/** @type {import('jest').Config} */
+// Add any custom config to be passed to Jest
 const customJestConfig = {
-  // ===== ENVIRONMENT SETUP =====
-  
   // Test environment
   testEnvironment: 'jsdom',
   
   // Setup files
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/__tests__/setup/test-setup.ts'],
   
-  // ===== MODULE RESOLUTION =====
-  
-  // Module name mapping for path aliases
-  moduleNameMapper: {
-    // Handle path aliases (must match tsconfig.json paths)
-    '^@/(.*)$': '<rootDir>/$1',
-    '^@/app/(.*)$': '<rootDir>/app/$1',
-    '^@/components/(.*)$': '<rootDir>/components/$1',
-    '^@/lib/(.*)$': '<rootDir>/lib/$1',
-    '^@/utils/(.*)$': '<rootDir>/lib/utils/$1',
-    '^@/hooks/(.*)$': '<rootDir>/hooks/$1',
-    '^@/types/(.*)$': '<rootDir>/types/$1',
-    '^@/styles/(.*)$': '<rootDir>/styles/$1',
-    '^@/config/(.*)$': '<rootDir>/config/$1',
-    '^@/data/(.*)$': '<rootDir>/data/$1',
-    '^@/assets/(.*)$': '<rootDir>/public/assets/$1',
-    '^@/public/(.*)$': '<rootDir>/public/$1',
-    
-    // Handle CSS modules and static assets
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
-      '<rootDir>/__mocks__/fileMock.js',
-  },
-  
-  // Module file extensions
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  
-  // Module directories
-  moduleDirectories: ['node_modules', '<rootDir>/'],
-  
-  // ===== TEST PATTERNS =====
-  
-  // Test file patterns
+  // Test patterns
   testMatch: [
-    '<rootDir>/**/__tests__/**/*.(ts|tsx|js|jsx)',
-    '<rootDir>/**/*.(test|spec).(ts|tsx|js|jsx)',
+    '**/__tests__/**/*.{js,jsx,ts,tsx}',
+    '**/*.(test|spec).{js,jsx,ts,tsx}'
   ],
   
-  // Files to ignore
+  // Ignore patterns
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
-    '<rootDir>/coverage/',
-    '<rootDir>/dist/',
-    '<rootDir>/out/',
-    '<rootDir>/build/',
-    '<rootDir>/e2e/',
+    '<rootDir>/__tests__/setup/',
+    '<rootDir>/__tests__/mocks/',
+    '<rootDir>/__tests__/fixtures/',
+    '<rootDir>/__tests__/utils/',
   ],
   
-  // Transform ignore patterns (process these node_modules)
-  transformIgnorePatterns: [
-    '/node_modules/(?!(.*\\.mjs$|@supabase|@hookform|@tanstack))',
-  ],
+  // Module name mapping for path aliases
+  moduleNameMapping: {
+    '^@/(.*)$': '<rootDir>/$1',
+    '^@/components/(.*)$': '<rootDir>/components/$1',
+    '^@/lib/(.*)$': '<rootDir>/lib/$1',
+    '^@/app/(.*)$': '<rootDir>/app/$1',
+    '^@/hooks/(.*)$': '<rootDir>/hooks/$1',
+    '^@/types/(.*)$': '<rootDir>/types/$1',
+    '^@/config/(.*)$': '<rootDir>/config/$1',
+    '^@/data/(.*)$': '<rootDir>/data/$1',
+  },
   
-  // ===== COVERAGE CONFIGURATION =====
-  
-  // Collect coverage information
-  collectCoverage: false, // Enable via CLI flag
-  
-  // Coverage directory
-  coverageDirectory: '<rootDir>/coverage',
-  
-  // Coverage providers
-  coverageProvider: 'v8',
-  
-  // Files to collect coverage from
+  // Coverage configuration
   collectCoverageFrom: [
-    'app/**/*.{ts,tsx}',
-    'components/**/*.{ts,tsx}',
-    'lib/**/*.{ts,tsx}',
-    'hooks/**/*.{ts,tsx}',
-    'src/**/*.{ts,tsx}',
+    // Newsletter Kit components
+    'lib/newsletter-kit/**/*.{js,jsx,ts,tsx}',
+    
+    // API routes
+    'app/api/newsletter/**/*.{js,ts}',
+    
+    // Main components that use newsletter kit
+    'components/**/*.{js,jsx,ts,tsx}',
+    
+    // Hooks related to newsletter
+    'hooks/**/*.{js,jsx,ts,tsx}',
+    
+    // Exclude files
     '!**/*.d.ts',
-    '!**/*.config.{ts,js}',
-    '!**/*.stories.{ts,tsx}',
+    '!**/*.config.{js,ts}',
+    '!**/*.stories.{js,jsx,ts,tsx}',
     '!**/node_modules/**',
+    '!**/__tests__/**',
     '!**/.next/**',
     '!**/coverage/**',
-    '!**/dist/**',
-    '!**/out/**',
+    '!lib/newsletter-kit/database/migrations/**',
+    '!lib/newsletter-kit/database/scripts/**',
+    '!lib/newsletter-kit/examples/**',
   ],
   
   // Coverage thresholds
   coverageThreshold: {
     global: {
-      branches: 70,
-      functions: 70,
-      lines: 70,
-      statements: 70,
+      branches: 85,
+      functions: 85,
+      lines: 85,
+      statements: 85,
+    },
+    // Specific thresholds for Newsletter Kit
+    'lib/newsletter-kit/components/**': {
+      branches: 90,
+      functions: 90,
+      lines: 90,
+      statements: 90,
+    },
+    'lib/newsletter-kit/hooks/**': {
+      branches: 90,
+      functions: 90,
+      lines: 90,
+      statements: 90,
+    },
+    'app/api/newsletter/**': {
+      branches: 85,
+      functions: 85,
+      lines: 85,
+      statements: 85,
     },
   },
   
   // Coverage reporters
-  coverageReporters: ['text', 'lcov', 'html', 'json-summary'],
-  
-  // ===== REPORTING =====
-  
-  // Test reporters
-  reporters: [
-    'default',
-    [
-      'jest-junit',
-      {
-        outputDirectory: '<rootDir>/coverage',
-        outputName: 'junit.xml',
-        classNameTemplate: '{classname}',
-        titleTemplate: '{title}',
-        ancestorSeparator: ' › ',
-        usePathForSuiteName: true,
-      },
-    ],
+  coverageReporters: [
+    'text',
+    'text-summary',
+    'lcov',
+    'html',
+    'json',
+    'clover',
   ],
   
-  // ===== PERFORMANCE =====
+  // Coverage directory
+  coverageDirectory: 'coverage',
   
-  // Max worker processes
-  maxWorkers: '50%',
+  // Transform configuration
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+  },
   
-  // Cache directory
-  cacheDirectory: '<rootDir>/.jest/cache',
+  // Module file extensions
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
+  
+  // Transform ignore patterns
+  transformIgnorePatterns: [
+    '/node_modules/(?!(.*\\.mjs$|@supabase|@tanstack))',
+  ],
+  
+  // Global variables
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.json',
+    },
+  },
+  
+  // Test timeout
+  testTimeout: 30000,
+  
+  // Verbose output
+  verbose: true,
   
   // Clear mocks between tests
   clearMocks: true,
-  
-  // Restore mocks after each test
   restoreMocks: true,
   
-  // ===== TIMING =====
-  
-  // Test timeout
-  testTimeout: 10000,
-  
-  // Setup timeout (removed deprecated option)
-  // setupFilesAfterEnvTimeout: 30000,
-  
-  // ===== ERROR HANDLING =====
-  
-  // Error on deprecated features
+  // Error handling
   errorOnDeprecated: true,
-  
-  // Verbose output
-  verbose: false,
-  
-  // ===== WATCH MODE =====
   
   // Watch plugins
   watchPlugins: [
@@ -172,27 +154,59 @@ const customJestConfig = {
     'jest-watch-typeahead/testname',
   ],
   
-  // ===== GLOBALS =====
+  // Custom reporters
+  reporters: [
+    'default',
+    [
+      'jest-junit',
+      {
+        suiteName: 'Newsletter Kit Tests',
+        outputDirectory: 'test-results',
+        outputName: 'junit.xml',
+        classNameTemplate: '{classname}',
+        titleTemplate: '{title}',
+      },
+    ],
+    [
+      'jest-html-reporters',
+      {
+        publicPath: 'test-results',
+        filename: 'report.html',
+        expand: true,
+        hideIcon: false,
+        pageTitle: 'Newsletter Kit Test Report',
+      },
+    ],
+  ],
   
-  // Global variables
-  globals: {
-    'ts-jest': {
-      useESM: true,
-    },
+  // Max workers for parallel execution
+  maxWorkers: '50%',
+  
+  // Cache directory
+  cacheDirectory: '<rootDir>/node_modules/.cache/jest',
+  
+  // Snapshot serializers
+  snapshotSerializers: [
+    'enzyme-to-json/serializer',
+  ],
+  
+  // Module directories
+  moduleDirectories: ['node_modules', '<rootDir>/'],
+  
+  // Roots
+  roots: ['<rootDir>'],
+  
+  // Test environment options
+  testEnvironmentOptions: {
+    url: 'http://localhost:3000',
   },
   
-  // ===== EXTENSIONS =====
+  // Force exit after tests
+  forceExit: false,
   
-  // Preset (handled by next/jest)
-  // preset: undefined,
-  
-  // Transform configuration (handled by next/jest)
-  // transform: {},
-  
-  // ===== CUSTOM MATCHERS =====
-  
-  // Custom matchers are set up in jest.setup.js
-};
+  // Detect open handles
+  detectOpenHandles: false,
+}
 
-// Export Jest configuration created by next/jest
-module.exports = createJestConfig(customJestConfig);
+// Create and export the Jest config
+module.exports = createJestConfig(customJestConfig)

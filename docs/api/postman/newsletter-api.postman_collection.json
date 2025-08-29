@@ -1,0 +1,873 @@
+{
+  "info": {
+    "name": "Newsletter API Collection",
+    "description": "Complete collection for testing the Newsletter API endpoints",
+    "version": "2.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{admin_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          "// Set common headers",
+          "pm.request.headers.add({",
+          "    key: 'Content-Type',",
+          "    value: 'application/json'",
+          "});",
+          "",
+          "// Generate random email for testing",
+          "if (pm.request.name.includes('Subscribe')) {",
+          "    const randomId = Math.random().toString(36).substring(7);",
+          "    pm.environment.set('random_email', `test_${randomId}@example.com`);",
+          "}"
+        ],
+        "type": "text/javascript"
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "exec": [
+          "// Common response tests",
+          "pm.test('Response time is less than 2000ms', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+          "});",
+          "",
+          "pm.test('Response has proper JSON structure', function () {",
+          "    pm.response.to.have.jsonBody();",
+          "});",
+          "",
+          "// Rate limit headers",
+          "if (pm.response.headers.has('X-RateLimit-Limit')) {",
+          "    pm.test('Rate limit headers are present', function () {",
+          "        pm.expect(pm.response.headers.get('X-RateLimit-Limit')).to.exist;",
+          "        pm.expect(pm.response.headers.get('X-RateLimit-Remaining')).to.exist;",
+          "        pm.expect(pm.response.headers.get('X-RateLimit-Reset')).to.exist;",
+          "    });",
+          "}"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "{{base_url}}",
+      "type": "string"
+    },
+    {
+      "key": "admin_token",
+      "value": "{{admin_token}}",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Subscriptions",
+      "item": [
+        {
+          "name": "Subscribe - Basic",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Response has success message', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.message).to.include('Successfully subscribed');",
+                  "    pm.expect(jsonData.data.subscription).to.exist;",
+                  "    pm.expect(jsonData.data.subscription.id).to.exist;",
+                  "    pm.expect(jsonData.data.subscription.email).to.exist;",
+                  "});",
+                  "",
+                  "// Store subscription data for other tests",
+                  "if (pm.response.code === 201) {",
+                  "    const responseData = pm.response.json();",
+                  "    pm.environment.set('subscription_id', responseData.data.subscription.id);",
+                  "    pm.environment.set('test_email', responseData.data.subscription.email);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{random_email}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/newsletter/subscribe",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "subscribe"]
+            },
+            "description": "Basic email subscription with minimal data"
+          },
+          "response": []
+        },
+        {
+          "name": "Subscribe - With Metadata",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Response includes metadata', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.subscription.source).to.equal('landing_page');",
+                  "    pm.expect(jsonData.data.subscription.tags).to.include('updates');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{random_email}}\",\n  \"source\": \"landing_page\",\n  \"tags\": [\"updates\", \"releases\"],\n  \"metadata\": {\n    \"referrer\": \"homepage\",\n    \"campaign\": \"launch_2024\",\n    \"utm_source\": \"google\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/newsletter/subscribe",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "subscribe"]
+            },
+            "description": "Email subscription with source, tags, and metadata"
+          },
+          "response": []
+        },
+        {
+          "name": "Subscribe - Duplicate Email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 409', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});",
+                  "",
+                  "pm.test('Response has proper error format', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.error).to.include('already subscribed');",
+                  "    pm.expect(jsonData.code).to.equal('ALREADY_SUBSCRIBED');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{test_email}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/newsletter/subscribe",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "subscribe"]
+            },
+            "description": "Test duplicate email subscription handling"
+          },
+          "response": []
+        },
+        {
+          "name": "Subscribe - Invalid Email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Response has validation error', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.error).to.exist;",
+                  "    pm.expect(jsonData.code).to.equal('VALIDATION_ERROR');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"invalid-email\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/newsletter/subscribe",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "subscribe"]
+            },
+            "description": "Test validation with invalid email format"
+          },
+          "response": []
+        },
+        {
+          "name": "Unsubscribe - With Email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response confirms unsubscription', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.message).to.include('Successfully unsubscribed');",
+                  "    pm.expect(jsonData.data.email).to.exist;",
+                  "    pm.expect(jsonData.data.unsubscribed_at).to.exist;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{test_email}}\",\n  \"reason\": \"too_frequent\",\n  \"feedback\": \"Getting too many emails per week\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/newsletter/unsubscribe",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "unsubscribe"]
+            },
+            "description": "Unsubscribe using email address with reason and feedback"
+          },
+          "response": []
+        },
+        {
+          "name": "Unsubscribe - Email Not Found",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test('Response has proper error format', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.error).to.include('Email not found');",
+                  "    pm.expect(jsonData.code).to.equal('EMAIL_NOT_FOUND');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nonexistent@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/newsletter/unsubscribe",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "unsubscribe"]
+            },
+            "description": "Test unsubscription with non-existent email"
+          },
+          "response": []
+        },
+        {
+          "name": "Confirm Subscription",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// This will typically return 404 unless we have a valid token",
+                  "// In a real scenario, the token would come from the email",
+                  "pm.test('Response has proper structure', function () {",
+                  "    pm.response.to.have.jsonBody();",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"sample-confirmation-token-123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/newsletter/confirm",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "confirm"]
+            },
+            "description": "Confirm subscription with token (sample token, will likely return 404)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Newsletter subscription management endpoints"
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Get Stats - Monthly",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has proper stats structure', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.data.summary).to.exist;",
+                  "    pm.expect(jsonData.data.summary.total_subscriptions).to.be.a('number');",
+                  "    pm.expect(jsonData.data.summary.active_subscriptions).to.be.a('number');",
+                  "    pm.expect(jsonData.data.sources).to.be.an('array');",
+                  "    pm.expect(jsonData.data.tags).to.be.an('array');",
+                  "    pm.expect(jsonData.data.meta).to.exist;",
+                  "});",
+                  "",
+                  "pm.test('Cache headers are present', function () {",
+                  "    pm.expect(pm.response.headers.get('Cache-Control')).to.include('max-age');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/newsletter/stats?period=month",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "stats"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "month"
+                }
+              ]
+            },
+            "description": "Get monthly newsletter statistics (requires admin auth)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Stats - Custom Date Range",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Meta contains custom date range', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.meta.start_date).to.include('2024-01-01');",
+                  "    pm.expect(jsonData.data.meta.end_date).to.include('2024-01-31');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/newsletter/stats?start_date=2024-01-01T00:00:00.000Z&end_date=2024-01-31T23:59:59.999Z&group_by=week",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "stats"],
+              "query": [
+                {
+                  "key": "start_date",
+                  "value": "2024-01-01T00:00:00.000Z"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2024-01-31T23:59:59.999Z"
+                },
+                {
+                  "key": "group_by",
+                  "value": "week"
+                }
+              ]
+            },
+            "description": "Get statistics for custom date range grouped by week"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Stats - Filtered by Source",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/newsletter/stats?source=web&period=week",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "stats"],
+              "query": [
+                {
+                  "key": "source",
+                  "value": "web"
+                },
+                {
+                  "key": "period",
+                  "value": "week"
+                }
+              ]
+            },
+            "description": "Get statistics filtered by source"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Stats - Unauthorized",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 401', function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test('Response has unauthorized error', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.code).to.equal('UNAUTHORIZED');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/newsletter/stats",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "stats"]
+            },
+            "description": "Test stats endpoint without authentication"
+          },
+          "response": []
+        }
+      ],
+      "description": "Newsletter analytics and statistics"
+    },
+    {
+      "name": "Admin Operations",
+      "item": [
+        {
+          "name": "Bulk Subscribe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response has bulk operation results', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.data.operation).to.equal('subscribe');",
+                  "    pm.expect(jsonData.data.processed).to.be.a('number');",
+                  "    pm.expect(jsonData.data.successful).to.be.a('number');",
+                  "    pm.expect(jsonData.data.failed).to.be.a('number');",
+                  "    pm.expect(jsonData.data.results).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"operation\": \"subscribe\",\n  \"emails\": [\n    \"bulk1@example.com\",\n    \"bulk2@example.com\",\n    \"bulk3@example.com\"\n  ],\n  \"source\": \"bulk_import\",\n  \"tags\": [\"imported\", \"bulk\"],\n  \"skip_confirmation\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/newsletter/bulk",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "bulk"]
+            },
+            "description": "Bulk subscribe multiple emails (requires admin auth)"
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Unsubscribe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response shows unsubscribe operation', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.operation).to.equal('unsubscribe');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"operation\": \"unsubscribe\",\n  \"emails\": [\n    \"bulk1@example.com\",\n    \"bulk2@example.com\"\n  ],\n  \"reason\": \"administrative\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/newsletter/bulk",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "bulk"]
+            },
+            "description": "Bulk unsubscribe multiple emails"
+          },
+          "response": []
+        },
+        {
+          "name": "Migration from Mailchimp",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Response has migration results', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    if (pm.response.code === 200) {",
+                  "      pm.expect(jsonData.success).to.be.true;",
+                  "      pm.expect(jsonData.data.migrated).to.be.a('number');",
+                  "      pm.expect(jsonData.data.skipped).to.be.a('number');",
+                  "      pm.expect(jsonData.data.failed).to.be.a('number');",
+                  "    }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source_system\": \"mailchimp\",\n  \"data\": [\n    {\n      \"email\": \"migrate1@example.com\",\n      \"subscribed_at\": \"2023-01-01T00:00:00.000Z\",\n      \"confirmed\": true,\n      \"tags\": [\"imported\", \"mailchimp\"],\n      \"source\": \"mailchimp\",\n      \"metadata\": {\n        \"original_id\": \"mc_12345\",\n        \"list_name\": \"Main Newsletter\"\n      }\n    },\n    {\n      \"email\": \"migrate2@example.com\",\n      \"subscribed_at\": \"2023-06-15T00:00:00.000Z\",\n      \"confirmed\": true,\n      \"tags\": [\"imported\", \"mailchimp\"],\n      \"source\": \"mailchimp\",\n      \"metadata\": {\n        \"original_id\": \"mc_67890\",\n        \"list_name\": \"Product Updates\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/newsletter/migrate",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "migrate"]
+            },
+            "description": "Migrate subscriptions from Mailchimp"
+          },
+          "response": []
+        }
+      ],
+      "description": "Administrative operations requiring authentication"
+    },
+    {
+      "name": "Error Handling",
+      "item": [
+        {
+          "name": "Invalid JSON",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Response has JSON error', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.code).to.equal('INVALID_JSON');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ invalid json }"
+            },
+            "url": {
+              "raw": "{{base_url}}/newsletter/subscribe",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "subscribe"]
+            },
+            "description": "Test invalid JSON handling"
+          },
+          "response": []
+        },
+        {
+          "name": "Wrong Content Type",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 400', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Response has content type error', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.code).to.equal('INVALID_CONTENT_TYPE');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "email=test@example.com"
+            },
+            "url": {
+              "raw": "{{base_url}}/newsletter/subscribe",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "subscribe"]
+            },
+            "description": "Test wrong content type handling"
+          },
+          "response": []
+        },
+        {
+          "name": "Method Not Allowed",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 405', function () {",
+                  "    pm.response.to.have.status(405);",
+                  "});",
+                  "",
+                  "pm.test('Allow header is present', function () {",
+                  "    pm.expect(pm.response.headers.get('Allow')).to.exist;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/newsletter/subscribe",
+              "host": ["{{base_url}}"],
+              "path": ["newsletter", "subscribe"]
+            },
+            "description": "Test method not allowed handling"
+          },
+          "response": []
+        }
+      ],
+      "description": "Error handling and edge cases"
+    }
+  ]
+}

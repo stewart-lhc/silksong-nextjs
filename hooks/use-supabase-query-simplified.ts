@@ -49,13 +49,14 @@ export function useEmailSubscriptionMutation() {
 
   return useMutation({
     mutationFn: async (email: string): Promise<{ email: string; count: number }> => {
-      const response = await fetch('/api/subscribe', {
+      const response = await fetch('/api/subscription', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email: email.trim().toLowerCase(),
+          source: 'web',
         }),
       });
 
