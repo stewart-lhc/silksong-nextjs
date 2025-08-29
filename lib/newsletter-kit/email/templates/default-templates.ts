@@ -1015,11 +1015,38 @@ This confirmation expires on {{expiryDate}}
 
 // ========================= SILKSONG HTML FILE TEMPLATE =========================
 import { SILKSONG_HTML_TEMPLATE } from './silksong-embedded';
+import { SILKSONG_GMAIL_TEMPLATE } from './silksong-gmail-optimized';
 
-// Use embedded template for reliability in all deployment environments
+// Gmail-optimized template for better compatibility
+export const silksongGmailTemplate: EmailTemplate = {
+  id: 'silksong-welcome-gmail',
+  name: 'Silksong Welcome (Gmail Optimized)',
+  subject: '🎉 You\'re In – Silksong Tracking Activated',
+  htmlTemplate: SILKSONG_GMAIL_TEMPLATE,
+  variables: [
+    { name: 'URL_HOME', type: 'url', required: true, description: 'Base URL of the website' },
+    { name: 'URL_COMPARE', type: 'url', required: false, description: 'URL to the comparison page' },
+    { name: 'URL_TIMELINE', type: 'url', required: false, description: 'URL to the timeline page' },
+    { name: 'URL_EMBED', type: 'url', required: false, description: 'URL to embed tools' },
+    { name: 'URL_CHECKLIST', type: 'url', required: false, description: 'URL to the checklist page' },
+    { name: 'URL_DOCS_API', type: 'url', required: false, description: 'URL to API documentation' },
+    { name: 'URL_EMBED_IFRAME', type: 'url', required: false, description: 'URL for countdown iframe embed' },
+    { name: 'DAYS_REMAINING', type: 'number', required: true, description: 'Number of days remaining until release' },
+    { name: 'URL_UNSUBSCRIBE', type: 'url', required: true, description: 'Unsubscribe URL' },
+    { name: 'TRACKING_PIXEL_URL', type: 'url', required: false, description: 'Tracking pixel URL for analytics' },
+    { name: 'YEAR', type: 'number', required: true, description: 'Current year' },
+  ],
+  metadata: {
+    description: 'Silksong-themed welcome email template optimized for Gmail compatibility',
+    category: 'gmail-optimized',
+    created_at: new Date().toISOString(),
+  },
+};
+
+// Standard template for other email clients
 export const silksongHtmlTemplate: EmailTemplate = {
   id: 'silksong-welcome-html',
-  name: 'Silksong Welcome (Embedded)',
+  name: 'Silksong Welcome (Standard)',
   subject: '🎉 You\'re In – Silksong Tracking Activated',
   htmlTemplate: SILKSONG_HTML_TEMPLATE,
   variables: [
@@ -1036,8 +1063,8 @@ export const silksongHtmlTemplate: EmailTemplate = {
     { name: 'YEAR', type: 'number', required: true, description: 'Current year' },
   ],
   metadata: {
-    description: 'Silksong-themed welcome email template (embedded for deployment reliability)',
-    category: 'embedded',
+    description: 'Silksong-themed welcome email template (standard version)',
+    category: 'standard',
     created_at: new Date().toISOString(),
   },
 };
@@ -1050,6 +1077,7 @@ export const defaultTemplates: EmailTemplate[] = [
   unsubscribeTemplate,
   silksongWelcomeTemplate,
   silksongConfirmationTemplate,
+  silksongGmailTemplate,
   silksongHtmlTemplate,
 ];
 

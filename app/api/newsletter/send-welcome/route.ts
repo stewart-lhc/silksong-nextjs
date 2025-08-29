@@ -60,16 +60,25 @@ export async function POST(request: NextRequest) {
       triggerEngine.addTemplate(template);
     });
 
-    // Add Silksong HTML file trigger
+    // Smart template selection based on email domain
+    const isGmailUser = email.toLowerCase().includes('@gmail.com') || 
+                        email.toLowerCase().includes('@googlemail.com');
+    
+    const templateId = isGmailUser ? 'silksong-welcome-gmail' : 'silksong-welcome-html';
+    const templateName = isGmailUser ? 'Silksong Welcome (Gmail Optimized)' : 'Silksong Welcome (Standard)';
+    
+    // Add dynamic trigger based on email provider
     triggerEngine.addTrigger({
-      id: 'silksong-welcome-html-trigger',
-      name: 'Silksong Welcome Email (HTML File)',
+      id: 'silksong-welcome-smart-trigger',
+      name: templateName,
       type: 'subscription_confirmed',
       enabled: true,
-      templateId: 'silksong-welcome-html', // Use the HTML file template
+      templateId: templateId,
       delay: 0,
       metadata: {
-        description: 'Send Silksong welcome email using the specific HTML template file',
+        description: `Send Silksong welcome email using ${isGmailUser ? 'Gmail-optimized' : 'standard'} template`,
+        emailDomain: email.split('@')[1],
+        templateOptimization: isGmailUser ? 'gmail' : 'standard',
       },
     });
 
