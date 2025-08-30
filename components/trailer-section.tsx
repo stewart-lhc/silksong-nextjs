@@ -69,7 +69,8 @@ export function TrailerSection() {
     const dx = currentX - touchStartX.current;
     const dy = currentY - touchStartY.current;
 
-    if (!isDragging.current) {
+    // Only mark as dragging if there's significant movement
+    if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
       isDragging.current = true;
     }
 
@@ -82,7 +83,12 @@ export function TrailerSection() {
   };
 
   const handleTouchEnd = () => {
-    if (!isDragging.current) return;
+    // Only process swipe if there was significant dragging movement
+    if (!isDragging.current) {
+      // This was a tap/click, not a swipe - let it pass through to the iframe
+      return;
+    }
+    
     const deltaX = touchStartX.current - touchEndX.current;
 
     // Higher threshold for mobile swipe
@@ -115,18 +121,10 @@ export function TrailerSection() {
             <div 
               ref={containerRef}
               className="relative aspect-video bg-card/50 backdrop-blur-sm rounded-lg border border-border/50 overflow-hidden card-enhanced"
+              onTouchStart={isMobile ? handleTouchStart : undefined}
+              onTouchMove={isMobile ? handleTouchMove : undefined}
+              onTouchEnd={isMobile ? handleTouchEnd : undefined}
             >
-              {/* Swipe overlay on mobile to capture gestures above iframe */}
-              {isMobile && (
-                <div
-                  className="absolute inset-0 z-10 touch-pan-y"
-                  onTouchStart={handleTouchStart}
-                  onTouchMove={handleTouchMove}
-                  onTouchEnd={handleTouchEnd}
-                  aria-label="Swipe to change trailer"
-                />
-              )}
-              
               <iframe 
                 key={trailers[currentTrailer].id}
                 src={trailers[currentTrailer].url} 
