@@ -26,7 +26,16 @@
     "test:all": "npm run test:unit && npm run test:integration && npm run test:accessibility && npm run test:performance && npm run test:e2e",
     "test:ci": "npm run test:coverage && npm run test:e2e",
     "test:subscription": "jest __tests__ --testPathPattern=subscription",
-    "test:email": "jest __tests__ --testPathPattern=email"
+    "test:email": "jest __tests__ --testPathPattern=email",
+    "db:status": "node scripts/simple-db-check.js",
+    "db:setup": "node scripts/database-manager-fixed.js",
+    "db:repair": "node scripts/db-admin.js repair",
+    "db:migrate": "node scripts/db-admin.js migrate",
+    "db:backup": "node scripts/db-admin.js backup",
+    "db:monitor": "node scripts/db-admin.js monitor",
+    "db:test": "node scripts/test-database-setup.js",
+    "db:admin": "node scripts/db-admin.js",
+    "db:check": "node scripts/simple-db-check.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
@@ -60,6 +69,7 @@
     "clsx": "^2.1.0",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
+    "dotenv": "^17.2.1",
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^0.445.0",
     "next": "^15.1.0",

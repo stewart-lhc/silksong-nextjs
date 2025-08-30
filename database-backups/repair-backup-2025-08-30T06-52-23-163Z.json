@@ -1,0 +1,39 @@
+{
+  "timestamp": "2025-08-30T06-52-23-163Z",
+  "purpose": "pre-repair-backup",
+  "tables": {
+    "email_subscriptions": [
+      {
+        "id": "26a5c556-ee9d-46e3-bfc0-1b47638d2486",
+        "email": "stewart.jas23@gmail.com",
+        "subscribed_at": "2025-08-29T15:32:00.236003+00:00",
+        "status": "active",
+        "source": "web",
+        "metadata": {},
+        "tags": [],
+        "confirmed_at": null,
+        "unsubscribed_at": null,
+        "confirmation_token": null,
+        "unsubscribe_token": "1f066aa1-8246-4935-b167-cc07d8f64111",
+        "ip_address": null,
+        "user_agent": null,
+        "referrer": null,
+        "utm_source": null,
+        "utm_medium": null,
+        "utm_campaign": null,
+        "utm_content": null,
+        "utm_term": null,
+        "created_at": "2025-08-29T15:32:00.236003+00:00",
+        "updated_at": "2025-08-29T15:32:00.236003+00:00",
+        "email_sent": false,
+        "email_sent_at": null,
+        "email_send_attempts": 0,
+        "last_email_error": null,
+        "last_email_template": null
+      }
+    ],
+    "newsletter_subscriptions": [],
+    "email_send_attempts": [],
+    "email_rollback_tasks": []
+  }
+}

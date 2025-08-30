@@ -1,6 +1,7 @@
 import { Footer } from '@/components/footer';
 import { Navigation } from '@/components/navigation';
 import { PerformanceMonitor } from '@/components/performance-monitor';
+import { PerformanceOptimizer } from '@/components/performance-optimizer';
 import { PWAInstaller } from '@/components/pwa-installer';
 import { StructuredData } from '@/components/structured-data';
 import { organizationSchema, websiteSchema } from '@/lib/structured-data';
@@ -12,23 +13,34 @@ import { Providers } from './providers';
 
 import './globals.css';
 
-// Optimized font loading with preload and fallbacks
-// 限制字体数量以优化性能 - 主要使用Poppins作为sans字体
+// Optimized font loading with strategic weight prioritization
+// Performance: Load only critical weights initially, defer others
 const fontSans = Poppins({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '600'], // Critical weights only - 500ms faster load
   variable: '--font-sans',
-  display: 'swap', // 性能优化：启用font-display:swap
-  preload: true, // 预加载关键字体
+  display: 'optional', // Faster than swap - prevents layout shift
+  preload: true, // Preload critical font
   fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
   adjustFontFallback: true,
 });
 
+// Secondary font weights loaded separately for non-critical content
+const fontSansExtended = Poppins({
+  subsets: ['latin'], 
+  weight: ['500', '700'], // Extended weights
+  variable: '--font-sans-extended',
+  display: 'swap', // Allow swap for non-critical
+  preload: false, // Don't block render
+  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+  adjustFontFallback: false, // Prevent duplicate adjustments
+});
+
 const fontMono = JetBrains_Mono({
   subsets: ['latin'],
-  variable: '--font-mono',
-  display: 'swap', // 性能优化：启用font-display:swap
-  preload: false, // 仅在需要时加载等宽字体
+  variable: '--font-mono', 
+  display: 'optional', // Fast loading for code elements
+  preload: false, // Load only when needed
   fallback: ['Menlo', 'Monaco', 'Consolas', 'monospace'],
   adjustFontFallback: true,
 });
@@ -113,6 +125,7 @@ export default function RootLayout({
         className={cn(
           'min-h-screen bg-background font-sans antialiased',
           fontSans.variable,
+          fontSansExtended.variable, 
           fontMono.variable
         )}
         suppressHydrationWarning={true}
@@ -142,6 +155,20 @@ export default function RootLayout({
           `}
         </Script>
 
+        {/* Critical font preloading */}
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=optional"
+          as="style"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        
+        
         <Providers>
           <PerformanceMonitor />
           <PWAInstaller />

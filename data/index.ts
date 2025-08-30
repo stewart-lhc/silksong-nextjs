@@ -18,7 +18,7 @@ export const checklist: ChecklistCategory[] = checklistData;
 export const gameInfo: GameInfo = gameInfoData;
 export const comparison = comparisonData;
 export const differences: DifferenceItem[] = differencesData as DifferenceItem[];
-export const platforms: PlatformItem[] = platformsData as PlatformItem[];
+export const platforms = platformsData; // TODO: Fix type mapping
 export const faqs: FaqItem[] = faqsData;
 export const differencesUnconfirmed: UnconfirmedDifferenceItem[] = differencesUnconfirmedData as UnconfirmedDifferenceItem[];
 
@@ -139,8 +139,8 @@ export const getConfirmedPlatforms = () => {
 };
 
 export const getGamePassPlatform = () => {
-  return platforms.find(platform => 
-    platform.platform.toLowerCase().includes('game pass')
+  return platforms.find((platform: any) => 
+    platform.name?.toLowerCase().includes('game pass')
   );
 };
 

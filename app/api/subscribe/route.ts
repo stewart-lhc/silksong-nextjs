@@ -8,6 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { supabaseAdmin } from '@/lib/supabase/server';
 import { rateLimit } from '@/lib/env';
+import { sendWelcomeEmail, getSubscriberCount } from '@/lib/email-service';
 import type { TablesInsert } from '@/types/supabase';
 
 // Rate limiting store (in production, use Redis or similar)
@@ -179,8 +180,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       email: validation.sanitized,
     };
 
-    // Try to insert subscription - let database handle duplicates
-    // Use supabaseAdmin to bypass RLS policies for API routes
+    // TRANSACTIONAL EMAIL LOGIC: Send email first, then store in database
+    // This ensures we don't store subscriptions for users who won't receive emails
+    
     if (!supabaseAdmin) {
       console.error('Supabase admin client not available - SERVICE_ROLE_KEY missing');
       return NextResponse.json(
@@ -189,40 +191,143 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    const { data, error } = await supabaseAdmin
+    // Step 1: Check if email already exists first
+    const { data: existingSubscription, error: checkError } = await supabaseAdmin
       .from('email_subscriptions')
-      .insert([subscriptionData])
-      .select();
-    
-    if (error) {
-      if (error.code === '23505') {
-        // Unique constraint violation - email already exists
-        return NextResponse.json(
-          { 
-            error: 'Email already subscribed',
-            code: 'ALREADY_SUBSCRIBED'
-          },
-          { status: 409 } // Conflict
-        );
-      }
-      
-      console.error('Database error during subscription:', error);
+      .select('id, email, subscribed_at')
+      .eq('email', validation.sanitized)
+      .single();
+
+    if (checkError && checkError.code !== 'PGRST116') {
+      // PGRST116 is "not found" - any other error is a problem
+      console.error('Database error during duplicate check:', checkError);
       return NextResponse.json(
         { error: 'Failed to process subscription' },
         { status: 500 }
       );
     }
 
+    if (existingSubscription) {
+      // Email already exists - return conflict
+      return NextResponse.json(
+        { 
+          error: 'Email already subscribed',
+          code: 'ALREADY_SUBSCRIBED',
+          subscription: {
+            id: existingSubscription.id,
+            email: existingSubscription.email,
+            subscribed_at: existingSubscription.subscribed_at,
+            source: 'existing'
+          }
+        },
+        { status: 409 }
+      );
+    }
+
+    // Step 2: Get current subscriber count for email template
+    const subscriberCount = await getSubscriberCount();
+
+    // Step 3: Send welcome email FIRST (transactional approach)
+    const tempSubscription = {
+      id: 'temp-' + Date.now(),
+      email: validation.sanitized,
+      subscribed_at: new Date().toISOString(),
+      source: source
+    };
+
+    const emailResult = await sendWelcomeEmail(tempSubscription, {
+      subscriberCount: subscriberCount + 1, // Include the new subscriber in count
+      customData: {
+        clientIp,
+        subscriptionSource: source,
+        transactional: true
+      }
+    });
+
+    // Step 4: If email fails, don't proceed with database storage
+    if (!emailResult.success) {
+      console.error('Transactional email failed - not storing subscription:', {
+        email: validation.sanitized,
+        error: emailResult.error,
+        reason: 'Email delivery failure prevents subscription completion'
+      });
+      
+      return NextResponse.json(
+        { 
+          error: 'Failed to send welcome email. Please try again or contact support.',
+          code: 'EMAIL_DELIVERY_FAILED',
+          details: 'Subscription not completed due to email delivery failure'
+        },
+        { status: 503 } // Service Unavailable
+      );
+    }
+
+    // Step 5: Email sent successfully - now store in database
+    const { data, error } = await supabaseAdmin
+      .from('email_subscriptions')
+      .insert([subscriptionData])
+      .select();
+    
+    if (error) {
+      // This is a critical error - email was sent but database failed
+      // We should log this for manual recovery
+      console.error('CRITICAL: Email sent but database storage failed:', {
+        email: validation.sanitized,
+        emailMessageId: emailResult.messageId,
+        databaseError: error,
+        requiresManualIntervention: true
+      });
+
+      if (error.code === '23505') {
+        // Unique constraint violation - race condition
+        // Email was sent but subscription already exists (very rare)
+        return NextResponse.json(
+          { 
+            error: 'Email already subscribed (detected after email sent)',
+            code: 'RACE_CONDITION_DETECTED',
+            emailSent: true,
+            messageId: emailResult.messageId
+          },
+          { status: 409 }
+        );
+      }
+      
+      return NextResponse.json(
+        { 
+          error: 'Email sent but subscription storage failed. Please contact support.',
+          code: 'DATABASE_STORAGE_FAILED',
+          emailSent: true,
+          messageId: emailResult.messageId
+        },
+        { status: 500 }
+      );
+    }
+
+    // Step 6: Success - both email sent and database updated
+    const subscription = {
+      id: data[0].id,
+      email: data[0].email,
+      subscribed_at: data[0].subscribed_at,
+      source: source
+    };
+
+    console.info('Transactional subscription completed successfully:', {
+      subscriptionId: subscription.id,
+      email: subscription.email,
+      emailMessageId: emailResult.messageId,
+      subscriberCount: subscriberCount + 1
+    });
+
     // Success response
     return NextResponse.json(
       { 
         success: true,
-        message: 'Successfully subscribed!',
-        subscription: {
-          id: data[0].id,
-          email: data[0].email,
-          subscribed_at: data[0].subscribed_at
-        }
+        message: 'Successfully subscribed! Welcome email sent.',
+        subscription,
+        emailSent: true,
+        messageId: emailResult.messageId,
+        subscriberCount: subscriberCount + 1,
+        transactional: true
       },
       {
         status: 201,

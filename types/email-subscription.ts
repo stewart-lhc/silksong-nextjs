@@ -1,17 +1,21 @@
 /**
  * Email Subscription System Types
- * Comprehensive type definitions for the reusable subscription system
+ * Simplified core types for the unified subscription system based on email_subscriptions table
  */
 
 import { ReactNode } from 'react';
 
-// Core subscription data types
+// Core subscription data types - Based on email_subscriptions table structure
 export interface EmailSubscription {
   id: string;
   email: string;
   subscribed_at: string;
   source?: string;
   metadata?: Record<string, any>;
+  // Additional fields for enhanced functionality
+  confirmed_at?: string;
+  unsubscribed_at?: string;
+  status?: 'pending' | 'confirmed' | 'unsubscribed';
 }
 
 // API types
@@ -27,12 +31,36 @@ export interface SubscriptionResponse {
   subscription?: EmailSubscription;
   error?: string;
   code?: string;
+  // Transactional email fields
+  emailSent?: boolean;
+  messageId?: string;
+  subscriberCount?: number;
+  transactional?: boolean;
 }
 
 export interface SubscriptionCountResponse {
   count: number;
   error?: string;
 }
+
+// Email service types
+export interface EmailSendOptions {
+  firstName?: string;
+  subscriberCount?: number;
+  customData?: Record<string, any>;
+}
+
+export interface EmailResult {
+  success: boolean;
+  messageId?: string;
+  error?: string;
+}
+
+export interface TransactionalEmailResult extends EmailResult {
+  transactional: boolean;
+  deliveryGuarantee: 'email_first' | 'database_first';
+}
+
 
 // Configuration types
 export interface SubscriptionConfig {

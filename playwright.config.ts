@@ -34,7 +34,7 @@ export default defineConfig({
     ['html'],
     ['json', { outputFile: 'test-results/playwright-report.json' }],
     ['junit', { outputFile: 'test-results/playwright-junit.xml' }],
-    ...(process.env.CI ? [['github']] : []),
+    ...(process.env.CI ? [['github'] as const] : []),
   ],
   
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */

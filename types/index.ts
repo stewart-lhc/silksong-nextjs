@@ -173,48 +173,7 @@ export interface UnconfirmedDifferenceItem {
 // =====================================================
 
 /**
- * Re-export comprehensive email subscription types
- * Provides type-safe email subscription functionality
+ * Re-export simplified email subscription types
+ * Provides basic email subscription functionality
  */
 export * from './email-subscription';
-
-/**
- * Convenient type aliases for common email subscription types
- */
-export type {
-  // Core email subscription types
-  ValidatedEmail,
-  SubscriptionId,
-  ExtendedSubscription,
-  SubscriptionResult,
-  EmailValidationResult,
-  SubscriptionError,
-  
-  // Database types
-  DatabaseAdapter,
-  DatabaseConfig,
-  
-  // API types  
-  SubscriptionApiClient,
-  ApiResponse as SubscriptionApiResponse,
-  SubscribeRequest,
-  SubscriptionResponse,
-  
-  // Component types
-  SubscriptionFormProps,
-  SubscriptionWidgetProps,
-  UseSubscriptionReturn,
-  
-  // Configuration types
-  EmailSubscriptionConfig,
-  ValidationConfiguration,
-  
-  // Event types
-  SubscriptionEvent,
-  EventEmitter,
-  SubscriptionCallbacks,
-  
-  // Utility types
-  Result,
-  Brand,
-} from './email-subscription';

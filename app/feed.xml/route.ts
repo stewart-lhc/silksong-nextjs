@@ -208,6 +208,10 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   } catch (error) {
     console.error('Error in GET /feed.xml:', error);
     
+    const siteUrl = process.env.NODE_ENV === 'production' 
+      ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
+      : 'http://localhost:3000';
+    
     // Return a basic error RSS feed
     const errorFeed = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
@@ -222,10 +226,6 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     </item>
   </channel>
 </rss>`;
-
-    const siteUrl = process.env.NODE_ENV === 'production' 
-      ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
-      : 'http://localhost:3000';
     
     const updatedErrorFeed = errorFeed.replace('https://silksong-nextjs.vercel.app', siteUrl);
     

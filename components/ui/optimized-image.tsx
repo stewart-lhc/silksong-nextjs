@@ -1,8 +1,9 @@
 'use client';
 
 import Image, { ImageProps } from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { trackImagePerformance } from '@/lib/performance-enhancements';
 
 interface OptimizedImageProps extends Omit<ImageProps, 'onLoad' | 'onError'> {
   fallbackSrc?: string;
@@ -20,7 +21,7 @@ export function OptimizedImage({
   loadingClassName,
   errorClassName,
   priority = false,
-  quality = 90,
+  quality = 85,
   placeholder = 'blur',
   blurDataURL,
   ...props
@@ -28,11 +29,25 @@ export function OptimizedImage({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [currentSrc, setCurrentSrc] = useState(src);
+  const imgRef = useRef<HTMLImageElement>(null);
 
-  // Generate blur placeholder if not provided
+  // Generate optimized blur placeholder if not provided
   const defaultBlurDataURL = 
     blurDataURL || 
-    'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==';
+    'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q==';
+
+  // Performance tracking
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development' && imgRef.current && !isLoading) {
+      trackImagePerformance(imgRef.current).then((metrics) => {
+        if (metrics.loadTime > 1000) {
+          console.warn(`⚠️ Slow image loading detected: ${metrics.imageUrl} took ${Math.round(metrics.loadTime)}ms to load`);
+        }
+      }).catch(() => {
+        // Silent fail for tracking
+      });
+    }
+  }, [isLoading]);
 
   const handleLoad = () => {
     setIsLoading(false);
@@ -84,6 +99,7 @@ export function OptimizedImage({
       )}
 
       <Image
+        ref={imgRef}
         src={currentSrc}
         alt={alt}
         className={cn(

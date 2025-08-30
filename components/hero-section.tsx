@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { useEmailSubscription } from '@/hooks/use-email-subscription';
+// TODO: Replace with simplified subscription hook
 
 // Simple Background with Image and Video
 function BackgroundVideo() {
@@ -118,26 +118,67 @@ function CountdownTimer() {
 export function HeroSection() {
   const [isTrailerOpen, setIsTrailerOpen] = useState(false);
   const [email, setEmail] = useState('');
-  
-  const {
-    subscriberCount,
-    isSubscribed,
-    isSubmitting,
-    isLoading,
-    error,
-    subscribe,
-    validateEmail,
-  } = useEmailSubscription();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const sanitized = email.trim().toLowerCase();
+    return {
+      isValid: emailRegex.test(sanitized) && sanitized.length <= 254,
+      sanitized
+    };
+  };
+
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email.trim()) {
+      setError('Please enter your email address');
       return;
     }
 
-    subscribe(email.trim());
-    setEmail(''); // Clear email field on successful submission
+    const validation = validateEmail(email);
+    if (!validation.isValid) {
+      setError('Please enter a valid email address');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+    setSuccess(null);
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: validation.sanitized,
+          source: 'homepage-hero'
+        })
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setIsSubscribed(true);
+        setSuccess('🎉 Welcome! Check your email for a special Silksong update.');
+        setEmail('');
+      } else if (response.status === 409) {
+        setError('You\'re already subscribed! Check your email for updates.');
+      } else {
+        setError(result.error || 'Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      console.error('Subscription error:', err);
+      setError('Network error. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
 
@@ -198,11 +239,18 @@ export function HeroSection() {
                   </h3>
                   
                   {isSubscribed ? (
-                    <div className="text-primary font-semibold flex items-center justify-center gap-2 py-4">
-                      <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
-                        ✓
+                    <div className="text-center space-y-2">
+                      <div className="text-primary font-semibold flex items-center justify-center gap-2 py-4">
+                        <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                          ✓
+                        </div>
+                        <span className="text-sm">Subscribed!</span>
                       </div>
-                      <span className="text-sm">Subscribed!</span>
+                      {success && (
+                        <p className="text-xs text-green-400/80 leading-relaxed">
+                          {success}
+                        </p>
+                      )}
                     </div>
                   ) : (
                     <form onSubmit={handleSubscribe} className="space-y-3">
@@ -210,18 +258,37 @@ export function HeroSection() {
                         type="email"
                         placeholder="Enter your email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-background/50 border-primary/30 text-foreground rounded-lg focus:ring-primary/50 text-sm"
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          if (error) setError(null);
+                        }}
+                        className={`w-full bg-background/50 border-primary/30 text-foreground rounded-lg focus:ring-primary/50 text-sm ${
+                          error ? 'border-red-400/50' : ''
+                        }`}
                         required
                         disabled={isSubmitting}
                         maxLength={254}
                       />
+                      
+                      {error && (
+                        <p className="text-xs text-red-400/90 text-center">
+                          {error}
+                        </p>
+                      )}
+                      
                       <Button
                         type="submit"
-                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-2 rounded-lg transition-all duration-200 shadow-lg hover:shadow-primary/20 text-sm"
+                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-2 rounded-lg transition-all duration-200 shadow-lg hover:shadow-primary/20 text-sm disabled:opacity-50"
                         disabled={isSubmitting || !email.trim()}
                       >
-                        {isSubmitting ? "..." : "Notify Me"}
+                        {isSubmitting ? (
+                          <div className="flex items-center justify-center gap-2">
+                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                            <span>Sending...</span>
+                          </div>
+                        ) : (
+                          "Notify Me"
+                        )}
                       </Button>
                     </form>
                   )}

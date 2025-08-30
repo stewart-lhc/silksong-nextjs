@@ -1,0 +1,127 @@
+{
+  "timestamp": "2025-08-30T06:52:32.817Z",
+  "repairLog": [
+    {
+      "timestamp": "2025-08-30T06:52:23.065Z",
+      "message": "🔧 === DATABASE REPAIR ==="
+    },
+    {
+      "timestamp": "2025-08-30T06:52:23.163Z",
+      "message": "\n💾 Creating repair backup..."
+    },
+    {
+      "timestamp": "2025-08-30T06:52:24.342Z",
+      "message": "✓ Backed up 1 records from email_subscriptions"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:24.659Z",
+      "message": "✓ Backed up 0 records from newsletter_subscriptions"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:26.232Z",
+      "message": "✓ Backed up 0 records from email_send_attempts"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:26.586Z",
+      "message": "✓ Backed up 0 records from email_rollback_tasks"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:26.587Z",
+      "message": "💾 Repair backup saved: D:\\GitHub\\silksong-main\\database-backups\\repair-backup-2025-08-30T06-52-23-163Z.json"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:26.588Z",
+      "message": "\n🔧 Repairing missing columns..."
+    },
+    {
+      "timestamp": "2025-08-30T06:52:26.588Z",
+      "message": "\n  🔍 Checking email_subscriptions columns..."
+    },
+    {
+      "timestamp": "2025-08-30T06:52:27.300Z",
+      "message": "    ⚠️  Table email_subscriptions does not exist, skipping column repairs"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:27.300Z",
+      "message": "\n🧹 Cleaning up orphaned records..."
+    },
+    {
+      "timestamp": "2025-08-30T06:52:28.537Z",
+      "message": "  ✓ No orphaned email_send_attempts found"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:28.851Z",
+      "message": "  ✓ No orphaned email_rollback_tasks found"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:28.851Z",
+      "message": "\n📤 Migrating newsletter_subscriptions data..."
+    },
+    {
+      "timestamp": "2025-08-30T06:52:29.220Z",
+      "message": "  ✓ newsletter_subscriptions table is empty"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:29.220Z",
+      "message": "\n📊 Repairing missing indexes..."
+    },
+    {
+      "timestamp": "2025-08-30T06:52:29.674Z",
+      "message": "  ⏭️  Table email_subscriptions doesn't exist, skipping indexes"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:30.179Z",
+      "message": "  ⏭️  Table email_send_attempts doesn't exist, skipping indexes"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:30.480Z",
+      "message": "  ⏭️  Table email_rollback_tasks doesn't exist, skipping indexes"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:30.480Z",
+      "message": "\n🔒 Repairing Row Level Security..."
+    },
+    {
+      "timestamp": "2025-08-30T06:52:30.727Z",
+      "message": "  ⏭️  Table email_subscriptions doesn't exist, skipping RLS"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:31.000Z",
+      "message": "  ⏭️  Table email_send_attempts doesn't exist, skipping RLS"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:31.284Z",
+      "message": "  ⏭️  Table email_rollback_tasks doesn't exist, skipping RLS"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:31.285Z",
+      "message": "\n✅ Validating repairs..."
+    },
+    {
+      "timestamp": "2025-08-30T06:52:31.594Z",
+      "message": "  ✅ email_subscriptions: Accessible"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:31.897Z",
+      "message": "  ✅ email_send_attempts: Accessible"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:32.359Z",
+      "message": "  ✅ email_rollback_tasks: Accessible"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:32.817Z",
+      "message": "  ✅ Database functions working"
+    },
+    {
+      "timestamp": "2025-08-30T06:52:32.817Z",
+      "message": "\n📋 Generating repair report..."
+    }
+  ],
+  "summary": {
+    "totalOperations": 29,
+    "successful": 5,
+    "warnings": 1,
+    "errors": 0
+  }
+}

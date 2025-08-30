@@ -8,6 +8,126 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Professional Mobile Video Carousel Performance Optimizations */
+@layer components {
+  .gesture-carousel-container {
+    /* Hardware acceleration for smooth mobile interactions */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    
+    /* Touch optimization */
+    touch-action: pan-y pinch-zoom;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    
+    /* Performance optimizations */
+    will-change: transform;
+    contain: layout style paint;
+    
+    /* Smooth scrolling for better UX */
+    scroll-behavior: smooth;
+  }
+
+  .gesture-carousel-video {
+    /* Optimize video rendering */
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    
+    /* Anti-aliasing for crisp edges */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    /* GPU acceleration */
+    backface-visibility: hidden;
+  }
+
+  .gesture-feedback-overlay {
+    /* Ensure overlay doesn't interfere with video */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    
+    /* Smooth appearance */
+    animation: fadeIn 0.2s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Performance-optimized button animations */
+  .carousel-nav-button {
+    /* Hardware acceleration */
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    
+    /* Smooth transitions */
+    transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+    
+    /* Optimize for mobile touch targets */
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .carousel-nav-button:hover:not(:disabled) {
+    transform: translateZ(0) scale(1.1);
+  }
+
+  .carousel-nav-button:active:not(:disabled) {
+    transform: translateZ(0) scale(1.05);
+  }
+
+  /* Dot indicator optimizations */
+  .carousel-dot {
+    /* Hardware acceleration */
+    transform: translateZ(0);
+    will-change: transform, background-color, box-shadow;
+    
+    /* Smooth scaling */
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    /* Ensure crisp edges */
+    border-radius: 50%;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  .gesture-carousel-container {
+    /* More aggressive performance on mobile */
+    will-change: transform, opacity;
+    
+    /* Prevent bounce scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    
+    /* Optimize for mobile browsers */
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+  }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .gesture-carousel-container,
+  .gesture-carousel-video,
+  .carousel-nav-button,
+  .carousel-dot {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
 @layer base {
   :root {
     /* === CORE THEME VARIABLES === */
@@ -200,6 +320,7 @@
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-family: var(--font-sans-extended), var(--font-sans), sans-serif;
     font-weight: 700;
     letter-spacing: 0.05em;
     
@@ -676,17 +797,27 @@
     }
   }
 
-  /* 动画类 */
+  /* 动画类 - Performance optimized */
   .animate-glow-pulse {
     animation: glow-pulse 3s ease-in-out infinite;
+    will-change: filter, transform; /* Optimize for filter and transform changes */
+    transform: translateZ(0); /* Create compositing layer */
   }
 
   .animate-mystical-float {
     animation: mystical-float 4s ease-in-out infinite;
+    will-change: transform, opacity; /* Hint for transform and opacity */
+    contain: layout style paint; /* Isolate rendering */
   }
 
   .animate-fade-in-up {
     animation: fade-in-up 0.8s ease-out;
+    will-change: transform, opacity;
+  }
+  
+  /* Reset will-change after animations complete */
+  .animate-fade-in-up.animation-complete {
+    will-change: auto;
   }
 
   .animate-shimmer {
@@ -698,6 +829,8 @@
     );
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
+    will-change: background-position; /* Optimize background animation */
+    contain: paint; /* Isolate paint operations */
   }
 
   .animate-silk-sway {
@@ -706,10 +839,14 @@
 
   .animate-silk-weave {
     animation: silk-weave 1.2s ease-out;
+    will-change: transform, opacity, filter; /* Multi-property optimization */
+    contain: layout style paint;
   }
 
   .animate-silk-breathe {
     animation: silk-breathe 6s ease-in-out infinite;
+    will-change: transform, filter;
+    transform: translateZ(0); /* GPU layer */
   }
 
   .animate-needle-gleam {
@@ -718,6 +855,37 @@
 
   .animate-web-pulse {
     animation: web-pulse 4s ease-in-out infinite;
+  }
+
+  /* === PERFORMANCE UTILITIES - 性能优化工具类 === */
+  
+  /* GPU acceleration utility */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+  
+  /* Compositing layer utility for complex animations */
+  .compositing-layer {
+    transform: translateZ(0);
+    contain: layout style paint;
+    will-change: transform, opacity;
+  }
+  
+  /* Fast transition utility */
+  .transition-fast {
+    transition: var(--transition-fast);
+  }
+  
+  /* Smooth transition utility */
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  /* Animation completion reset */
+  .animation-complete {
+    will-change: auto !important;
+    contain: none !important;
   }
 
   /* === LAYOUT UTILITIES - 布局工具类 === */
@@ -851,6 +1019,105 @@
       transform: none;
     }
   }
+
+  /* === PROFESSIONAL MOBILE CAROUSEL STYLES === */
+  
+  /* Gesture carousel container optimizations */
+  .gesture-carousel-container {
+    touch-action: pan-y pinch-zoom; /* Allow vertical scroll and zoom, capture horizontal */
+    user-select: none; /* Prevent text selection during gestures */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    
+    /* Hardware acceleration for smooth interactions */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Video player optimizations */
+  .gesture-carousel-video {
+    /* Optimize for transform animations */
+    will-change: transform;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    
+    /* Prevent text selection and touch callouts */
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    
+    /* Smooth transitions when not gesturing */
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  /* Navigation buttons enhancements */
+  .carousel-nav-button {
+    /* Improved touch targets for mobile */
+    min-width: 44px;
+    min-height: 44px;
+    
+    /* Smooth transitions */
+    transition: all 0.2s ease;
+    
+    /* Prevent focus outline on mobile */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Cursor states for better UX */
+  .cursor-grab {
+    cursor: grab;
+  }
+
+  .cursor-grabbing {
+    cursor: grabbing;
+    cursor: -webkit-grabbing;
+  }
+
+  /* Performance optimizations for mobile gestures */
+  @media (max-width: 768px) {
+    .gesture-carousel-container {
+      /* More aggressive hardware acceleration on mobile */
+      transform: translate3d(0, 0, 0);
+      -webkit-transform: translate3d(0, 0, 0);
+      
+      /* Optimize touch performance */
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+    }
+    
+    .gesture-carousel-video {
+      /* Reduce motion on low-performance devices */
+      @media (prefers-reduced-motion: reduce) {
+        transition: none !important;
+        will-change: auto;
+      }
+    }
+    
+    /* Hide navigation buttons on very small screens during gesture */
+    .gesture-carousel-container.cursor-grabbing .carousel-nav-button {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  /* Accessibility improvements */
+  @media (prefers-reduced-motion: reduce) {
+    .gesture-carousel-video {
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .carousel-nav-button {
+      border: 2px solid currentColor !important;
+      background: black !important;
+      color: white !important;
+    }
+  }
   
   /* High contrast mode support for silk theme */
   @media (prefers-contrast: high) {
@@ -886,6 +1153,17 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+    will-change: auto !important; /* Reset performance hints */
+  }
+  
+  /* Reset all performance optimizations for accessibility */
+  .mystical-glow,
+  .fantasy-text,
+  .silk-woven-text,
+  .silk-card {
+    will-change: auto !important;
+    transform: none !important;
+    contain: none !important;
   }
 }
 
