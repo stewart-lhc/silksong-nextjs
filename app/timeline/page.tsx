@@ -100,7 +100,7 @@ export default function TimelinePage() {
             <div className="absolute left-4 md:left-8 top-0 bottom-0 w-2 bg-gradient-to-b from-primary to-accent opacity-90 shadow-lg"></div>
 
             <div className="space-y-12 md:space-y-16">
-              {sortedTimeline.map((item, index) => {
+              {sortedTimeline.map((item, _index) => {
                 const timelineItem = item as TimelineItem;
                 return (
                   <div key={timelineItem.id} className="relative">

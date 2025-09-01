@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -109,7 +108,7 @@ export default function EmbedToolsPage() {
     
     // Debug logging (only in development)
     if (process.env.NODE_ENV !== 'production') {
-      console.log('🔧 generateEmbedUrl Debug:', {
+      console.info('🔧 generateEmbedUrl Debug:', {
         NODE_ENV: process.env.NODE_ENV,
         windowOrigin: typeof window !== 'undefined' ? window.location.origin : 'undefined',
         baseUrl,
@@ -300,7 +299,7 @@ export default function EmbedToolsPage() {
                     </div>
                     <div>
                       <p className="text-lg font-medium text-destructive mb-2">Failed to load preview</p>
-                      <p className="text-sm text-muted-foreground mb-4">The widget preview couldn't be loaded. This might be due to a network issue or server error.</p>
+                      <p className="text-sm text-muted-foreground mb-4">The widget preview couldn&apos;t be loaded. This might be due to a network issue or server error.</p>
                       <Button 
                         variant="outline" 
                         onClick={() => {

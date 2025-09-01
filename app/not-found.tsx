@@ -25,7 +25,7 @@ export default function NotFound() {
             Lost in the Void
           </h1>
           <p className="text-xl text-gray-300 max-w-md mx-auto">
-            Even Hornet couldn't find this path. The page you seek has vanished into the depths.
+            Even Hornet couldn&apos;t find this path. The page you seek has vanished into the depths.
           </p>
         </div>
 

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { getMetaImages, OPTIMIZED_PRESS_KIT_IMAGES } from '@/lib/seo-image-utils';
 
 // Base website information
 const SITE_NAME = "Hollow Knight: Silksong Release Tracker";
@@ -118,14 +119,14 @@ export const seoConfigs: Record<string, PageSEOConfig> = {
       type: "website",
       url: BASE_URL,
       siteName: SITE_NAME,
-      images: [`${BASE_URL}/pressKit/Silksong_Promo_02_2400.png`]
+      images: [getMetaImages().openGraph]
     },
     twitter: {
       card: "summary_large_image",
       site: "@teamcherry",
       title: "🕷️ Silksong Release: September 4, 2025",
       description: "Official countdown tracker for Hollow Knight: Silksong! Everything you need to know about Team Cherry's highly anticipated sequel.",
-      images: [`${BASE_URL}/pressKit/Silksong_Promo_02_2400.png`]
+      images: [getMetaImages().twitter]
     },
     structuredData: [
       createWebsiteStructuredData(BASE_URL, SITE_NAME, "The most comprehensive release tracker for Hollow Knight: Silksong"),

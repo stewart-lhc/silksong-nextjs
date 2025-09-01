@@ -95,7 +95,7 @@ export const StorySection = memo(() => {
                   Hornet, princess-protector of Hallownest, finds herself alone in a vast, unfamiliar world.
                 </p>
                 <p className="text-lg text-muted-foreground leading-relaxed">
-                  She must battle foes, seek out allies, and solve mysteries as she ascends on a deadly pilgrimage to the kingdom's peak.
+                  She must battle foes, seek out allies, and solve mysteries as she ascends on a deadly pilgrimage to the kingdom&apos;s peak.
                 </p>
                 <p className="text-lg text-muted-foreground leading-relaxed">
                   Bound by her lineage and guided by echoes of her past, Hornet will adventure through mossy grottos, coral forests and shining citadels to unravel a deadly thread that threatens this strange new land.

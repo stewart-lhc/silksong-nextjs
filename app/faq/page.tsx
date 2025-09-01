@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
-import { HelpCircle, Calendar, Gamepad2, Download, DollarSign, Users } from 'lucide-react';
+import { HelpCircle, Calendar, Gamepad2, Download, Users } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'FAQ - Hollow Knight: Silksong',
@@ -224,7 +224,7 @@ export default function FAQPage() {
         <CardHeader>
           <CardTitle className="text-center">Still Have Questions?</CardTitle>
           <CardDescription className="text-center">
-            Can't find what you're looking for? Check these official sources for the latest information.
+            Can&apos;t find what you&apos;re looking for? Check these official sources for the latest information.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -254,7 +254,7 @@ export default function FAQPage() {
       {/* Disclaimer */}
       <div className="text-center mt-8 text-sm text-muted-foreground max-w-2xl mx-auto">
         Information on this page is compiled from official Team Cherry communications and may change. 
-        For the most up-to-date information, always check Team Cherry's official channels.
+        For the most up-to-date information, always check Team Cherry&apos;s official channels.
       </div>
       </div>
     </div>

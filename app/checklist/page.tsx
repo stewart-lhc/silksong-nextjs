@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
@@ -127,7 +126,7 @@ export default function ChecklistPage() {
           url: shareUrl,
         });
       } catch (error) {
-        console.log('Error sharing:', error);
+        console.warn('Error sharing:', error);
         fallbackShare(shareText, shareUrl);
       }
     } else {
@@ -353,7 +352,7 @@ export default function ChecklistPage() {
                   })}
                 </div>
                 <p className="text-muted-foreground text-sm print:text-gray-600">
-                  Keep track of your preparation progress and ensure you're ready for Silksong's release!
+                  Keep track of your preparation progress and ensure you&apos;re ready for Silksong&apos;s release!
                 </p>
               </div>
             </CardContent>

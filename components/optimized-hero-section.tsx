@@ -5,7 +5,8 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { useState, useEffect } from 'react';
 import { Video } from 'lucide-react';
-import gameInfo from '@/data/gameInfo.json';
+// import gameInfo from '@/data/gameInfo.json'; // Unused after subscriber count removal
+import { HeroBackgroundImage } from '@/components/ui/optimized-presskit-image';
 
 // Email validation and sanitization utility
 const validateAndSanitizeEmail = (email: string): { isValid: boolean; sanitized: string; error?: string } => {
@@ -81,16 +82,10 @@ export function OptimizedHeroSection() {
   const [isStreamOpen, setIsStreamOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [subscriberCount, setSubscriberCount] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [lastSubmissionTime, setLastSubmissionTime] = useState(0);
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
 
-  useEffect(() => {
-    // Initialize subscriber count from gameInfo
-    setSubscriberCount(gameInfo.subscribers);
-  }, []);
 
   // Optimize video loading without DOM manipulation
   useEffect(() => {
@@ -101,7 +96,7 @@ export function OptimizedHeroSection() {
 
     // Use requestIdleCallback or fallback to setTimeout
     if ('requestIdleCallback' in window) {
-      (window as any).requestIdleCallback(loadVideo, { timeout: 1000 });
+      (window as typeof window & { requestIdleCallback: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number }).requestIdleCallback(loadVideo, { timeout: 1000 });
     } else {
       setTimeout(loadVideo, 100);
     }
@@ -135,7 +130,7 @@ export function OptimizedHeroSection() {
       // Simulate subscription (replace with actual implementation)
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      setSubscriberCount(prev => prev + 1);
+      // Subscription successful - could update count here if needed
       setIsSubscribed(true);
       setEmail("");
       setTimeout(() => setIsSubscribed(false), 3000);
@@ -152,18 +147,15 @@ export function OptimizedHeroSection() {
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
       {/* Background Video */}
       <div className="absolute inset-0 w-full h-full">
-        {/* Fallback background image while video loads */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url(/pressKit/Hornet_mid_shot.webp)`,
-            opacity: videoLoaded ? 0 : 1,
-            transition: 'opacity 0.5s ease-in-out'
-          }}
+        {/* Optimized fallback background image while video loads */}
+        <HeroBackgroundImage
+          src="/pressKit/Hornet_mid_shot"
+          alt="Hornet in Silksong gameplay scene"
+          className={`absolute inset-0 transition-opacity duration-500 ${videoLoaded ? 'opacity-0' : 'opacity-100'}`}
         />
         
         {/* Loading skeleton */}
-        {!videoLoaded && !videoError && (
+        {!videoLoaded && (
           <div className="absolute inset-0 bg-gradient-to-br from-background/80 to-primary/20 animate-pulse">
             <div className="absolute inset-0 bg-primary/10 animate-pulse" />
           </div>
@@ -171,7 +163,7 @@ export function OptimizedHeroSection() {
         
         {/* Optimized YouTube iframe */}
         <iframe 
-          src="https://www.youtube.com/embed/0BqVbQ6nUXE?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playlist=0BqVbQ6nUXE" 
+          src="https://www.youtube-nocookie.com/embed/0BqVbQ6nUXE?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playlist=0BqVbQ6nUXE" 
           className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
           style={{
             aspectRatio: '16/9',
@@ -249,7 +241,7 @@ export function OptimizedHeroSection() {
             <DialogContent className="max-w-4xl w-full h-[80vh] p-0">
               <div className="w-full h-full">
                 <iframe
-                  src="https://www.youtube.com/embed/6XGeJwsUP9c?autoplay=1"
+                  src="https://www.youtube-nocookie.com/embed/6XGeJwsUP9c?autoplay=1"
                   className="w-full h-full"
                   allow="autoplay; encrypted-media"
                   allowFullScreen

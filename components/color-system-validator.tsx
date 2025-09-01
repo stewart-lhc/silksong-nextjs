@@ -80,6 +80,13 @@ interface ColorCombinationResult {
   passes: boolean;
 }
 
+interface ValidationResult {
+  passRate: number;
+  failedCombinations: ColorCombinationResult[];
+  suggestions: Record<string, string>;
+  totalCombinations: number;
+}
+
 // 本地验证函数
 function validateColorSystem(
   colorSystem: Record<string, string>,
@@ -156,7 +163,7 @@ export function ColorSystemValidator({
   className,
 }: ColorSystemValidatorProps) {
   const [wcagLevel, setWcagLevel] = useState<WCAGLevel>(level);
-  const [validationResult, setValidationResult] = useState<any>(null);
+  const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
   const [isValidating, setIsValidating] = useState(false);
 
   // 执行验证
@@ -430,7 +437,7 @@ export function ColorSystemValidator({
                     {Object.entries(validationResult.suggestions)
                       .slice(0, 5)
                       .map(
-                        ([key, suggestion]: [string, any], index: number) => {
+                        ([key, suggestion]: [string, string], index: number) => {
                           const [fg, bg] = key.split('_');
                           return (
                             <Card key={index}>

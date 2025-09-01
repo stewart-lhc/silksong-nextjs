@@ -16,7 +16,7 @@ const customJestConfig = {
   testEnvironment: 'jsdom',
   
   // Setup files
-  setupFilesAfterEnv: ['<rootDir>/__tests__/setup/test-setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   
   // Test patterns
   testMatch: [
@@ -35,7 +35,7 @@ const customJestConfig = {
   ],
   
   // Module name mapping for path aliases
-  moduleNameMapping: {
+  moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
     '^@/components/(.*)$': '<rootDir>/components/$1',
     '^@/lib/(.*)$': '<rootDir>/lib/$1',
@@ -44,6 +44,7 @@ const customJestConfig = {
     '^@/types/(.*)$': '<rootDir>/types/$1',
     '^@/config/(.*)$': '<rootDir>/config/$1',
     '^@/data/(.*)$': '<rootDir>/data/$1',
+    '^@/styles/(.*)$': '<rootDir>/styles/$1',
   },
   
   // Coverage configuration
@@ -115,10 +116,7 @@ const customJestConfig = {
   // Coverage directory
   coverageDirectory: 'coverage',
   
-  // Transform configuration
-  transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
-  },
+  // Transform configuration (handled by Next.js)
   
   // Module file extensions
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
@@ -128,12 +126,7 @@ const customJestConfig = {
     '/node_modules/(?!(.*\\.mjs$|@supabase|@tanstack))',
   ],
   
-  // Global variables
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.json',
-    },
-  },
+  // Global variables (handled by Next.js)
   
   // Test timeout
   testTimeout: 30000,
@@ -149,35 +142,10 @@ const customJestConfig = {
   errorOnDeprecated: true,
   
   // Watch plugins
-  watchPlugins: [
-    'jest-watch-typeahead/filename',
-    'jest-watch-typeahead/testname',
-  ],
+  watchPlugins: [],
   
   // Custom reporters
-  reporters: [
-    'default',
-    [
-      'jest-junit',
-      {
-        suiteName: 'Newsletter Kit Tests',
-        outputDirectory: 'test-results',
-        outputName: 'junit.xml',
-        classNameTemplate: '{classname}',
-        titleTemplate: '{title}',
-      },
-    ],
-    [
-      'jest-html-reporters',
-      {
-        publicPath: 'test-results',
-        filename: 'report.html',
-        expand: true,
-        hideIcon: false,
-        pageTitle: 'Newsletter Kit Test Report',
-      },
-    ],
-  ],
+  reporters: ['default'],
   
   // Max workers for parallel execution
   maxWorkers: '50%',
@@ -185,10 +153,7 @@ const customJestConfig = {
   // Cache directory
   cacheDirectory: '<rootDir>/node_modules/.cache/jest',
   
-  // Snapshot serializers
-  snapshotSerializers: [
-    'enzyme-to-json/serializer',
-  ],
+  // Snapshot serializers (using default)
   
   // Module directories
   moduleDirectories: ['node_modules', '<rootDir>/'],

@@ -5,7 +5,7 @@
 
 import { clientEnv } from '@/lib/env.client';
 import type { Database } from '@/types/supabase';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type PostgrestError } from '@supabase/supabase-js';
 
 // Client-side Supabase client with enhanced configuration
 export const supabase = createClient<Database>(
@@ -61,7 +61,7 @@ export class SupabaseQueryError extends Error {
 
 // Enhanced query wrapper with automatic error handling
 export async function executeQuery<T>(
-  queryFn: () => Promise<{ data: T | null; error: any }>
+  queryFn: () => Promise<{ data: T | null; error: PostgrestError | null }>
 ): Promise<T> {
   try {
     const { data, error } = await queryFn();
@@ -92,7 +92,7 @@ export async function executeQuery<T>(
 }
 
 // Type-safe subscription helper
-export function createRealtimeSubscription<T extends Record<string, any>>(
+export function createRealtimeSubscription<T extends Record<string, unknown>>(
   table: string,
   options: {
     filter?: string;
@@ -102,22 +102,30 @@ export function createRealtimeSubscription<T extends Record<string, any>>(
 ) {
   const { filter, event = '*', schema = 'public' } = options;
 
-  const subscription = supabase.channel(`realtime:${table}`).on(
+  type RealtimePayload = {
+    eventType: string;
+    new?: T;
+    old?: T;
+    [key: string]: unknown;
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase realtime API has incomplete TypeScript definitions
+  const subscription = (supabase as any).channel(`realtime:${table}`).on(
     'postgres_changes',
     {
       event,
       schema,
       table,
       filter,
-    } as any,
-    (payload: any) => {
+    },
+    (payload: RealtimePayload) => {
       // Type-safe payload handling
       return payload;
     }
   );
 
   return {
-    subscribe: (callback: (payload: any) => void) => {
+    subscribe: (callback: (payload: RealtimePayload) => void) => {
       return subscription
         .on(
           'postgres_changes',
@@ -126,7 +134,7 @@ export function createRealtimeSubscription<T extends Record<string, any>>(
             schema,
             table,
             filter,
-          } as any,
+          },
           callback
         )
         .subscribe();

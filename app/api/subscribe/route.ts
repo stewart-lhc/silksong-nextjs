@@ -349,18 +349,69 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 }
 
 /**
- * Handle other HTTP methods with 405 Method Not Allowed
+ * GET /api/subscribe - Get subscription count
+ * Merged functionality from /api/subscriptions and /api/subscriptions/count
  */
-export async function GET(): Promise<NextResponse> {
-  return NextResponse.json(
-    { error: 'Method not allowed' },
-    { 
-      status: 405,
-      headers: {
-        'Allow': 'POST',
-      },
+export async function GET(_request: NextRequest): Promise<NextResponse> {
+  try {
+    const headersList = await headers();
+    const forwardedFor = headersList.get('x-forwarded-for');
+    const realIp = headersList.get('x-real-ip');
+    const clientIp = forwardedFor?.split(',')[0] || realIp || 'unknown';
+    
+    // Rate limiting for GET requests (lighter limits)
+    const rateCheck = checkRateLimit(`get:${clientIp}`);
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded', resetTime: rateCheck.resetTime },
+        { 
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': rateLimit.maxRequests.toString(),
+            'X-RateLimit-Remaining': rateCheck.remaining.toString(),
+            'X-RateLimit-Reset': Math.ceil(rateCheck.resetTime / 1000).toString(),
+          }
+        }
+      );
     }
-  );
+
+    if (!supabaseAdmin) {
+      console.error('Supabase admin client not available - SERVICE_ROLE_KEY missing');
+      return NextResponse.json(
+        { error: 'Database configuration error' },
+        { status: 500 }
+      );
+    }
+
+    // Get subscription count using the email service (consistent with transactional approach)
+    const count = await getSubscriberCount();
+    
+    return NextResponse.json(
+      { 
+        count,
+        success: true
+      },
+      { 
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+          'X-RateLimit-Limit': rateLimit.maxRequests.toString(),
+          'X-RateLimit-Remaining': rateCheck.remaining.toString(),
+          'X-RateLimit-Reset': Math.ceil(rateCheck.resetTime / 1000).toString(),
+        }
+      }
+    );
+  } catch (error) {
+    console.error('Error getting subscriber count in GET /api/subscribe:', error);
+    return NextResponse.json(
+      { 
+        error: 'Failed to get subscriber count',
+        count: 0 
+      },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(): Promise<NextResponse> {
@@ -369,7 +420,7 @@ export async function PUT(): Promise<NextResponse> {
     { 
       status: 405,
       headers: {
-        'Allow': 'POST',
+        'Allow': 'GET, POST',
       },
     }
   );
@@ -381,7 +432,7 @@ export async function DELETE(): Promise<NextResponse> {
     { 
       status: 405,
       headers: {
-        'Allow': 'POST',
+        'Allow': 'GET, POST',
       },
     }
   );
@@ -393,7 +444,7 @@ export async function PATCH(): Promise<NextResponse> {
     { 
       status: 405,
       headers: {
-        'Allow': 'POST',
+        'Allow': 'GET, POST',
       },
     }
   );

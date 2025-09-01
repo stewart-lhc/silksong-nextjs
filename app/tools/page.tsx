@@ -97,7 +97,7 @@ export default function ToolsPage() {
 
   // State for RSS feed preview
   const [rssItems, setRssItems] = useState<RSSItem[]>([]);
-  const [rssLoading, setRssLoading] = useState(false);
+  const [_rssLoading, setRssLoading] = useState(false);
 
   // State for embed configuration
   const [embedConfig, setEmbedConfig] = useState<EmbedConfig>({

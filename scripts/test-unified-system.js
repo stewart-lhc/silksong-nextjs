@@ -94,7 +94,7 @@ async function testUnifiedSystem() {
     
     // Test 4: Get subscriber count
     console.log('\n📊 Test 4: Subscriber count...');
-    const countResponse = await fetch(`${API_BASE}/api/subscriptions/count`);
+    const countResponse = await fetch(`${API_BASE}/api/subscribe`);
     const countResult = await countResponse.json();
     
     if (countResult.count >= 0) {

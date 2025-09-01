@@ -25,7 +25,7 @@ const platformLogoMap: Record<string, string> = {
 };
 
 // Fallback icon mapping
-const fallbackIconMap: Record<string, React.ComponentType<any>> = {
+const fallbackIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   steam: Monitor,
   xbox: Gamepad2,
   'xbox-one': Gamepad2,

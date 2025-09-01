@@ -10,6 +10,14 @@ interface CountdownState {
   seconds: number;
 }
 
+interface ThemeStyles {
+  bg: string;
+  text: string;
+  accent: string;
+  muted: string;
+  border: string;
+}
+
 const translations = {
   en: {
     title: 'Hollow Knight: Silksong',
@@ -281,7 +289,7 @@ function CountdownUnit({
 }: {
   value: number;
   label: string;
-  themeStyles: any;
+  themeStyles: ThemeStyles;
 }) {
   return (
     <div

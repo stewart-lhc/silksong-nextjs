@@ -75,7 +75,7 @@ async function loadTimelineData(): Promise<{ data: TimelineItem[]; etag: string 
     };
 
     return { data: timelineData, etag };
-  } catch (error) {
+  } catch (_error) {
     throw new Error('Failed to load timeline data');
   }
 }
@@ -177,11 +177,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
         'Access-Control-Allow-Headers': 'Content-Type, If-None-Match',
       },
     });
-  } catch (error) {
-    console.error('Error in GET /api/status:', error);
+  } catch (_error) {
+    console.error('Error in GET /api/status:', _error);
 
     // Return specific error for timeline issues
-    if (error instanceof Error && error.message.includes('timeline')) {
+    if (_error instanceof Error && _error.message.includes('timeline')) {
       return NextResponse.json(
         { error: 'Timeline data not available' },
         { status: 500 }

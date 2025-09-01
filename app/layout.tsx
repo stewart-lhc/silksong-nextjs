@@ -1,7 +1,6 @@
 import { Footer } from '@/components/footer';
 import { Navigation } from '@/components/navigation';
 import { PerformanceMonitor } from '@/components/performance-monitor';
-import { PerformanceOptimizer } from '@/components/performance-optimizer';
 import { PWAInstaller } from '@/components/pwa-installer';
 import { StructuredData } from '@/components/structured-data';
 import { organizationSchema, websiteSchema } from '@/lib/structured-data';
@@ -155,18 +154,6 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Critical font preloading */}
-        <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=optional"
-          as="style"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
         
         
         <Providers>

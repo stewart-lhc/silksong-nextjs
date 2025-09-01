@@ -133,14 +133,14 @@ export function analyzeLCPElement(): Promise<{
     // Use the LCP API to identify the LCP element
     const observer = new PerformanceObserver((entryList) => {
       const entries = entryList.getEntries();
-      const lastEntry = entries[entries.length - 1] as any;
+      const lastEntry = entries[entries.length - 1] as PerformanceEntry & { element?: Element };
       
       if (lastEntry && lastEntry.element) {
         const element = lastEntry.element;
-        const isImage = element.tagName === 'IMG' || element.style.backgroundImage;
+        const isImage = element.tagName === 'IMG' || Boolean((element as HTMLElement).style.backgroundImage);
         
         const suggestions: string[] = [];
-        const currentMetrics: any = {};
+        const currentMetrics: Record<string, unknown> = {};
 
         if (isImage) {
           if (element.tagName === 'IMG') {
@@ -157,12 +157,12 @@ export function analyzeLCPElement(): Promise<{
             if (!currentMetrics.hasBlurPlaceholder) {
               suggestions.push('Add blur placeholder for better perceived performance');
             }
-            if (!currentMetrics.format.includes('webp') && !currentMetrics.format.includes('avif')) {
+            if (typeof currentMetrics.format === 'string' && !currentMetrics.format.includes('webp') && !currentMetrics.format.includes('avif')) {
               suggestions.push('Use modern image formats (WebP/AVIF) for better compression');
             }
           } else {
             // Background image
-            const bgImage = element.style.backgroundImage;
+            const bgImage = (element as HTMLElement).style.backgroundImage;
             currentMetrics.url = bgImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
             suggestions.push('Consider using <img> with object-fit instead of background-image for better optimization');
           }
@@ -235,7 +235,7 @@ export async function generateImageOptimizationReport(): Promise<{
       if (metrics.size > report.largestImage.size) {
         report.largestImage = { url: img.src, size: metrics.size };
       }
-    } catch (error) {
+    } catch (_error) {
       report.unoptimizedImages.push(img.src);
     }
   }
@@ -267,31 +267,31 @@ export async function logImageOptimizationReport(): Promise<void> {
     const report = await generateImageOptimizationReport();
     const lcpAnalysis = await analyzeLCPElement();
     
-    console.group('🖼️ Image Optimization Report');
-    console.log(`📊 Total Images: ${report.totalImages}`);
-    console.log(`✅ Optimized: ${report.optimizedImages} (${Math.round(report.optimizedImages / report.totalImages * 100)}%)`);
-    console.log(`⚡ Average Load Time: ${Math.round(report.averageLoadTime)}ms`);
+    console.info('🖼️ Image Optimization Report');
+    console.info(`📊 Total Images: ${report.totalImages}`);
+    console.info(`✅ Optimized: ${report.optimizedImages} (${Math.round(report.optimizedImages / report.totalImages * 100)}%)`);
+    console.info(`⚡ Average Load Time: ${Math.round(report.averageLoadTime)}ms`);
     
     if (report.unoptimizedImages.length > 0) {
       console.warn('🚨 Unoptimized Images:', report.unoptimizedImages.slice(0, 5));
     }
     
     if (report.recommendations.length > 0) {
-      console.log('💡 Recommendations:', report.recommendations);
+      console.info('💡 Recommendations:', report.recommendations);
     }
     
     if (lcpAnalysis.element) {
-      console.group('🎯 LCP Element Analysis');
-      console.log('Element:', lcpAnalysis.element);
-      console.log('Is Image:', lcpAnalysis.isImage);
-      console.log('Current Metrics:', lcpAnalysis.currentMetrics);
+      console.info('🎯 LCP Element Analysis');
+      console.info('Element:', lcpAnalysis.element);
+      console.info('Is Image:', lcpAnalysis.isImage);
+      console.info('Current Metrics:', lcpAnalysis.currentMetrics);
       if (lcpAnalysis.optimizationSuggestions.length > 0) {
-        console.log('Suggestions:', lcpAnalysis.optimizationSuggestions);
+        console.info('Suggestions:', lcpAnalysis.optimizationSuggestions);
       }
-      console.groupEnd();
+      console.info('--- End LCP Analysis ---');
     }
     
-    console.groupEnd();
+    console.info('--- End Image Optimization Report ---');
   } catch (error) {
     console.error('Failed to generate image optimization report:', error);
   }

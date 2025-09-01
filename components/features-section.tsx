@@ -84,7 +84,7 @@ export const FeaturesSection = memo(() => {
             </h3>
             <div className="space-y-4">
               <p className="text-lg text-foreground/90 leading-relaxed">
-                Hornet must master a whole new suite of powerful moves to survive. She'll unleash devastating attacks, learn incredible silken abilities, and craft deadly tools in order to overcome the kingdom's challenges.
+                Hornet must master a whole new suite of powerful moves to survive. She&apos;ll unleash devastating attacks, learn incredible silken abilities, and craft deadly tools in order to overcome the kingdom&apos;s challenges.
               </p>
               <p className="text-lg text-foreground/90 leading-relaxed">
                 Over 150 all-new foes stand between Hornet and the shining citadel crowning the kingdom. Beasts and hunters, assassins and kings, monsters and knights - Hornet must face them all with bravery and skill!

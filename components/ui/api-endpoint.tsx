@@ -42,7 +42,7 @@ interface Header {
 interface Response {
   status: number;
   description: string;
-  example: any;
+  example: unknown;
 }
 
 interface CodeExample {
@@ -301,7 +301,7 @@ export function APIEndpoint({
                     </Badge>
                     <span className="font-semibold">{response.description}</span>
                   </div>
-                  {response.example && (
+                  {response.example !== undefined && (
                     <ResponseExample 
                       data={response.example}
                       status={response.status}

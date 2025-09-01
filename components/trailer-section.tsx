@@ -17,27 +17,27 @@ const trailers: Trailer[] = [
   {
     id: "6XGeJwsUP9c",
     title: "Hollow Knight: Silksong - Release Trailer",
-    url: "https://www.youtube.com/embed/6XGeJwsUP9c"
+    url: "https://www.youtube-nocookie.com/embed/6XGeJwsUP9c"
   },
   {
     id: "hHnI6nlfE2A",
     title: "Hollow Knight: Silksong - We've Played It! | gamescom 2025",
-    url: "https://www.youtube.com/embed/hHnI6nlfE2A"
+    url: "https://www.youtube-nocookie.com/embed/hHnI6nlfE2A"
   },
   {
     id: "pFAknD_9U7c",
     title: "Hollow Knight: Silksong Reveal Trailer",
-    url: "https://www.youtube.com/embed/pFAknD_9U7c"
+    url: "https://www.youtube-nocookie.com/embed/pFAknD_9U7c"
   },
   {
     id: "Y8lvHT_IQbM",
     title: "Hollow Knight: Silksong Gameplay - Nintendo Treehouse: Live | E3 2019",
-    url: "https://www.youtube.com/embed/Y8lvHT_IQbM?start=428"
+    url: "https://www.youtube-nocookie.com/embed/Y8lvHT_IQbM?start=428"
   },
   {
     id: "Gv6CRPqkpuU",
     title: "Hollow Knight: Silksong - Details from Team Cherry",
-    url: "https://www.youtube.com/embed/Gv6CRPqkpuU?start=9"
+    url: "https://www.youtube-nocookie.com/embed/Gv6CRPqkpuU?start=9"
   }
 ];
 

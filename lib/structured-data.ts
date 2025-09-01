@@ -1,4 +1,5 @@
 import { BASE_URL, SITE_NAME, GAME_RELEASE_DATE } from '../config/seo';
+import { getMetaImages } from './seo-image-utils';
 
 // Base organization schema
 export const organizationSchema = {
@@ -179,7 +180,7 @@ export function generateArticleSchema(
     },
     "image": {
       "@type": "ImageObject",
-      "url": `${BASE_URL}/pressKit/Silksong_Promo_02_2400.png`,
+      "url": getMetaImages().structuredData,
       "width": 2400,
       "height": 1350
     }

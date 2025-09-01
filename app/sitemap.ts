@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { BASE_URL, seoConfigs } from '../config/seo';
+import { BASE_URL } from '../config/seo';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Use August 2025 dates to reflect recent updates

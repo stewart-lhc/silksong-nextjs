@@ -1,6 +1,7 @@
 'use client';
 
 import { Facebook, Menu, Youtube } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCallback, useMemo, useState } from 'react';
@@ -196,10 +197,13 @@ export function Navigation() {
         <div className='flex items-center justify-between'>
           {/* Logo */}
           <Link href='/' className='flex items-center'>
-            <img
+            <Image
               src='/favicon.ico'
               alt='Hollow Knight Silksong'
-              className='h-10 object-contain'
+              width={40}
+              height={40}
+              className='h-10 w-10 object-contain'
+              priority
             />
           </Link>
           
@@ -231,10 +235,12 @@ export function Navigation() {
                   {/* Header */}
                   <div className='flex items-center justify-center border-b border-border/50 pb-4'>
                     <Link href='/' onClick={handleClose}>
-                      <img
+                      <Image
                         src='/favicon.ico'
                         alt='Hollow Knight Silksong'
-                        className='h-8 object-contain'
+                        width={32}
+                        height={32}
+                        className='h-8 w-8 object-contain'
                       />
                     </Link>
                   </div>

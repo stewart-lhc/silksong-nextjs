@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { getSEOConfig } from '../config/seo';
 
 interface StructuredDataProps {
-  data?: Record<string, any>[];
+  data?: Record<string, unknown>[];
 }
 
 export function StructuredData({ data }: StructuredDataProps) {

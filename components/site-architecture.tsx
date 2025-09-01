@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Clock, Users, Gamepad2, Download, HelpCircle, Calendar, CheckSquare } from 'lucide-react';
+import { ArrowRight, Gamepad2, HelpCircle, Calendar, CheckSquare } from 'lucide-react';
 
 // Site taxonomy and categorization
 export const siteArchitecture = {
@@ -146,7 +146,7 @@ export function RelatedContent({ currentPage, maxSuggestions = 3 }: RelatedConte
     .filter(page => page.path !== currentPage);
 
   // Get related pages based on category and priority
-  const currentPageData = Object.values(siteArchitecture.primaryCategories)
+  const _currentPageData = Object.values(siteArchitecture.primaryCategories)
     .flatMap(category => category.pages)
     .find(page => page.path === currentPage);
 

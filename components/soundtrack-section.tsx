@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Play, Pause, SkipForward, SkipBack, Volume2, ExternalLink } from 'lucide-react';
@@ -117,10 +118,14 @@ export function SoundtrackSection() {
             <CardContent className="p-8">
               {/* Current Track Info */}
               <div className="text-center mb-8">
-                <img 
+                <Image 
                   src="/Music/cover.jpg" 
                   alt="Silksong OST Cover" 
+                  width={192}
+                  height={192}
                   className="w-48 h-48 mx-auto rounded-lg shadow-xl mb-6"
+                  priority
+                  sizes="(max-width: 768px) 144px, 192px"
                 />
                 <h3 className="text-2xl font-bold text-foreground mb-2">
                   {tracks[currentTrack].title}

@@ -15,18 +15,12 @@
     "jsx": "preserve",
     "incremental": true,
     
-    /* Path Mapping - 路径别名配置 */
+    /* Path Mapping - 优化的路径别名配置 */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./app/*", "./components/*", "./lib/*", "./data/*", "./config/*", "./types/*", "./hooks/*"],
-      "@/components/*": ["./components/*"],
+      "@/*": ["./*"],
       "@/components/ui/*": ["./components/ui/*"],
-      "@/lib/*": ["./lib/*"],
-      "@/styles/*": ["./styles/*"],
-      "@/hooks/*": ["./app/hooks/*", "./hooks/*"],
-      "@/utils/*": ["./lib/utils/*"],
-      "@/types/*": ["./types/*"],
-      "@/data/*": ["./data/*"]
+      "@/utils/*": ["./lib/utils/*"]
     },
     
     /* Type Checking */

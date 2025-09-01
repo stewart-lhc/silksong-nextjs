@@ -39,15 +39,17 @@ export function PerformanceOptimizer() {
           observerRef.current = new PerformanceObserver((list) => {
             const entries = list.getEntries();
             entries.forEach((entry) => {
-              if (entry.name.includes('font')) {
-                console.log(`Font loaded: ${entry.name} in ${Math.round(entry.duration)}ms`);
+              if (entry.name.includes('font') && process.env.NODE_ENV === 'development') {
+                console.info(`Font loaded: ${entry.name} in ${Math.round(entry.duration)}ms`);
               }
             });
           });
           
           observerRef.current.observe({ entryTypes: ['resource'] });
         } catch (error) {
-          console.warn('PerformanceObserver not supported:', error);
+          if (process.env.NODE_ENV === 'development') {
+            console.warn('PerformanceObserver not supported:', error);
+          }
         }
       }
     };
@@ -97,7 +99,12 @@ export function PerformanceOptimizer() {
 
       // Reduce animations on low-end devices
       const optimizeForDevice = () => {
-        const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
+        type NetworkInformation = {
+          effectiveType?: string;
+        };
+        const connection = (navigator as typeof navigator & { connection?: NetworkInformation; mozConnection?: NetworkInformation; webkitConnection?: NetworkInformation }).connection || 
+                          (navigator as typeof navigator & { connection?: NetworkInformation; mozConnection?: NetworkInformation; webkitConnection?: NetworkInformation }).mozConnection || 
+                          (navigator as typeof navigator & { connection?: NetworkInformation; mozConnection?: NetworkInformation; webkitConnection?: NetworkInformation }).webkitConnection;
         
         if (connection && (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g')) {
           document.body.classList.add('performance-reduced');
@@ -202,23 +209,45 @@ export const performanceUtils = {
 
   // Get performance metrics
   getPerformanceMetrics: () => {
-    const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-    const paintEntries = performance.getEntriesByType('paint');
-    
-    return {
+    try {
+      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const paintEntries = performance.getEntriesByType('paint');
+      
+      return {
       // Core Web Vitals approximation
       fcp: paintEntries.find(entry => entry.name === 'first-contentful-paint')?.startTime || 0,
-      lcp: navigation?.loadEventEnd - navigation?.navigationStart || 0,
+      lcp: navigation 
+        ? (navigation.loadEventEnd - navigation.fetchStart) 
+        : (paintEntries.find(entry => entry.name === 'largest-contentful-paint')?.startTime || 0),
       cls: 0, // Would need more complex measurement
+      
+      // Navigation timing metrics (using modern API)
+      domContentLoaded: navigation ? (navigation.domContentLoadedEventEnd - navigation.fetchStart) : 0,
+      loadComplete: navigation ? (navigation.loadEventEnd - navigation.fetchStart) : 0,
+      ttfb: navigation ? (navigation.responseStart - navigation.requestStart) : 0, // Time to First Byte
       
       // Font metrics
       fontLoadTime: Array.from(document.fonts).length,
       
       // Memory usage (if available)
-      memory: (performance as any).memory ? {
-        used: Math.round((performance as any).memory.usedJSHeapSize / 1024 / 1024),
-        total: Math.round((performance as any).memory.totalJSHeapSize / 1024 / 1024),
+      memory: (performance as typeof performance & { memory?: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number } }).memory ? {
+        used: Math.round((performance as typeof performance & { memory: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number } }).memory.usedJSHeapSize / 1024 / 1024),
+        total: Math.round((performance as typeof performance & { memory: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number } }).memory.totalJSHeapSize / 1024 / 1024),
+        limit: Math.round((performance as typeof performance & { memory: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number } }).memory.jsHeapSizeLimit / 1024 / 1024),
       } : null,
     };
+    } catch (error) {
+      console.warn('Failed to collect performance metrics:', error);
+      return {
+        fcp: 0,
+        lcp: 0,
+        cls: 0,
+        domContentLoaded: 0,
+        loadComplete: 0,
+        ttfb: 0,
+        fontLoadTime: 0,
+        memory: null,
+      };
+    }
   },
 };

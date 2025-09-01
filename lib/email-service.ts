@@ -13,7 +13,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 interface EmailSendOptions {
   firstName?: string;
   subscriberCount?: number;
-  customData?: Record<string, any>;
+  customData?: Record<string, unknown>;
 }
 
 interface EmailResult {
@@ -42,7 +42,7 @@ export async function sendWelcomeEmail(
   options: EmailSendOptions = {}
 ): Promise<EmailResult> {
   try {
-    const { firstName, subscriberCount = 0, customData } = options;
+    const { firstName: _firstName, subscriberCount: _subscriberCount = 0, customData } = options;
     const isTransactional = customData?.transactional || false;
     
     // Prepare template variables
@@ -62,9 +62,7 @@ export async function sendWelcomeEmail(
       subject: '🎉 You\'re In – Silksong Tracking Activated',
       html: htmlContent,
       text: textContent,
-      // Disable link tracking to prevent Gmail image display issues
-      track_opens: false,
-      track_clicks: false,
+      // Note: Resend doesn't support track_opens/track_clicks configuration
       headers: {
         'X-Entity-Ref-ID': subscription.id,
         'List-Unsubscribe': `<mailto:${process.env.REPLY_TO_EMAIL || process.env.FROM_EMAIL || 'unsubscribe@hollowknightsilksong.org'}>`,
@@ -106,7 +104,7 @@ export async function sendWelcomeEmail(
 export async function sendConfirmationEmail(
   email: string,
   confirmationToken: string,
-  options: { expiryHours?: number; customData?: Record<string, any> } = {}
+  options: { expiryHours?: number; customData?: Record<string, unknown> } = {}
 ): Promise<EmailResult> {
   try {
     const { expiryHours = 24 } = options;
@@ -161,9 +159,7 @@ If you didn't request this subscription, you can safely ignore this email.
       subject: 'Confirm your Silksong subscription',
       html: htmlContent,
       text: textContent,
-      // Disable tracking for confirmation emails too
-      track_opens: false,
-      track_clicks: false,
+      // Note: Resend doesn't support track_opens/track_clicks configuration
       tags: [
         { name: 'type', value: 'confirmation' }
       ]

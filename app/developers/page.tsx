@@ -11,7 +11,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { CodeBlock } from '@/components/ui/code-block';
 import { APIEndpoint } from '@/components/ui/api-endpoint';
-import { ResponseExample } from '@/components/ui/response-example';
 import { 
   Code2, 
   Zap, 
@@ -19,7 +18,6 @@ import {
   Clock, 
   Download, 
   ExternalLink,
-  Copy,
   Check,
   BookOpen,
   Users,
@@ -170,7 +168,7 @@ export default function DevelopersPage() {
                   <h3 className="text-lg font-semibold mb-3">2. Explore the Response</h3>
                   <div className="bg-hornet-neutral-700 dark:bg-hornet-neutral-800 rounded-lg p-4">
                     <p className="text-sm text-hornet-neutral-200 mb-3">
-                      You'll get a comprehensive response with:
+                      You&apos;ll get a comprehensive response with:
                     </p>
                     <ul className="space-y-2 text-sm">
                       <li className="flex items-center gap-2">
@@ -224,7 +222,7 @@ export default function DevelopersPage() {
               <CardContent>
                 <Badge variant="secondary" className="mb-2">Public APIs</Badge>
                 <p className="text-sm text-hornet-neutral-200">
-                  Currently, all endpoints are public and don't require authentication. 
+                  Currently, all endpoints are public and don&apos;t require authentication. 
                   Rate limits apply to ensure fair usage.
                 </p>
               </CardContent>
@@ -288,7 +286,7 @@ export default function DevelopersPage() {
                   },
                   {
                     status: 304,
-                    description: 'Not Modified - Content hasn\'t changed (when using ETag)',
+                    description: 'Not Modified - Content hasn&apos;t changed (when using ETag)',
                     example: null
                   },
                   {
@@ -555,7 +553,7 @@ curl -X POST "https://silksong-nextjs.vercel.app/api/subscribe" \\
                   },
                   {
                     status: 304,
-                    description: 'Not Modified - Feed hasn\'t changed',
+                    description: 'Not Modified - Feed hasn&apos;t changed',
                     example: null
                   }
                 ]}

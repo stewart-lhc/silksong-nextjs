@@ -5,8 +5,8 @@ import { onCLS, onFCP, onLCP, onINP, onTTFB, type Metric } from 'web-vitals';
 
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
-    va?: (...args: any[]) => void;
+    gtag?: (...args: unknown[]) => void;
+    va?: (...args: unknown[]) => void;
   }
 }
 
@@ -51,7 +51,7 @@ export function PerformanceMonitor() {
       if (process.env.NODE_ENV === 'development') {
         const rating = getRating(metric.name, metric.value);
         const color = rating === 'good' ? '🟢' : rating === 'needs-improvement' ? '🟡' : '🔴';
-        console.log(`${color} ${metric.name}: ${metric.value.toFixed(2)}${getUnit(metric.name)} (${rating})`);
+        console.info(`${color} ${metric.name}: ${metric.value.toFixed(2)}${getUnit(metric.name)} (${rating})`);
       }
     }
 
@@ -64,7 +64,7 @@ export function PerformanceMonitor() {
 
     // Development-only initialization log
     if (process.env.NODE_ENV === 'development') {
-      console.log('🚀 Performance Monitor initialized - tracking Core Web Vitals');
+      console.info('🚀 Performance Monitor initialized - tracking Core Web Vitals');
     }
   }, []);
 

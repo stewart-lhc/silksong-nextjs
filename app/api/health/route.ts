@@ -29,8 +29,8 @@ interface HealthStatus {
 /**
  * GET /api/health - Health check endpoint
  */
-export async function GET(request: NextRequest) {
-  const startTime = Date.now();
+export async function GET(_request: NextRequest) {
+  const _startTime = Date.now();
 
   try {
     // Check database connectivity and performance
@@ -56,12 +56,12 @@ export async function GET(request: NextRequest) {
           error: error.message,
         };
       }
-    } catch (error) {
+    } catch (_error) {
       supabaseStatus = {
         status: 'unhealthy',
         connected: false,
         error:
-          error instanceof Error ? error.message : 'Unknown connection error',
+          _error instanceof Error ? _error.message : 'Unknown connection error',
       };
     }
 
@@ -105,8 +105,8 @@ export async function GET(request: NextRequest) {
         'Content-Type': 'application/json',
       },
     });
-  } catch (error) {
-    console.error('Health check failed:', error);
+  } catch (_error) {
+    console.error('Health check failed:', _error);
 
     const errorStatus: HealthStatus = {
       status: 'unhealthy',
@@ -139,7 +139,7 @@ export async function GET(request: NextRequest) {
 /**
  * HEAD /api/health - Simple health check for monitoring systems
  */
-export async function HEAD(request: NextRequest) {
+export async function HEAD(_request: NextRequest) {
   try {
     // Quick database connectivity check
     const { error } = await supabase
@@ -162,7 +162,7 @@ export async function HEAD(request: NextRequest) {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
       },
     });
-  } catch (error) {
+  } catch (_error) {
     return new NextResponse(null, {
       status: 503,
       headers: {

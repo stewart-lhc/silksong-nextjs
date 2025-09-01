@@ -1,7 +1,13 @@
 import { BASE_URL, GAME_RELEASE_DATE } from '../config/seo';
 
+interface JsonLdSchema {
+  '@context': string;
+  '@type': string;
+  [key: string]: unknown;
+}
+
 interface StructuredDataProps {
-  schema: Record<string, any>;
+  schema: JsonLdSchema;
 }
 
 export function StructuredData({ schema }: StructuredDataProps) {
@@ -62,7 +68,7 @@ export const createHowToSchema = (checklistData: Array<{
     "name": category.title,
     "text": category.description,
     "url": `${BASE_URL}/checklist#${category.id}`,
-    "substeps": category.items.slice(0, 3).map((item, itemIndex) => ({
+    "substeps": category.items.slice(0, 3).map((item) => ({
       "@type": "HowToDirection",
       "text": item.text
     }))
@@ -153,7 +159,7 @@ export const createTimelineSchema = (events: Array<{
     },
     "datePublished": GAME_RELEASE_DATE
   },
-  "timeline": events.map((event, index) => ({
+  "timeline": events.map((event) => ({
     "@type": "Event",
     "name": event.title,
     "description": event.description,

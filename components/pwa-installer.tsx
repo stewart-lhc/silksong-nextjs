@@ -40,7 +40,7 @@ export function PWAInstaller() {
     const checkInstallStatus = () => {
       // Check if running as PWA
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
-                          (window.navigator as any).standalone === true ||
+                          (window.navigator as { standalone?: boolean }).standalone === true ||
                           document.referrer.includes('android-app://');
       setIsInstalled(isStandalone);
     };
@@ -54,7 +54,9 @@ export function PWAInstaller() {
             updateViaCache: 'none', // Always check for updates
           });
 
-          console.log('Service Worker registered successfully:', registration);
+          if (process.env.NODE_ENV === 'development') {
+            console.info('Service Worker registered successfully:', registration);
+          }
 
           // Check for updates
           registration.addEventListener('updatefound', () => {
@@ -62,7 +64,9 @@ export function PWAInstaller() {
             if (newWorker) {
               newWorker.addEventListener('statechange', () => {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  console.log('New service worker available');
+                  if (process.env.NODE_ENV === 'development') {
+                    console.info('New service worker available');
+                  }
                   // Show update notification
                   showUpdateAvailable();
                 }
@@ -105,7 +109,9 @@ export function PWAInstaller() {
       setIsInstalled(true);
       setShowInstallPrompt(false);
       setDeferredPrompt(null);
-      console.log('PWA was installed successfully');
+      if (process.env.NODE_ENV === 'development') {
+        console.info('PWA was installed successfully');
+      }
     });
 
     return () => {
@@ -121,9 +127,13 @@ export function PWAInstaller() {
       const choiceResult = await deferredPrompt.userChoice;
       
       if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted the install prompt');
+        if (process.env.NODE_ENV === 'development') {
+          console.info('User accepted the install prompt');
+        }
       } else {
-        console.log('User dismissed the install prompt');
+        if (process.env.NODE_ENV === 'development') {
+          console.info('User dismissed the install prompt');
+        }
       }
     } catch (error) {
       console.error('Error showing install prompt:', error);

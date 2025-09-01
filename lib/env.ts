@@ -204,7 +204,7 @@ export const localization = {
 
 // Development helper to log environment status
 if (isDevelopment) {
-  console.log('Environment Configuration:', {
+  console.info('Environment Configuration:', {
     nodeEnv: env.NODE_ENV,
     appUrl: env.NEXT_PUBLIC_APP_URL,
     appName: env.NEXT_PUBLIC_APP_NAME,

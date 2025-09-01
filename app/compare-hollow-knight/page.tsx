@@ -12,7 +12,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { cn } from '@/lib/utils';
 import comparisonData from '@/data/comparison.json';
 
 export const metadata: Metadata = {

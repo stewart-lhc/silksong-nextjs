@@ -31,14 +31,12 @@ export function DevPerformanceDashboard() {
     webVitals: []
   });
   const [isVisible, setIsVisible] = useState(false);
+  const isDevelopment = process.env.NODE_ENV === 'development';
 
-  // Only show in development
-  if (process.env.NODE_ENV !== 'development') {
-    return null;
-  }
-
-  // Track Web Vitals
+  // Track Web Vitals - always call hooks unconditionally
   useWebVitals((metric) => {
+    if (!isDevelopment) return;
+    
     setPerformanceData(prev => ({
       ...prev,
       webVitals: [...prev.webVitals.filter(m => m.name !== metric.name), metric]
@@ -47,6 +45,8 @@ export function DevPerformanceDashboard() {
 
   // Load performance reports
   useEffect(() => {
+    if (!isDevelopment) return;
+
     const loadReports = async () => {
       try {
         const [imageReport, lcpAnalysis] = await Promise.all([
@@ -81,10 +81,12 @@ export function DevPerformanceDashboard() {
     } else {
       window.addEventListener('load', () => setTimeout(loadReports, 2000));
     }
-  }, []);
+  }, [isDevelopment]);
 
   // Keyboard shortcut to toggle dashboard
   useEffect(() => {
+    if (!isDevelopment) return;
+
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.shiftKey && e.key === 'P') {
         setIsVisible(!isVisible);
@@ -93,7 +95,12 @@ export function DevPerformanceDashboard() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [isVisible]);
+  }, [isVisible, isDevelopment]);
+
+  // Only show in development - moved after all hooks
+  if (!isDevelopment) {
+    return null;
+  }
 
   if (!isVisible) {
     return (

@@ -7,7 +7,7 @@ import { Video } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Card } from '@/components/ui/card';
+// import { Card } from '@/components/ui/card'; // Unused
 // TODO: Replace with simplified subscription hook
 
 // Simple Background with Image and Video
@@ -36,7 +36,7 @@ function BackgroundVideo() {
       
       {/* YouTube Video */}
       <iframe
-        src="https://www.youtube.com/embed/0BqVbQ6nUXE?autoplay=1&mute=1&loop=1&playlist=0BqVbQ6nUXE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&start=1&playsinline=1&enablejsapi=1"
+        src="https://www.youtube-nocookie.com/embed/0BqVbQ6nUXE?autoplay=1&mute=1&loop=1&playlist=0BqVbQ6nUXE&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&start=1&playsinline=1&enablejsapi=1"
         className="absolute pointer-events-none transition-opacity duration-1000"
         style={{
           filter: 'brightness(0.6) contrast(1.1)',
@@ -310,7 +310,7 @@ export function HeroSection() {
               <DialogContent className="max-w-4xl w-full h-[80vh] p-0">
                 <div className="w-full h-full">
                   <iframe
-                    src="https://www.youtube.com/embed/6XGeJwsUP9c?autoplay=1"
+                    src="https://www.youtube-nocookie.com/embed/6XGeJwsUP9c?autoplay=1"
                     className="w-full h-full rounded-lg"
                     allow="autoplay; encrypted-media"
                     allowFullScreen

@@ -9,7 +9,7 @@ import React from 'react';
 import { CodeBlock } from '@/components/ui/code-block';
 
 interface ResponseExampleProps {
-  data: any;
+  data: unknown;
   status: number;
   className?: string;
 }
