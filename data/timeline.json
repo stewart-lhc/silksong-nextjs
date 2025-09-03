@@ -42,7 +42,7 @@
     "description": "Matthew Griffin, head of marketing and publishing at Team Cherry, confirmed that Silksong was originally planned for release in the first half of 2023 but was delayed to ensure quality.",
     "type": "Development Update",
     "source": "https://twitter.com/griffinmatta/status/1656093223819149312",
-    "category": "release date"
+    "category": "release_date"
   },
   {
     "id": "6",
@@ -106,5 +106,23 @@
     "type": "Community",
     "source": "https://www.gamespot.com/articles/the-latest-silksong-induced-game-delay-doesnt-hide-its-reasoning-in-new-trailer/1100-6534273/",
     "category": "community"
+  },
+  {
+    "id": "13",
+    "date": "2025-08-29",
+    "title": "Review Embargo Lifts to Widespread Acclaim",
+    "description": "The review embargo for Hollow Knight: Silksong lifted. The game received universal acclaim, with many critics from major outlets awarding it perfect or near-perfect scores, praising its expanded world, fluid combat, and intricate design.",
+    "type": "News",
+    "source": "https://www.metacritic.com/game/hollow-knight-silksong/",
+    "category": "reception"
+  },
+  {
+    "id": "14",
+    "date": "2025-08-31",
+    "title": "Official Release Times and Price Confirmed",
+    "description": "In an official update four days before release, Team Cherry confirmed the global launch times (7AM PT, 10AM ET, 4PM CEST, 11PM JST) and the final price: $19.99 USD, €19.99, and ¥2300 JPY.",
+    "type": "Announcement",
+    "source": "https://x.com/TeamCherryGames/status/1962330350681735642",
+    "category": "release_date"
   }
 ]

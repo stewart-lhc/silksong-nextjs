@@ -8,6 +8,7 @@ interface CountdownState {
   hours: number;
   minutes: number;
   seconds: number;
+  milliseconds: number;
 }
 
 interface ThemeStyles {
@@ -88,6 +89,7 @@ export default function EmbedCountdownPage() {
     hours: 0,
     minutes: 0,
     seconds: 0,
+    milliseconds: 0,
   });
   const [isReleased, setIsReleased] = useState(false);
 
@@ -137,29 +139,29 @@ export default function EmbedCountdownPage() {
 
   useEffect(() => {
     const updateCountdown = () => {
-      const now = new Date().getTime();
+      const now = Date.now();
       const diff = targetDate - now;
 
       if (diff <= 0) {
         setIsReleased(true);
+        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
         return;
       }
 
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      const milliseconds = diff % 1000;
 
-      setCountdown({ days, hours, minutes, seconds });
+      setCountdown({ days, hours, minutes, seconds, milliseconds });
     };
 
     // Initial update
     updateCountdown();
 
-    // Update every second
-    const interval = setInterval(updateCountdown, 1000);
+    // Update every 100ms to support 0.1s display
+    const interval = setInterval(updateCountdown, 100);
 
     return () => clearInterval(interval);
   }, [targetDate]);
@@ -245,7 +247,7 @@ export default function EmbedCountdownPage() {
               </a>
             </div>
             
-            {/* Countdown numbers */}
+            {/* Countdown numbers with leading-zero hide and 0.1s seconds */}
             <div
               style={{
                 display: 'flex',
@@ -254,26 +256,36 @@ export default function EmbedCountdownPage() {
                 alignItems: 'center',
               }}
             >
-              <CountdownUnit
-                value={countdown.days}
-                label={t.days}
-                themeStyles={themeStyles}
-              />
-              <CountdownUnit
-                value={countdown.hours}
-                label={t.hours}
-                themeStyles={themeStyles}
-              />
-              <CountdownUnit
-                value={countdown.minutes}
-                label={t.minutes}
-                themeStyles={themeStyles}
-              />
-              <CountdownUnit
-                value={countdown.seconds}
-                label={t.seconds}
-                themeStyles={themeStyles}
-              />
+              {(() => {
+                const segments = [
+                  { key: 'days', label: t.days, value: countdown.days },
+                  { key: 'hours', label: t.hours, value: countdown.hours },
+                  { key: 'minutes', label: t.minutes, value: countdown.minutes },
+                  { key: 'seconds', label: t.seconds, value: countdown.seconds },
+                ] as const;
+
+                let firstNonZeroIndex = segments.findIndex((s) => s.value > 0);
+                if (firstNonZeroIndex === -1) firstNonZeroIndex = segments.length - 1; // keep seconds
+                const visible = segments.slice(firstNonZeroIndex);
+                const onlyMinutesAndSeconds = countdown.days === 0 && countdown.hours === 0;
+
+                return visible.map((seg) => {
+                  const isSeconds = seg.key === 'seconds';
+                  const display = onlyMinutesAndSeconds && isSeconds
+                    ? `${seg.value.toString().padStart(2, '0')}.${Math.floor(countdown.milliseconds / 100)}`
+                    : undefined;
+
+                  return (
+                    <CountdownUnit
+                      key={seg.key}
+                      value={seg.value}
+                      label={seg.label}
+                      themeStyles={themeStyles}
+                      display={display}
+                    />
+                  );
+                });
+              })()}
             </div>
           </div>
         )}
@@ -286,10 +298,12 @@ function CountdownUnit({
   value,
   label,
   themeStyles,
+  display,
 }: {
   value: number;
   label: string;
   themeStyles: ThemeStyles;
+  display?: string;
 }) {
   return (
     <div
@@ -308,7 +322,7 @@ function CountdownUnit({
           color: themeStyles.accent,
         }}
       >
-        {value.toString().padStart(2, '0')}
+        {display ?? value.toString().padStart(2, '0')}
       </span>
       <span
         style={{

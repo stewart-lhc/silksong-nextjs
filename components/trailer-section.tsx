@@ -230,11 +230,12 @@ export function TrailerSection() {
             <div className="flex justify-center space-x-2" role="tablist" aria-label="Trailer selection">
               {trailers.map((trailer, index) => (
                 <button
+                  type="button"
                   key={trailer.id}
                   onClick={() => handleDirectNavigation(index)}
                   disabled={isAnimating}
                   role="tab"
-                  aria-selected={index === currentTrailer}
+                  aria-selected={String(index === currentTrailer)}
                   aria-label={`Switch to ${trailer.title}`}
                   className={`
                     carousel-dot w-3 h-3 focus:outline-none focus:ring-2 focus:ring-primary/50
