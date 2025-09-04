@@ -229,23 +229,41 @@ export function TrailerSection() {
             {/* Professional Dots Indicator with Enhanced UX */}
             <div className="flex justify-center space-x-2" role="tablist" aria-label="Trailer selection">
               {trailers.map((trailer, index) => (
-                <button
-                  type="button"
-                  key={trailer.id}
-                  onClick={() => handleDirectNavigation(index)}
-                  disabled={isAnimating}
-                  role="tab"
-                  aria-selected={String(index === currentTrailer)}
-                  aria-label={`Switch to ${trailer.title}`}
-                  className={`
-                    carousel-dot w-3 h-3 focus:outline-none focus:ring-2 focus:ring-primary/50
-                    ${index === currentTrailer 
-                      ? 'bg-primary scale-125 shadow-lg shadow-primary/50' 
-                      : 'bg-muted hover:bg-muted-foreground/50 hover:scale-110'
-                    }
-                    ${isAnimating ? 'pointer-events-none opacity-50' : ''}
-                  `}
-                />
+                index === currentTrailer ? (
+                  <button
+                    key={trailer.id}
+                    onClick={() => handleDirectNavigation(index)}
+                    disabled={isAnimating}
+                    role="tab"
+                    aria-selected="true"
+                    aria-label={`Switch to ${trailer.title}`}
+                    className={`
+                      carousel-dot w-3 h-3 focus:outline-none focus:ring-2 focus:ring-primary/50
+                      ${index === currentTrailer 
+                        ? 'bg-primary scale-125 shadow-lg shadow-primary/50' 
+                        : 'bg-muted hover:bg-muted-foreground/50 hover:scale-110'
+                      }
+                      ${isAnimating ? 'pointer-events-none opacity-50' : ''}
+                    `}
+                  />
+                ) : (
+                  <button
+                    key={trailer.id}
+                    onClick={() => handleDirectNavigation(index)}
+                    disabled={isAnimating}
+                    role="tab"
+                    aria-selected="false"
+                    aria-label={`Switch to ${trailer.title}`}
+                    className={`
+                      carousel-dot w-3 h-3 focus:outline-none focus:ring-2 focus:ring-primary/50
+                      ${index === currentTrailer 
+                        ? 'bg-primary scale-125 shadow-lg shadow-primary/50' 
+                        : 'bg-muted hover:bg-muted-foreground/50 hover:scale-110'
+                      }
+                      ${isAnimating ? 'pointer-events-none opacity-50' : ''}
+                    `}
+                  />
+                )
               ))}
             </div>
 

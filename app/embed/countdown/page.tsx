@@ -1,97 +1,119 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
-interface CountdownState {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-  milliseconds: number;
-}
-
-interface ThemeStyles {
-  bg: string;
-  text: string;
-  accent: string;
-  muted: string;
-  border: string;
-}
 
 const translations = {
   en: {
     title: 'Hollow Knight: Silksong',
-    subtitle: 'September 4',
-    days: 'Days',
-    hours: 'Hours',
-    minutes: 'Minutes',
-    seconds: 'Seconds',
-    released: 'Released!',
-    unknown: 'Release Date TBA',
+    buyNow: 'Buy Now',
+    platforms: {
+      steam: 'Steam (PC/Mac/Linux)',
+      xbox: 'Xbox (Series X|S/One)',
+      nintendo: 'Nintendo (Switch/Switch2)',
+      playstation: 'PlayStation (PS4/PS5)',
+      gog: 'GOG',
+      humble: 'Humble Bundle',
+    },
   },
   zh: {
     title: '空洞骑士：丝之歌',
-    subtitle: '9月4日',
-    days: '天',
-    hours: '小时',
-    minutes: '分钟',
-    seconds: '秒',
-    released: '已发售！',
-    unknown: '发售日期待定',
+    buyNow: '立即购买',
+    platforms: {
+      steam: 'Steam (PC/Mac/Linux)',
+      xbox: 'Xbox (Series X|S/One)',
+      nintendo: 'Nintendo (Switch/Switch2)',
+      playstation: 'PlayStation (PS4/PS5)',
+      gog: 'GOG',
+      humble: 'Humble Bundle',
+    },
   },
   es: {
     title: 'Hollow Knight: Silksong',
-    subtitle: '4 de Septiembre',
-    days: 'Días',
-    hours: 'Horas',
-    minutes: 'Minutos',
-    seconds: 'Segundos',
-    released: '¡Lanzado!',
-    unknown: 'Fecha de lanzamiento por confirmar',
+    buyNow: 'Comprar Ahora',
+    platforms: {
+      steam: 'Steam (PC/Mac/Linux)',
+      xbox: 'Xbox (Series X|S/One)',
+      nintendo: 'Nintendo (Switch/Switch2)',
+      playstation: 'PlayStation (PS4/PS5)',
+      gog: 'GOG',
+      humble: 'Humble Bundle',
+    },
   },
   fr: {
     title: 'Hollow Knight: Silksong',
-    subtitle: '4 Septembre',
-    days: 'Jours',
-    hours: 'Heures',
-    minutes: 'Minutes',
-    seconds: 'Secondes',
-    released: 'Sorti !',
-    unknown: 'Date de sortie à confirmer',
+    buyNow: 'Acheter Maintenant',
+    platforms: {
+      steam: 'Steam (PC/Mac/Linux)',
+      xbox: 'Xbox (Series X|S/One)',
+      nintendo: 'Nintendo (Switch/Switch2)',
+      playstation: 'PlayStation (PS4/PS5)',
+      gog: 'GOG',
+      humble: 'Humble Bundle',
+    },
   },
   de: {
     title: 'Hollow Knight: Silksong',
-    subtitle: '4. September',
-    days: 'Tage',
-    hours: 'Stunden',
-    minutes: 'Minuten',
-    seconds: 'Sekunden',
-    released: 'Veröffentlicht!',
-    unknown: 'Veröffentlichungsdatum offen',
+    buyNow: 'Jetzt Kaufen',
+    platforms: {
+      steam: 'Steam (PC/Mac/Linux)',
+      xbox: 'Xbox (Series X|S/One)',
+      nintendo: 'Nintendo (Switch/Switch2)',
+      playstation: 'PlayStation (PS4/PS5)',
+      gog: 'GOG',
+      humble: 'Humble Bundle',
+    },
   },
   ja: {
     title: 'ホロウナイト：シルクソング',
-    subtitle: '9月4日',
-    days: '日',
-    hours: '時間',
-    minutes: '分',
-    seconds: '秒',
-    released: 'リリース済み！',
-    unknown: 'リリース日未定',
+    buyNow: '今すぐ購入',
+    platforms: {
+      steam: 'Steam (PC/Mac/Linux)',
+      xbox: 'Xbox (Series X|S/One)',
+      nintendo: 'Nintendo (Switch/Switch2)',
+      playstation: 'PlayStation (PS4/PS5)',
+      gog: 'GOG',
+      humble: 'Humble Bundle',
+    },
   },
 };
 
+// Purchase links data
+const purchaseLinks = [
+  {
+    id: 'steam',
+    url: 'https://store.steampowered.com/app/1030300',
+    key: 'steam' as const,
+  },
+  {
+    id: 'xbox',
+    url: 'https://www.xbox.com/en-us/games/store/hollow-knight-silksong/9n116v0599hb',
+    key: 'xbox' as const,
+  },
+  {
+    id: 'nintendo',
+    url: 'https://www.nintendo.com/games/detail/hollow-knight-silksong-switch/',
+    key: 'nintendo' as const,
+  },
+  {
+    id: 'playstation',
+    url: 'https://store.playstation.com/en-us/concept/10005908',
+    key: 'playstation' as const,
+  },
+  {
+    id: 'gog',
+    url: 'https://www.gog.com/game/hollow_knight_silksong',
+    key: 'gog' as const,
+  },
+  {
+    id: 'humble',
+    url: 'https://www.humblebundle.com/store/hollow-knight-silksong',
+    key: 'humble' as const,
+  },
+];
+
 export default function EmbedCountdownPage() {
   const searchParams = useSearchParams();
-  const [countdown, setCountdown] = useState<CountdownState>({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-    milliseconds: 0,
-  });
-  const [isReleased, setIsReleased] = useState(false);
 
   const theme = searchParams.get('theme') || 'light';
   const lang = searchParams.get('lang') || 'en';
@@ -100,9 +122,6 @@ export default function EmbedCountdownPage() {
   const showBorder = searchParams.get('border') !== 'false';
 
   const t = translations[lang as keyof typeof translations] || translations.en;
-
-  // Target release date - using PRD specified date at 14:00:00 UTC
-  const targetDate = new Date('2025-09-04T14:00:00Z').getTime();
 
   const themeStyles =
     theme === 'dark'
@@ -127,44 +146,16 @@ export default function EmbedCountdownPage() {
     border: showBorder ? `1px solid ${themeStyles.border}` : 'none',
     borderRadius: '6px',
     padding: '8px 12px',
-    maxWidth: layout === 'vertical' ? '180px' : '380px',
+    maxWidth: layout === 'vertical' ? '280px' : '600px',
     fontFamily: 'system-ui, -apple-system, sans-serif',
     display: 'flex',
     flexDirection: layout === 'vertical' ? 'column' : 'row',
     alignItems: 'center',
-    justifyContent: layout === 'vertical' ? 'center' : 'space-between',
+    justifyContent: 'center',
     gap: '12px',
-    minHeight: '60px',
+    minHeight: '160px',
   } as const;
 
-  useEffect(() => {
-    const updateCountdown = () => {
-      const now = Date.now();
-      const diff = targetDate - now;
-
-      if (diff <= 0) {
-        setIsReleased(true);
-        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 });
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-      const milliseconds = diff % 1000;
-
-      setCountdown({ days, hours, minutes, seconds, milliseconds });
-    };
-
-    // Initial update
-    updateCountdown();
-
-    // Update every 100ms to support 0.1s display
-    const interval = setInterval(updateCountdown, 100);
-
-    return () => clearInterval(interval);
-  }, [targetDate]);
 
   return (
     <div
@@ -212,127 +203,55 @@ export default function EmbedCountdownPage() {
           </div>
         )}
 
-        {isReleased ? (
-          <div
-            style={{
-              textAlign: 'center',
-              fontWeight: '600',
-              color: themeStyles.accent,
-              fontSize: '16px',
-            }}
-          >
-            {t.released}
-          </div>
-        ) : (
-          <div>
-            {/* Date and time info above countdown */}
-            <div
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: layout === 'vertical' ? 'column' : 'row',
+            flexWrap: layout === 'vertical' ? 'nowrap' : 'wrap',
+            gap: '8px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
+          {purchaseLinks.map((link) => (
+            <a
+              key={link.id}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
-                textAlign: 'center',
-                marginBottom: '12px',
-              }}
-            >
-              <a
-                href="https://steamdb.info/app/1030300"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: themeStyles.muted,
-                  textDecoration: 'none',
-                  fontSize: '11px',
-                  display: 'block',
-                }}
-              >
-                {t.subtitle} - 14:00:00 UTC
-              </a>
-            </div>
-            
-            {/* Countdown numbers with leading-zero hide and 0.1s seconds */}
-            <div
-              style={{
-                display: 'flex',
-                gap: layout === 'vertical' ? '8px' : '12px',
-                flexDirection: layout === 'vertical' ? 'column' : 'row',
+                display: 'inline-flex',
                 alignItems: 'center',
+                justifyContent: 'center',
+                padding: '6px 12px',
+                backgroundColor: themeStyles.accent,
+                color: themeStyles.bg,
+                textDecoration: 'none',
+                borderRadius: '4px',
+                fontSize: '11px',
+                fontWeight: '600',
+                transition: 'all 0.2s ease',
+                border: 'none',
+                cursor: 'pointer',
+                minWidth: layout === 'vertical' ? '200px' : '140px',
+                textAlign: 'center',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = '0.9';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = '1';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
-              {(() => {
-                const segments = [
-                  { key: 'days', label: t.days, value: countdown.days },
-                  { key: 'hours', label: t.hours, value: countdown.hours },
-                  { key: 'minutes', label: t.minutes, value: countdown.minutes },
-                  { key: 'seconds', label: t.seconds, value: countdown.seconds },
-                ] as const;
-
-                let firstNonZeroIndex = segments.findIndex((s) => s.value > 0);
-                if (firstNonZeroIndex === -1) firstNonZeroIndex = segments.length - 1; // keep seconds
-                const visible = segments.slice(firstNonZeroIndex);
-                const onlyMinutesAndSeconds = countdown.days === 0 && countdown.hours === 0;
-
-                return visible.map((seg) => {
-                  const isSeconds = seg.key === 'seconds';
-                  const display = onlyMinutesAndSeconds && isSeconds
-                    ? `${seg.value.toString().padStart(2, '0')}.${Math.floor(countdown.milliseconds / 100)}`
-                    : undefined;
-
-                  return (
-                    <CountdownUnit
-                      key={seg.key}
-                      value={seg.value}
-                      label={seg.label}
-                      themeStyles={themeStyles}
-                      display={display}
-                    />
-                  );
-                });
-              })()}
-            </div>
-          </div>
-        )}
+              {t.platforms[link.key]}
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-function CountdownUnit({
-  value,
-  label,
-  themeStyles,
-  display,
-}: {
-  value: number;
-  label: string;
-  themeStyles: ThemeStyles;
-  display?: string;
-}) {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '2px',
-        fontSize: '12px',
-      }}
-    >
-      <span
-        style={{
-          fontWeight: '600',
-          fontSize: '16px',
-          color: themeStyles.accent,
-        }}
-      >
-        {display ?? value.toString().padStart(2, '0')}
-      </span>
-      <span
-        style={{
-          color: themeStyles.muted,
-          fontSize: '10px',
-          textTransform: 'uppercase',
-        }}
-      >
-        {label}
-      </span>
-    </div>
-  );
-}

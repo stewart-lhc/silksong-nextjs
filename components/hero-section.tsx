@@ -60,57 +60,59 @@ function BackgroundVideo() {
   );
 }
 
-// Animated countdown component (simplified version)
+// Purchase links data
+const purchaseLinks = [
+  {
+    id: 'steam',
+    url: 'https://store.steampowered.com/app/1030300',
+    name: 'Steam (PC/Mac/Linux)',
+  },
+  {
+    id: 'xbox',
+    url: 'https://www.xbox.com/en-us/games/store/hollow-knight-silksong/9n116v0599hb',
+    name: 'Xbox (Series X|S/One)',
+  },
+  {
+    id: 'nintendo',
+    url: 'https://www.nintendo.com/games/detail/hollow-knight-silksong-switch/',
+    name: 'Nintendo (Switch/Switch2)',
+  },
+  {
+    id: 'playstation',
+    url: 'https://store.playstation.com/en-us/concept/10005908',
+    name: 'PlayStation (PS4/PS5)',
+  },
+  {
+    id: 'gog',
+    url: 'https://www.gog.com/game/hollow_knight_silksong',
+    name: 'GOG',
+  },
+  {
+    id: 'humble',
+    url: 'https://www.humblebundle.com/store/hollow-knight-silksong',
+    name: 'Humble Bundle',
+  },
+];
+
+// Purchase buttons component (replaces countdown)
 function CountdownTimer() {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
-  useEffect(() => {
-    // Set target date to September 4, 2025 at 14:00:00 UTC
-    const targetDate = new Date('2025-09-04T14:00:00Z');
-    
-    const updateCountdown = () => {
-      const now = new Date().getTime();
-      const distance = targetDate.getTime() - now;
-
-      if (distance > 0) {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000),
-        });
-      }
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <div className="grid grid-cols-4 gap-3 text-center max-w-lg mx-auto">
-      <div className="bg-background/30 backdrop-blur-sm rounded-lg p-4 border border-primary/20 min-w-0">
-        <div className="text-3xl md:text-4xl lg:text-6xl font-bold text-white">{timeLeft.days}</div>
-        <div className="text-sm text-muted-foreground mt-1">Days</div>
-      </div>
-      <div className="bg-background/30 backdrop-blur-sm rounded-lg p-4 border border-primary/20 min-w-0">
-        <div className="text-3xl md:text-4xl lg:text-6xl font-bold text-white">{timeLeft.hours}</div>
-        <div className="text-sm text-muted-foreground mt-1">Hours</div>
-      </div>
-      <div className="bg-background/30 backdrop-blur-sm rounded-lg p-4 border border-primary/20 min-w-0">
-        <div className="text-3xl md:text-4xl lg:text-6xl font-bold text-white">{timeLeft.minutes}</div>
-        <div className="text-sm text-muted-foreground mt-1">Minutes</div>
-      </div>
-      <div className="bg-background/30 backdrop-blur-sm rounded-lg p-4 border border-primary/20 min-w-0">
-        <div className="text-3xl md:text-4xl lg:text-6xl font-bold text-white">{timeLeft.seconds}</div>
-        <div className="text-sm text-muted-foreground mt-1">Seconds</div>
-      </div>
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-4xl mx-auto">
+      {purchaseLinks.map((link) => (
+        <a
+          key={link.id}
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-primary/90 hover:bg-primary text-white rounded-lg p-3 md:p-4 
+                   transition-all duration-300 hover:scale-105 hover:shadow-lg
+                   text-center font-semibold text-sm md:text-base
+                   border border-primary/20 backdrop-blur-sm
+                   min-h-[60px] md:min-h-[70px] flex items-center justify-center"
+        >
+          <span className="leading-tight">{link.name}</span>
+        </a>
+      ))}
     </div>
   );
 }
@@ -215,16 +217,11 @@ export function HeroSection() {
               <div className="bg-card/20 backdrop-blur-sm border border-primary/20 rounded-2xl p-6 w-full h-full flex flex-col justify-center">
                 <div className="text-center mb-6">
                   <h3 className="text-2xl md:text-3xl font-bold text-primary/90 mb-2">
-                    Release Countdown
+                    Now Available!
                   </h3>
-                  <a 
-                    href="https://steamdb.info/app/1030300" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-sm text-muted-foreground/80 hover:text-primary/70 transition-colors duration-300 hover:underline"
-                  >
-                    4 September 2025 – 14:00:00 UTC
-                  </a>
+                  <p className="text-sm text-muted-foreground/80">
+                    Choose your platform and start your adventure
+                  </p>
                 </div>
                 <CountdownTimer />
               </div>
