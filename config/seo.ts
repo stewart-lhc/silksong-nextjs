@@ -4,7 +4,7 @@ import { getMetaImages, OPTIMIZED_PRESS_KIT_IMAGES } from '@/lib/seo-image-utils
 // Base website information
 const SITE_NAME = "Hollow Knight: Silksong Release Tracker";
 const BASE_URL = process.env.NODE_ENV === 'production' 
-  ? process.env.NEXT_PUBLIC_SITE_URL || "https://hollowknightsilksong.org"
+  ? process.env.NEXT_PUBLIC_SITE_URL || "https://www.hollowknightsilksong.org"
   : "http://localhost:3000";
 const GAME_RELEASE_DATE = "September 4, 2025";
 
@@ -441,6 +441,76 @@ export const seoConfigs: Record<string, PageSEOConfig> = {
       title: "👨‍💻 Silksong API Documentation",
       description: "Build amazing Silksong community tools with our comprehensive API and developer resources."
     }
+  },
+
+  // What is Silksong Guide Page (/what-is-silksong)
+  whatIsSilksong: {
+    title: "What is Silksong? Complete Beginner's Guide to Hollow Knight: Silksong",
+    description: "Complete beginner's guide to Hollow Knight: Silksong. Learn about Hornet, the story, gameplay differences, whether it's a prequel or sequel, and if you need to play Hollow Knight first.",
+    keywords: [
+      ...BASE_KEYWORDS,
+      "what is silksong",
+      "is silksong a prequel",
+      "silksong story",
+      "hollow knight sequel",
+      "beginner guide",
+      "hornet protagonist",
+      "do I need hollow knight",
+      "silksong vs hollow knight",
+      "Team Cherry new game"
+    ],
+    alternates: {
+      canonical: `${BASE_URL}/what-is-silksong`,
+    },
+    openGraph: {
+      title: "🕷️ What is Hollow Knight: Silksong? Complete Beginner's Guide",
+      description: "Everything newcomers need to know about Hollow Knight: Silksong - the story, characters, gameplay, and why it's the most anticipated Metroidvania sequel.",
+      type: "article",
+      url: `${BASE_URL}/what-is-silksong`,
+      siteName: SITE_NAME,
+      images: [getMetaImages().openGraph]
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "🕷️ What is Silksong? Beginner's Guide",
+      description: "Complete guide for newcomers to Hollow Knight: Silksong - story, characters, gameplay & everything you need to know about Team Cherry's sequel.",
+      images: [getMetaImages().twitter]
+    },
+    structuredData: [{
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "What is Hollow Knight: Silksong? Complete Beginner's Guide",
+      "description": "A comprehensive introduction to Hollow Knight: Silksong for newcomers, covering the story, characters, gameplay, and connection to the original Hollow Knight.",
+      "author": {
+        "@type": "Organization",
+        "name": "Silksong Community"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": SITE_NAME,
+        "url": BASE_URL
+      },
+      "datePublished": new Date().toISOString(),
+      "dateModified": new Date().toISOString(),
+      "url": `${BASE_URL}/what-is-silksong`,
+      "image": getMetaImages().openGraph,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `${BASE_URL}/what-is-silksong`
+      },
+      "articleSection": "Gaming Guide",
+      "keywords": "what is silksong, hollow knight silksong, is silksong a prequel, silksong story, hollow knight sequel",
+      "about": [
+        {
+          "@type": "VideoGame",
+          "name": "Hollow Knight: Silksong"
+        },
+        {
+          "@type": "VideoGame", 
+          "name": "Hollow Knight"
+        }
+      ]
+    }]
   }
 };
 
@@ -454,7 +524,8 @@ export const getSEOConfig = (route: string): PageSEOConfig => {
     "/faq": "faq",
     "/tools": "tools",
     "/compare-hollow-knight": "compare",
-    "/developers": "developers"
+    "/developers": "developers",
+    "/what-is-silksong": "whatIsSilksong"
   };
 
   const configKey = routeMap[route] || "home";
@@ -549,6 +620,7 @@ export const faqSEO = seoConfigs.faq;
 export const toolsSEO = seoConfigs.tools;
 export const compareSEO = seoConfigs.compare;
 export const developersSEO = seoConfigs.developers;
+export const whatIsSilksongSEO = seoConfigs.whatIsSilksong;
 
 // Export constants for reuse
 export { SITE_NAME, BASE_URL, GAME_RELEASE_DATE, BASE_KEYWORDS };
