@@ -1,0 +1,117 @@
+Category,Item Name,Description,Location,Type/Subtype,Required for,Reward,Mandatory/Optional,Source
+Bosses,Moss Mother,First boss encounter. Flying bug with stinger. Tutorial boss.,"Ruined Chapel, Moss Grotto",Main Story Boss,Progression,Access to further areas,Mandatory,"Rock Paper Shotgun, Game8"
+Bosses,Bell Beast,Fast travel creature. Pillbug-like boss stuck in silk trap.,The Marrow (entrance area),Main Story Boss,Silkspear ability,Transportation mount,Mandatory,"Rock Paper Shotgun, Game8"
+Bosses,Lace,Recurring boss character. Similar to Hornet in original game.,Deep Docks (behind locked gate),Main Story Boss,Swift Step ability,Story progression,Mandatory,"Rock Paper Shotgun, Game8"
+Bosses,Savage Beastfly,Main story boss in Hunter's March.,"Chapel of the Beast, Hunter's March",Main Story Boss,Drifter's Cloak,Horn Fragment,Mandatory,Game8
+Bosses,Fourth Chorus,Boss in Far Fields area.,"Lava Pit, Far Fields",Main Story Boss,Drifter's Cloak,Story progression,Mandatory,Game8
+Bosses,Moorwing,Boss at the edge of Greymoor.,Edge of Greymoor (before Bellhart),Main Story Boss,Unknown,Story progression,Mandatory,Game8
+Bosses,Sister Splinter,Boss near the top of Shellwood.,Near top of Shellwood,Main Story Boss,Unknown,Story progression,Mandatory,Game8
+Bosses,Widow,Boss in Bellhart area.,Bellhart,Main Story Boss,Cling Grip,Needolin Ancestral Art,Mandatory,"Game8, Nintendo Life"
+Bosses,Last Judge,Final area boss guarding the Grand Gate.,East of Blasted Steps (Grand Gate),Main Story Boss,Unknown,Access to final area,Mandatory,Game8
+Bosses,Cogwork Dancers,Optional boss in Cogwork area.,Intersection of Cogwork Core and Choral Chambers,Optional Boss,Unknown,Unknown,Optional,Game8
+Bosses,Skull Tyrant,Optional boss in The Marrow.,The Marrow,Optional Boss,Cling Grip,Crown Fragment,Optional,Game8
+Tools,Straight Pin,Light throwing tool that launches small pins forward.,The Marrow,Red Tool (Offensive),Combat,Ranged attack ability,Optional,IGN
+Tools,Sting Shard,Throws a spiked trap that expands and detonates when touched.,Deep Docks,Red Tool (Offensive),Combat,Trap attack ability,Optional,IGN
+Tools,Flintslate,Temporarily heats Needle weapon for increased fire damage.,Deep Docks,Red Tool (Offensive),Combat,Fire damage enhancement,Optional,IGN
+Tools,Curveclaw,Throws curved boomerang that arcs backward and up.,Hunter's March,Red Tool (Offensive),Combat,Boomerang attack,Optional,IGN
+Tools,Threefold Pin,Throws three blades in a fan pattern.,Greymoor,Red Tool (Offensive),Combat,Multi-projectile attack,Optional,IGN
+Tools,Druid's Eye,Taking damage secretes green elixir that turns to Silk.,Moss Grotto (Mosshome),Blue Tool (Passive),Survival,Silk regeneration on damage,Optional,IGN
+Tools,Magma Bell,Negates heat damage from fiery surfaces (not lava).,Deep Docks,Blue Tool (Passive),Environmental protection,Heat damage immunity,Optional,IGN
+Tools,Fractured Mask,Protects final Health Point from killing blow until next Bench.,Hunter's March,Blue Tool (Passive),Survival,Death protection,Optional,IGN
+Tools,Magnetite Brooch,Causes fallen Rosary Beads to gravitate toward you.,Moss Grotto (Bone Bottom),Yellow Tool (Utility),Collection,Automatic item collection,Optional,IGN
+Tools,Shard Pendant,Collect more Shell Shards from enemies.,The Marrow,Yellow Tool (Utility),Collection,Increased shard drops,Optional,IGN
+Tools,Compass,Tracks current location when viewing the Map.,The Marrow (Shakra),Yellow Tool (Utility),Navigation,Map position tracking,Optional,IGN
+Tools,Dead Bug's Purse,Allows keeping a portion of Rosaries upon defeat.,Wormways,Yellow Tool (Utility),Death protection,Rosary retention on death,Optional,IGN
+Crests,Hunter Crest,Starting crest. Quick attacks with 3 tool slots (one of each type).,Default starting equipment,Starting Crest,Game start,Basic combat abilities,Mandatory,Nintendo Life
+Crests,Reaper Crest,"Heavy, slow attacks with enhanced healing abilities.","Chapel of the Reaper, Greymoor (far left)",Combat Crest,Access to Greymoor,Enhanced silk generation on heal,Optional,Nintendo Life
+Crests,Wanderer Crest,"Fast, short attacks similar to original Hollow Knight style.","Chapel of the Wanderer, west of Bone Bottom",Movement Crest,Cling Grip ability,Hollow Knight-style combat,Optional,Nintendo Life
+Crests,Beast Crest,Scratch attacks with berserk mode. 2 Red tool slots initially.,"Chapel of the Beast, Hunter's March",Berserk Crest,Drifter's Cloak,Berserk mode on heal,Optional,Nintendo Life
+Crests,Shaman Crest,Magic-focused crest with spell enhancements.,Unknown location,Magic Crest,Unknown,Enhanced magic abilities,Optional,Search Results
+Crests,Witch Crest,Dark magic focused crest.,Unknown location,Dark Magic Crest,Unknown,Dark magic abilities,Optional,Search Results
+Crests,Architect Crest,Construction and building focused abilities.,Unknown location,Builder Crest,Unknown,Building abilities,Optional,Search Results
+Abilities,Silkspear,Ranged silk projectile attack.,Moss Grotto (Mosshome),Ancestral Art,Progression,Ranged combat ability,Mandatory,Game8
+Abilities,Swift Step,Dash ability for crossing gaps.,Deep Docks area,Movement Art,Progression,Enhanced mobility,Mandatory,Game8
+Abilities,Drifter's Cloak,Gliding ability for longer air time.,Far Fields area,Movement Art,Progression,Extended air mobility,Mandatory,Game8
+Abilities,Cling Grip,Wall climbing ability.,Unknown location,Movement Art,Progression,Wall traversal,Mandatory,Game8
+Abilities,Needolin,Musical instrument for unlocking sealed doors.,Defeat Widow boss in Bellhart,Special Art,Widow boss defeat,Door unlocking ability,Optional,Nintendo Life
+Abilities,Bind,Healing ability using silk.,Default ability,Healing Art,Game start,Health restoration,Mandatory,Multiple sources
+Mask Shards,Mask Shard #1,Health upgrade component. 4 shards = 1 health mask.,Moss Grotto area,Health Upgrade,Exploration,+1 Health (when combined),Optional,IGN
+Mask Shards,Mask Shard #2,Health upgrade component. 4 shards = 1 health mask.,The Marrow area,Health Upgrade,Exploration,+1 Health (when combined),Optional,IGN
+Mask Shards,Mask Shard #3,Health upgrade component. 4 shards = 1 health mask.,Deep Docks area,Health Upgrade,Exploration,+1 Health (when combined),Optional,IGN
+Mask Shards,Mask Shard #4,Health upgrade component. 4 shards = 1 health mask.,Hunter's March area,Health Upgrade,Exploration,+1 Health (when combined),Optional,IGN
+Mask Shards,Mask Shard #5,Health upgrade component. 4 shards = 1 health mask.,Far Fields area,Health Upgrade,Exploration,+1 Health (when combined),Optional,IGN
+Mask Shards,Mask Shard #6,Health upgrade component. 4 shards = 1 health mask.,Greymoor area,Health Upgrade,Exploration,+1 Health (when combined),Optional,IGN
+Mask Shards,Mask Shard #7,Health upgrade component. 4 shards = 1 health mask.,Bellhart area,Health Upgrade,Exploration,+1 Health (when combined),Optional,IGN
+Mask Shards,Mask Shard #8,Health upgrade component. 4 shards = 1 health mask.,Shellwood area,Health Upgrade,Exploration,+1 Health (when combined),Optional,IGN
+Mask Shards,Mask Shard #9,Health upgrade component. 4 shards = 1 health mask.,Cogwork Core area,Health Upgrade,Exploration,+1 Health (when combined),Optional,IGN
+Mask Shards,Mask Shard #10,Health upgrade component. 4 shards = 1 health mask.,Choral Chambers area,Health Upgrade,Exploration,+1 Health (when combined),Optional,IGN
+Mask Shards,Mask Shard #11,Health upgrade component. 4 shards = 1 health mask.,Wormways area,Health Upgrade,Exploration,+1 Health (when combined),Optional,IGN
+Mask Shards,Mask Shard #12,Health upgrade component. 4 shards = 1 health mask.,Blasted Steps area,Health Upgrade,Exploration,+1 Health (when combined),Optional,IGN
+Mask Shards,Mask Shard #13,Health upgrade component. 4 shards = 1 health mask.,Hidden location #1,Health Upgrade,Exploration,+1 Health (when combined),Optional,Various
+Mask Shards,Mask Shard #14,Health upgrade component. 4 shards = 1 health mask.,Hidden location #2,Health Upgrade,Exploration,+1 Health (when combined),Optional,Various
+Mask Shards,Mask Shard #15,Health upgrade component. 4 shards = 1 health mask.,Hidden location #3,Health Upgrade,Exploration,+1 Health (when combined),Optional,Various
+Mask Shards,Mask Shard #16,Health upgrade component. 4 shards = 1 health mask.,Hidden location #4,Health Upgrade,Exploration,+1 Health (when combined),Optional,Various
+Mask Shards,Mask Shard #17,Health upgrade component. 4 shards = 1 health mask.,Hidden location #5,Health Upgrade,Exploration,+1 Health (when combined),Optional,Various
+Mask Shards,Mask Shard #18,Health upgrade component. 4 shards = 1 health mask.,Hidden location #6,Health Upgrade,Exploration,+1 Health (when combined),Optional,Various
+Mask Shards,Mask Shard #19,Health upgrade component. 4 shards = 1 health mask.,Hidden location #7,Health Upgrade,Exploration,+1 Health (when combined),Optional,Various
+Mask Shards,Mask Shard #20,Health upgrade component. 4 shards = 1 health mask.,Hidden location #8,Health Upgrade,Exploration,+1 Health (when combined),Optional,Various
+Spool Fragments,Spool Fragment #1,Silk capacity upgrade. Extends silk spool beyond 9 rings.,Moss Grotto area,Silk Upgrade,Exploration,+Silk capacity,Optional,IGN
+Spool Fragments,Spool Fragment #2,Silk capacity upgrade. Extends silk spool beyond 9 rings.,The Marrow area,Silk Upgrade,Exploration,+Silk capacity,Optional,IGN
+Spool Fragments,Spool Fragment #3,Silk capacity upgrade. Extends silk spool beyond 9 rings.,Deep Docks area,Silk Upgrade,Exploration,+Silk capacity,Optional,IGN
+Spool Fragments,Spool Fragment #4,Silk capacity upgrade. Extends silk spool beyond 9 rings.,Hunter's March area,Silk Upgrade,Exploration,+Silk capacity,Optional,IGN
+Spool Fragments,Spool Fragment #5,Silk capacity upgrade. Extends silk spool beyond 9 rings.,Far Fields area,Silk Upgrade,Exploration,+Silk capacity,Optional,IGN
+Spool Fragments,Spool Fragment #6,Silk capacity upgrade. Extends silk spool beyond 9 rings.,Greymoor area,Silk Upgrade,Exploration,+Silk capacity,Optional,IGN
+Spool Fragments,Spool Fragment #7,Silk capacity upgrade. Extends silk spool beyond 9 rings.,Bellhart area,Silk Upgrade,Exploration,+Silk capacity,Optional,IGN
+Spool Fragments,Spool Fragment #8,Silk capacity upgrade. Extends silk spool beyond 9 rings.,Shellwood area,Silk Upgrade,Exploration,+Silk capacity,Optional,IGN
+Items,Hunter's Cloak,Default starting protective garb. Expertly woven but aged.,Default starting item,Starting Equipment,Game start,Basic protection,Mandatory,Game8
+Items,Tool Pouch,"Basic pouch for holding tools, traps and crafting materials.",Default starting item,Starting Equipment,Game start,Tool storage,Mandatory,Game8
+Items,Everbloom,Ethereal flower that glows with pale light and wards against void.,Deep memory/special location,Special Item,Story progression,Void protection,Optional,Game8
+Items,Craftmetal,Rare element found in Pharloom's rock and bone. Used for crafting.,"Bone Bottom shop, various locations",Crafting Material,60 Rosaries,Tool crafting,Optional,Game8
+Items,Memory Locket,Keepsake containing precious memory. Used to expand Crests.,Mort's Shop,Crest Upgrade,150 Rosaries,Crest expansion,Optional,Game8
+Items,Pale Oil,Bile gland of rare sylphean slug. Improves blade sharpness.,Various locations,Upgrade Material,Exploration,Blade enhancement,Optional,Game8
+Items,Simple Key,"Rusted common key. Opens simple locks, breaks after use.",Bone Bottom shop,Key Item,500 Rosaries,Lock opening,Optional,Game8
+Items,Diving Bell Key,Worker's key for Deep Docks diving bell.,Deep Docks area,Key Item,Exploration/Quest,Area access,Optional,Game8
+Items,Gate Key,Worker's key for Deep Docks middle gate.,Deep Docks area,Key Item,Exploration/Quest,Area access,Optional,Game8
+Items,White Key,Surgical implement-shaped key for Citadel's Whiteward.,Unknown location,Key Item,Unknown,Citadel access,Optional,Game8
+Items,Mossberry,Sweet fruit with toxic seeds. Found in moist environments.,"Starting area, various locations",Consumable,Exploration,Food item,Optional,Game8
+Items,Silver Bell,Finely forged bell made from gleaming metal.,Unknown location,Valuable Item,Unknown,Trading/Quest item,Optional,Game8
+Items,Fine Pin,Common Pharloom weapon in good condition. Metal rod with sharp tip.,Various locations,Weapon/Material,Exploration,Crafting material,Optional,Game8
+Items,Shining Cog,Pristine automaton cog. Metal hasn't dulled despite use.,Automaton enemies,Crafting Material,Enemy defeat,Crafting component,Optional,Game8
+Items,Choir Cloak,Pilgrim garment offering protection against wind and cold.,Citadel area,Equipment,Quest completion,Enhanced protection,Optional,Game8
+Items,Queen's Egg,Fragile egg containing young Silkeater Queen.,Unknown location,Special Item,Unknown,Silkeater breeding,Optional,Game8
+Areas,Moss Grotto,"Starting area. Lush, overgrown region with tutorial content.",Game beginning,Starting Area,Game start,Tutorial progression,Mandatory,Multiple sources
+Areas,Bone Bottom,Underground area beneath Moss Grotto. Contains shops.,Below Moss Grotto,Underground Area,Moss Mother defeat,Shopping and upgrades,Mandatory,Multiple sources
+Areas,The Marrow,Central area with Bell Beast. Hub for fast travel.,Central Pharloom,Hub Area,Early progression,Transportation hub,Mandatory,Multiple sources
+Areas,Deep Docks,Industrial docks area with water and machinery.,Connected to The Marrow,Industrial Area,Silkspear ability,Story progression,Mandatory,Multiple sources
+Areas,Hunter's March,Wild hunting grounds with beast-themed content.,Western regions,Wildlife Area,Swift Step ability,Beast Crest location,Mandatory,Multiple sources
+Areas,Far Fields,Agricultural and open field areas.,Northern regions,Field Area,Various abilities,Fourth Chorus boss,Mandatory,Multiple sources
+Areas,Greymoor,Moorland area with Reaper Chapel.,Far left regions,Moorland Area,Mid-game progression,Reaper Crest location,Optional,Multiple sources
+Areas,Bellhart,Elevated area above other regions.,Upper areas,Elevated Area,Cling Grip,Widow boss location,Mandatory,Multiple sources
+Areas,Shellwood,Forest area with wooden/shell structures.,Forest regions,Forest Area,Unknown,Sister Splinter boss,Optional,Multiple sources
+Areas,Cogwork Core,Mechanical area with automaton enemies.,Industrial regions,Mechanical Area,Unknown,Cogwork boss fights,Optional,Multiple sources
+Areas,Choral Chambers,Musical-themed area with singing elements.,Connected to Cogwork,Musical Area,Unknown,Musical progression,Optional,Multiple sources
+Areas,Wormways,Underground tunnel system.,Underground network,Tunnel System,Unknown,Dead Bug's Purse tool,Optional,Multiple sources
+Areas,Blasted Steps,Final area leading to Grand Gate.,Endgame location,Final Area,Late game,Last Judge boss,Mandatory,Multiple sources
+Areas,Weavenest Atla,Hidden area for crest upgrades.,Behind sealed door in Moss Grotto,Secret Area,Needolin instrument,Hunter Crest upgrade,Optional,Nintendo Life
+Tools,Longpin,Extended range piercing tool.,Unknown location,Red Tool (Offensive),Combat,Long-range piercing,Optional,Nintendo Life
+Tools,Sprintmaster Medal,Tool that enhances movement speed.,Speed challenge completion,Yellow Tool (Utility),Speed challenge,Movement enhancement,Optional,Game8
+Tools,Bell Fragment,Crafting component for bell-based tools.,Various bell locations,Crafting Material,Exploration,Tool crafting,Optional,Various
+Tools,Silk Weaver,Tool that enhances silk-based abilities.,Unknown location,Blue Tool (Passive),Unknown,Silk enhancement,Optional,Search Results
+Tools,Needle Polish,Tool upgrade material for needle weapons.,Unknown location,Upgrade Material,Exploration,Needle enhancement,Optional,Search Results
+Tools,Bone Charm,Protective charm made from carved bone.,Unknown location,Blue Tool (Passive),Unknown,Protection enhancement,Optional,Search Results
+Tools,Hunter's Medal,Recognition token for skilled hunters.,Hunting challenges,Yellow Tool (Utility),Combat achievements,Hunter recognition,Optional,Game8
+Tools,Swift Pin,Fast-firing projectile tool.,Unknown location,Red Tool (Offensive),Unknown,Rapid-fire attacks,Optional,Search Results
+NPCs,Eva,Crest upgrade specialist in Weavenest Atla. Provides Hunter Crest upgrades.,Weavenest Atla,Crest Specialist,Needolin instrument,Hunter Crest upgrade,Optional,Nintendo Life
+NPCs,Mort,Shop keeper selling various items and upgrades.,Bone Bottom area,Merchant,Game progression,Item sales,Optional,Game8
+NPCs,Bell Hermit,Mysterious character associated with bells and souls.,Unknown location,Quest Giver,Unknown,Hermit's Soul item,Optional,Game8
+NPCs,Chapel Maid,Religious figure providing soul-related items.,Various chapels,Quest Giver,Chapel access,Maiden's Soul item,Optional,Game8
+NPCs,Sprintmaster Swift,Speed challenge organizer.,Unknown location,Challenge Giver,Speed trials,Sprintmaster Medal,Optional,Game8
+NPCs,Seth the Guardian,Wandering warrior offering challenges.,Various locations,Challenge Giver,Combat trials,Guardian's Memento,Optional,Game8
+NPCs,Mergwin,Food delivery recipient in Choral Chambers.,Choral Chambers,Quest Receiver,Courier's Rasher delivery,Quest reward,Optional,Game8
+NPCs,Lugoli,Disgraced chef known for pickled delicacies.,Unknown location,Lore Character,Unknown,Pickled Muckmaggot recipe,Optional,Game8
+Quests,Courier Mission,Deliver Courier's Rasher to Mergwin in Choral Chambers.,Various locations to Choral Chambers,Delivery Quest,Obtain Courier's Rasher,Quest reward,Optional,Game8
+Quests,Hunter Trials,Complete hunting challenges for recognition.,Various hunting grounds,Combat Quest,Combat skills,Hunter's Memento,Optional,Game8
+Quests,Speed Challenges,Complete timed movement challenges.,Various locations,Speed Quest,Movement abilities,Sprintmaster Memento,Optional,Game8
+Quests,Bell Collection,Gather and restore various bells throughout Pharloom.,Multiple bell locations,Collection Quest,Exploration,Bell-related rewards,Optional,Game8
+Quests,Soul Seeking,Collect souls from various characters and locations.,Multiple NPCs and areas,Collection Quest,NPC interactions,Soul vials,Optional,Game8
+Quests,Craft Master,Learn and master various crafting recipes.,Crafting locations,Crafting Quest,Materials gathering,Enhanced crafting,Optional,Game8

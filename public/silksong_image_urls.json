@@ -1,0 +1,125 @@
+{
+  "bosses": [
+    {
+      "name": "Lace",
+      "url": "https://game8.co/games/Hollow-Knight-Silksong/archives/547558/lace_boss.png",
+      "filename": "bosses_lace.png"
+    },
+    {
+      "name": "Moss Charnel",
+      "url": "https://game8.co/games/Hollow-Knight-Silksong/archives/547558/moss_charnel.png",
+      "filename": "bosses_moss_charnel.png"
+    },
+    {
+      "name": "The Bell",
+      "url": "https://game8.co/games/Hollow-Knight-Silksong/archives/547558/bell_boss.png",
+      "filename": "bosses_the_bell.png"
+    }
+  ],
+  "tools": [
+    {
+      "name": "Needle",
+      "url": "https://game8.co/games/Hollow-Knight-Silksong/archives/547558/needle_icon.png",
+      "filename": "tools_needle.png"
+    },
+    {
+      "name": "Thread",
+      "url": "https://game8.co/games/Hollow-Knight-Silksong/archives/547558/thread_icon.png",
+      "filename": "tools_thread.png"
+    },
+    {
+      "name": "Bind",
+      "url": "https://game8.co/games/Hollow-Knight-Silksong/archives/547558/bind_tool.png",
+      "filename": "tools_bind.png"
+    }
+  ],
+  "crests": [
+    {
+      "name": "Hunter Crest",
+      "url": "https://images.nintendolife.com/screenshots/131421/large.jpg",
+      "filename": "hunter_crest.png"
+    },
+    {
+      "name": "Wanderer Crest",
+      "url": "https://images.nintendolife.com/screenshots/131422/large.jpg",
+      "filename": "wanderer_crest.png"
+    },
+    {
+      "name": "Beast Crest",
+      "url": "https://images.nintendolife.com/screenshots/131423/large.jpg",
+      "filename": "beast_crest.png"
+    },
+    {
+      "name": "Reaper Crest",
+      "url": "https://images.nintendolife.com/screenshots/131424/large.jpg",
+      "filename": "reaper_crest.png"
+    }
+  ],
+  "abilities": [
+    {
+      "name": "Dash",
+      "url": "https://game8.co/games/Hollow-Knight-Silksong/archives/547558/dash_ability.png",
+      "filename": "abilities_dash.png"
+    },
+    {
+      "name": "Bind Jump",
+      "url": "https://game8.co/games/Hollow-Knight-Silksong/archives/547558/bind_jump.png",
+      "filename": "abilities_bind_jump.png"
+    }
+  ],
+  "mask_shards": [
+    {
+      "name": "Mask Shard",
+      "url": "https://game8.co/games/Hollow-Knight-Silksong/archives/547558/mask_shard_icon.png",
+      "filename": "mask_shards_shard.png"
+    }
+  ],
+  "areas": [
+    {
+      "name": "Moss Grotto",
+      "url": "https://images.nintendolife.com/guides/hollow-knight-silksong/moss_grotto_area.png",
+      "filename": "areas_moss_grotto.png"
+    },
+    {
+      "name": "Deep Docks",
+      "url": "https://images.nintendolife.com/guides/hollow-knight-silksong/deep_docks_area.png",
+      "filename": "areas_deep_docks.png"
+    },
+    {
+      "name": "Citadel",
+      "url": "https://images.nintendolife.com/guides/hollow-knight-silksong/citadel_area.png",
+      "filename": "areas_citadel.png"
+    }
+  ],
+  "items": [
+    {
+      "name": "Silk Moth Wing",
+      "url": "https://game8.co/games/Hollow-Knight-Silksong/archives/547558/silk_moth_wing.png",
+      "filename": "items_silk_moth_wing.png"
+    },
+    {
+      "name": "Crystal Shard",
+      "url": "https://game8.co/games/Hollow-Knight-Silksong/archives/547558/crystal_shard.png",
+      "filename": "items_crystal_shard.png"
+    }
+  ],
+  "npcs": [
+    {
+      "name": "Shakra",
+      "url": "https://images.nintendolife.com/guides/hollow-knight-silksong/shakra_npc.png",
+      "filename": "npcs_shakra.png"
+    },
+    {
+      "name": "Bell Ringer",
+      "url": "https://images.nintendolife.com/guides/hollow-knight-silksong/bell_ringer_npc.png",
+      "filename": "npcs_bell_ringer.png"
+    }
+  ],
+  "spool_fragments": [
+    {
+      "name": "Spool Fragment",
+      "url": "https://game8.co/games/Hollow-Knight-Silksong/archives/547558/spool_fragment.png",
+      "filename": "spool_fragments_fragment.png"
+    }
+  ]
+}

@@ -1,11 +1,10 @@
 'use client';
 
-import { useRef, useCallback, useMemo } from 'react';
+import { useRef, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   Grid, List, User, FileText, Share2, Printer, RotateCcw
 } from 'lucide-react';
@@ -15,88 +14,7 @@ import { CategorySidebar } from '@/components/category-sidebar';
 import { ProgressSidebar } from '@/components/progress-sidebar';
 import { ItemCard } from '@/components/item-card';
 import { PrintStyles } from '@/components/print-styles';
-import { VirtualList, useItemHeight } from '@/components/virtual-list';
 
-// 性能优化：预定义常量
-const ITEM_HEIGHTS = {
-  compact: 120,  // compact视图的预估高度
-  detailed: 280  // detailed视图的预估高度
-};
-const CONTAINER_HEIGHT = 600; // 列表容器高度
-const VIRTUAL_THRESHOLD = 20; // 超过这个数量才启用虚拟滚动
-
-// High-performance virtualized item list component
-import { ChecklistItem } from '@/components/item-card';
-
-interface VirtualizedItemListProps {
-  items: Array<ChecklistItem & {
-    categoryId: string;
-    categoryTitle: string;
-  }>;
-  viewMode: 'compact' | 'detailed';
-  toggleItem: (categoryId: string, itemId: string) => void;
-  searchTerm: string;
-}
-
-const VirtualizedItemList = ({ items, viewMode, toggleItem, searchTerm }: VirtualizedItemListProps) => {
-  const itemHeight = useItemHeight(viewMode);
-  
-  // Optimized render function with memoization
-  const renderItem = useCallback((item: VirtualizedItemListProps['items'][0], _index: number) => {
-    return (
-      <div className={viewMode === 'compact' ? 'mb-3' : 'mb-6 px-3'}>
-        <ItemCard
-          key={`${item.categoryId}-${item.id}`}
-          item={item}
-          categoryId={item.categoryId}
-          onToggle={toggleItem}
-          viewMode={viewMode}
-          searchTerm={searchTerm}
-        />
-      </div>
-    );
-  }, [viewMode, toggleItem, searchTerm]);
-  
-  
-  
-  // Grid layout for detailed view
-  if (viewMode === 'detailed') {
-    return (
-      <div className="h-full overflow-auto checklist-scroll-area">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-3">
-          {items.map((item, index) => (
-            <div key={`${item.categoryId}-${item.id}`} className="h-fit">
-              <ItemCard
-                item={item}
-                categoryId={item.categoryId}
-                onToggle={toggleItem}
-                viewMode={viewMode}
-                searchTerm={searchTerm}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-  
-  // Single column for compact view - disable virtual scrolling to fix Details expansion
-  return (
-    <div className="h-full overflow-auto space-y-3 checklist-scroll-area">
-      {items.map((item, index) => (
-        <div key={`${item.categoryId}-${item.id}`}>
-          <ItemCard
-            item={item}
-            categoryId={item.categoryId}
-            onToggle={toggleItem}
-            viewMode={viewMode}
-            searchTerm={searchTerm}
-          />
-        </div>
-      ))}
-    </div>
-  );
-};
 
 function ChecklistPageContent() {
   const {
@@ -304,14 +222,38 @@ function ChecklistPageContent() {
                       </Button>
                     </div>
                   ) : (
-                    // 使用统一的虚拟化列表组件
                     <div className="h-full pr-4">
-                      <VirtualizedItemList 
-                        items={filteredItems}
-                        viewMode={viewMode}
-                        toggleItem={toggleItem}
-                        searchTerm={filters.searchTerm}
-                      />
+                      {viewMode === 'detailed' ? (
+                        <div className="h-full overflow-auto checklist-scroll-area">
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-3">
+                            {filteredItems.map((item) => (
+                              <div key={`${item.categoryId}-${item.id}`} className="h-fit">
+                                <ItemCard
+                                  item={item}
+                                  categoryId={item.categoryId}
+                                  onToggle={toggleItem}
+                                  viewMode={viewMode}
+                                  searchTerm={filters.searchTerm}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="h-full overflow-auto space-y-3 checklist-scroll-area">
+                          {filteredItems.map((item) => (
+                            <div key={`${item.categoryId}-${item.id}`}>
+                              <ItemCard
+                                item={item}
+                                categoryId={item.categoryId}
+                                onToggle={toggleItem}
+                                viewMode={viewMode}
+                                searchTerm={filters.searchTerm}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

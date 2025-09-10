@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hollow Knight: Silksong - 完整Checklist工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e6ed;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #4a90e2;
+        }
+
+        .header h1 {
+            color: #4a90e2;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: rgba(74, 144, 226, 0.1);
+            border-radius: 5px;
+            border: 1px solid rgba(74, 144, 226, 0.3);
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4a90e2;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4a90e2 0%, #357abd 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 15px;
+            background: rgba(74, 144, 226, 0.2);
+            border: 2px solid rgba(74, 144, 226, 0.5);
+            border-radius: 5px;
+            color: #e0e6ed;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(74, 144, 226, 0.4);
+            border-color: #4a90e2;
+            transform: translateY(-2px);
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 300px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(74, 144, 226, 0.5);
+            border-radius: 5px;
+            color: #e0e6ed;
+            margin-left: auto;
+        }
+
+        .search-box::placeholder {
+            color: rgba(224, 230, 237, 0.6);
+        }
+
+        .category-section {
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(74, 144, 226, 0.3);
+        }
+
+        .category-header {
+            background: rgba(74, 144, 226, 0.2);
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .category-header:hover {
+            background: rgba(74, 144, 226, 0.3);
+        }
+
+        .category-title {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .category-count {
+            background: rgba(74, 144, 226, 0.8);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+
+        .category-items {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .category-items.expanded {
+            max-height: 2000px;
+        }
+
+        .checklist-item {
+            padding: 15px;
+            border-bottom: 1px solid rgba(74, 144, 226, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: background 0.3s ease;
+        }
+
+        .checklist-item:hover {
+            background: rgba(74, 144, 226, 0.1);
+        }
+
+        .checklist-item.completed {
+            opacity: 0.6;
+            background: rgba(0, 255, 0, 0.1);
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #4a90e2;
+            border-radius: 3px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox.checked {
+            background: #4a90e2;
+            color: white;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .item-description {
+            color: rgba(224, 230, 237, 0.8);
+            margin-bottom: 5px;
+        }
+
+        .item-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .meta-tag {
+            padding: 3px 8px;
+            background: rgba(74, 144, 226, 0.2);
+            border-radius: 3px;
+            font-size: 0.8em;
+            border: 1px solid rgba(74, 144, 226, 0.4);
+        }
+
+        .meta-tag.location {
+            background: rgba(255, 165, 0, 0.2);
+            border-color: rgba(255, 165, 0, 0.4);
+        }
+
+        .meta-tag.mandatory {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: rgba(255, 0, 0, 0.4);
+        }
+
+        .meta-tag.optional {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: rgba(0, 255, 0, 0.4);
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            margin: 5px;
+            background: rgba(74, 144, 226, 0.8);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: rgba(74, 144, 226, 1);
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: rgba(224, 230, 237, 0.6);
+            border-top: 1px solid rgba(74, 144, 226, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .item-meta {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎮 Hollow Knight: Silksong</h1>
+        <p>完整Checklist工具 - 追踪你的探索进度</p>
+    </div>
+
+    <div class="container">
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number" id="total-items">0</div>
+                <div>总项目</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="completed-items">0</div>
+                <div>已完成</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="completion-rate">0%</div>
+                <div>完成率</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="mandatory-completed">0</div>
+                <div>必须项目</div>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-bar"></div>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-category="all">全部</button>
+            <button class="filter-btn" data-category="Bosses">Boss战</button>
+            <button class="filter-btn" data-category="Tools">工具</button>
+            <button class="filter-btn" data-category="Crests">职业</button>
+            <button class="filter-btn" data-category="Abilities">能力</button>
+            <button class="filter-btn" data-category="Mask Shards">生命碎片</button>
+            <button class="filter-btn" data-category="Spool Fragments">丝绸碎片</button>
+            <button class="filter-btn" data-category="Items">道具</button>
+            <button class="filter-btn" data-category="Areas">区域</button>
+            <button class="filter-btn" data-category="NPCs">NPC</button>
+            <button class="filter-btn" data-category="Quests">任务</button>
+            <input type="text" class="search-box" placeholder="搜索项目..." id="search-input">
+        </div>
+
+        <div id="checklist-container">
+            <!-- 动态生成的checklist项目将在这里显示 -->
+        </div>
+
+        <div class="actions">
+            <button class="btn" onclick="exportProgress()">导出进度</button>
+            <button class="btn" onclick="importProgress()">导入进度</button>
+            <button class="btn" onclick="resetProgress()">重置进度</button>
+            <input type="file" id="import-file" style="display: none;" accept=".json" onchange="handleImport(event)">
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>基于最新Silksong信息制作 | 数据来源: IGN, Game8, Nintendo Life, Rock Paper Shotgun等</p>
+        <p>© 2025 Hollow Knight: Silksong Checklist Tool | 游戏版权归Team Cherry所有</p>
+    </div>
+
+    <script>
+        // Silksong checklist data will be loaded here
+        const checklistData = [{'Category': 'Bosses', 'Item Name': 'Moss Mother', 'Description': 'First boss encounter. Flying bug with stinger. Tutorial boss.', 'Location': 'Ruined Chapel, Moss Grotto', 'Type/Subtype': 'Main Story Boss', 'Required for': 'Progression', 'Reward': 'Access to further areas', 'Mandatory/Optional': 'Mandatory', 'Source': 'Rock Paper Shotgun, Game8'}, {'Category': 'Bosses', 'Item Name': 'Bell Beast', 'Description': 'Fast travel creature. Pillbug-like boss stuck in silk trap.', 'Location': 'The Marrow (entrance area)', 'Type/Subtype': 'Main Story Boss', 'Required for': 'Silkspear ability', 'Reward': 'Transportation mount', 'Mandatory/Optional': 'Mandatory', 'Source': 'Rock Paper Shotgun, Game8'}, {'Category': 'Bosses', 'Item Name': 'Lace', 'Description': 'Recurring boss character. Similar to Hornet in original game.', 'Location': 'Deep Docks (behind locked gate)', 'Type/Subtype': 'Main Story Boss', 'Required for': 'Swift Step ability', 'Reward': 'Story progression', 'Mandatory/Optional': 'Mandatory', 'Source': 'Rock Paper Shotgun, Game8'}, {'Category': 'Bosses', 'Item Name': 'Savage Beastfly', 'Description': "Main story boss in Hunter's March.", 'Location': "Chapel of the Beast, Hunter's March", 'Type/Subtype': 'Main Story Boss', 'Required for': "Drifter's Cloak", 'Reward': 'Horn Fragment', 'Mandatory/Optional': 'Mandatory', 'Source': 'Game8'}, {'Category': 'Bosses', 'Item Name': 'Fourth Chorus', 'Description': 'Boss in Far Fields area.', 'Location': 'Lava Pit, Far Fields', 'Type/Subtype': 'Main Story Boss', 'Required for': "Drifter's Cloak", 'Reward': 'Story progression', 'Mandatory/Optional': 'Mandatory', 'Source': 'Game8'}, {'Category': 'Bosses', 'Item Name': 'Moorwing', 'Description': 'Boss at the edge of Greymoor.', 'Location': 'Edge of Greymoor (before Bellhart)', 'Type/Subtype': 'Main Story Boss', 'Required for': 'Unknown', 'Reward': 'Story progression', 'Mandatory/Optional': 'Mandatory', 'Source': 'Game8'}, {'Category': 'Bosses', 'Item Name': 'Sister Splinter', 'Description': 'Boss near the top of Shellwood.', 'Location': 'Near top of Shellwood', 'Type/Subtype': 'Main Story Boss', 'Required for': 'Unknown', 'Reward': 'Story progression', 'Mandatory/Optional': 'Mandatory', 'Source': 'Game8'}, {'Category': 'Bosses', 'Item Name': 'Widow', 'Description': 'Boss in Bellhart area.', 'Location': 'Bellhart', 'Type/Subtype': 'Main Story Boss', 'Required for': 'Cling Grip', 'Reward': 'Needolin Ancestral Art', 'Mandatory/Optional': 'Mandatory', 'Source': 'Game8, Nintendo Life'}, {'Category': 'Bosses', 'Item Name': 'Last Judge', 'Description': 'Final area boss guarding the Grand Gate.', 'Location': 'East of Blasted Steps (Grand Gate)', 'Type/Subtype': 'Main Story Boss', 'Required for': 'Unknown', 'Reward': 'Access to final area', 'Mandatory/Optional': 'Mandatory', 'Source': 'Game8'}, {'Category': 'Bosses', 'Item Name': 'Cogwork Dancers', 'Description': 'Optional boss in Cogwork area.', 'Location': 'Intersection of Cogwork Core and Choral Chambers', 'Type/Subtype': 'Optional Boss', 'Required for': 'Unknown', 'Reward': 'Unknown', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Bosses', 'Item Name': 'Skull Tyrant', 'Description': 'Optional boss in The Marrow.', 'Location': 'The Marrow', 'Type/Subtype': 'Optional Boss', 'Required for': 'Cling Grip', 'Reward': 'Crown Fragment', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Tools', 'Item Name': 'Straight Pin', 'Description': 'Light throwing tool that launches small pins forward.', 'Location': 'The Marrow', 'Type/Subtype': 'Red Tool (Offensive)', 'Required for': 'Combat', 'Reward': 'Ranged attack ability', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Tools', 'Item Name': 'Sting Shard', 'Description': 'Throws a spiked trap that expands and detonates when touched.', 'Location': 'Deep Docks', 'Type/Subtype': 'Red Tool (Offensive)', 'Required for': 'Combat', 'Reward': 'Trap attack ability', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Tools', 'Item Name': 'Flintslate', 'Description': 'Temporarily heats Needle weapon for increased fire damage.', 'Location': 'Deep Docks', 'Type/Subtype': 'Red Tool (Offensive)', 'Required for': 'Combat', 'Reward': 'Fire damage enhancement', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Tools', 'Item Name': 'Curveclaw', 'Description': 'Throws curved boomerang that arcs backward and up.', 'Location': "Hunter's March", 'Type/Subtype': 'Red Tool (Offensive)', 'Required for': 'Combat', 'Reward': 'Boomerang attack', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Tools', 'Item Name': 'Threefold Pin', 'Description': 'Throws three blades in a fan pattern.', 'Location': 'Greymoor', 'Type/Subtype': 'Red Tool (Offensive)', 'Required for': 'Combat', 'Reward': 'Multi-projectile attack', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Tools', 'Item Name': "Druid's Eye", 'Description': 'Taking damage secretes green elixir that turns to Silk.', 'Location': 'Moss Grotto (Mosshome)', 'Type/Subtype': 'Blue Tool (Passive)', 'Required for': 'Survival', 'Reward': 'Silk regeneration on damage', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Tools', 'Item Name': 'Magma Bell', 'Description': 'Negates heat damage from fiery surfaces (not lava).', 'Location': 'Deep Docks', 'Type/Subtype': 'Blue Tool (Passive)', 'Required for': 'Environmental protection', 'Reward': 'Heat damage immunity', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Tools', 'Item Name': 'Fractured Mask', 'Description': 'Protects final Health Point from killing blow until next Bench.', 'Location': "Hunter's March", 'Type/Subtype': 'Blue Tool (Passive)', 'Required for': 'Survival', 'Reward': 'Death protection', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Tools', 'Item Name': 'Magnetite Brooch', 'Description': 'Causes fallen Rosary Beads to gravitate toward you.', 'Location': 'Moss Grotto (Bone Bottom)', 'Type/Subtype': 'Yellow Tool (Utility)', 'Required for': 'Collection', 'Reward': 'Automatic item collection', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Tools', 'Item Name': 'Shard Pendant', 'Description': 'Collect more Shell Shards from enemies.', 'Location': 'The Marrow', 'Type/Subtype': 'Yellow Tool (Utility)', 'Required for': 'Collection', 'Reward': 'Increased shard drops', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Tools', 'Item Name': 'Compass', 'Description': 'Tracks current location when viewing the Map.', 'Location': 'The Marrow (Shakra)', 'Type/Subtype': 'Yellow Tool (Utility)', 'Required for': 'Navigation', 'Reward': 'Map position tracking', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Tools', 'Item Name': "Dead Bug's Purse", 'Description': 'Allows keeping a portion of Rosaries upon defeat.', 'Location': 'Wormways', 'Type/Subtype': 'Yellow Tool (Utility)', 'Required for': 'Death protection', 'Reward': 'Rosary retention on death', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Crests', 'Item Name': 'Hunter Crest', 'Description': 'Starting crest. Quick attacks with 3 tool slots (one of each type).', 'Location': 'Default starting equipment', 'Type/Subtype': 'Starting Crest', 'Required for': 'Game start', 'Reward': 'Basic combat abilities', 'Mandatory/Optional': 'Mandatory', 'Source': 'Nintendo Life'}, {'Category': 'Crests', 'Item Name': 'Reaper Crest', 'Description': 'Heavy, slow attacks with enhanced healing abilities.', 'Location': 'Chapel of the Reaper, Greymoor (far left)', 'Type/Subtype': 'Combat Crest', 'Required for': 'Access to Greymoor', 'Reward': 'Enhanced silk generation on heal', 'Mandatory/Optional': 'Optional', 'Source': 'Nintendo Life'}, {'Category': 'Crests', 'Item Name': 'Wanderer Crest', 'Description': 'Fast, short attacks similar to original Hollow Knight style.', 'Location': 'Chapel of the Wanderer, west of Bone Bottom', 'Type/Subtype': 'Movement Crest', 'Required for': 'Cling Grip ability', 'Reward': 'Hollow Knight-style combat', 'Mandatory/Optional': 'Optional', 'Source': 'Nintendo Life'}, {'Category': 'Crests', 'Item Name': 'Beast Crest', 'Description': 'Scratch attacks with berserk mode. 2 Red tool slots initially.', 'Location': "Chapel of the Beast, Hunter's March", 'Type/Subtype': 'Berserk Crest', 'Required for': "Drifter's Cloak", 'Reward': 'Berserk mode on heal', 'Mandatory/Optional': 'Optional', 'Source': 'Nintendo Life'}, {'Category': 'Crests', 'Item Name': 'Shaman Crest', 'Description': 'Magic-focused crest with spell enhancements.', 'Location': 'Unknown location', 'Type/Subtype': 'Magic Crest', 'Required for': 'Unknown', 'Reward': 'Enhanced magic abilities', 'Mandatory/Optional': 'Optional', 'Source': 'Search Results'}, {'Category': 'Crests', 'Item Name': 'Witch Crest', 'Description': 'Dark magic focused crest.', 'Location': 'Unknown location', 'Type/Subtype': 'Dark Magic Crest', 'Required for': 'Unknown', 'Reward': 'Dark magic abilities', 'Mandatory/Optional': 'Optional', 'Source': 'Search Results'}, {'Category': 'Crests', 'Item Name': 'Architect Crest', 'Description': 'Construction and building focused abilities.', 'Location': 'Unknown location', 'Type/Subtype': 'Builder Crest', 'Required for': 'Unknown', 'Reward': 'Building abilities', 'Mandatory/Optional': 'Optional', 'Source': 'Search Results'}, {'Category': 'Abilities', 'Item Name': 'Silkspear', 'Description': 'Ranged silk projectile attack.', 'Location': 'Moss Grotto (Mosshome)', 'Type/Subtype': 'Ancestral Art', 'Required for': 'Progression', 'Reward': 'Ranged combat ability', 'Mandatory/Optional': 'Mandatory', 'Source': 'Game8'}, {'Category': 'Abilities', 'Item Name': 'Swift Step', 'Description': 'Dash ability for crossing gaps.', 'Location': 'Deep Docks area', 'Type/Subtype': 'Movement Art', 'Required for': 'Progression', 'Reward': 'Enhanced mobility', 'Mandatory/Optional': 'Mandatory', 'Source': 'Game8'}, {'Category': 'Abilities', 'Item Name': "Drifter's Cloak", 'Description': 'Gliding ability for longer air time.', 'Location': 'Far Fields area', 'Type/Subtype': 'Movement Art', 'Required for': 'Progression', 'Reward': 'Extended air mobility', 'Mandatory/Optional': 'Mandatory', 'Source': 'Game8'}, {'Category': 'Abilities', 'Item Name': 'Cling Grip', 'Description': 'Wall climbing ability.', 'Location': 'Unknown location', 'Type/Subtype': 'Movement Art', 'Required for': 'Progression', 'Reward': 'Wall traversal', 'Mandatory/Optional': 'Mandatory', 'Source': 'Game8'}, {'Category': 'Abilities', 'Item Name': 'Needolin', 'Description': 'Musical instrument for unlocking sealed doors.', 'Location': 'Defeat Widow boss in Bellhart', 'Type/Subtype': 'Special Art', 'Required for': 'Widow boss defeat', 'Reward': 'Door unlocking ability', 'Mandatory/Optional': 'Optional', 'Source': 'Nintendo Life'}, {'Category': 'Abilities', 'Item Name': 'Bind', 'Description': 'Healing ability using silk.', 'Location': 'Default ability', 'Type/Subtype': 'Healing Art', 'Required for': 'Game start', 'Reward': 'Health restoration', 'Mandatory/Optional': 'Mandatory', 'Source': 'Multiple sources'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #1', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Moss Grotto area', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #2', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'The Marrow area', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #3', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Deep Docks area', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #4', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': "Hunter's March area", 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #5', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Far Fields area', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #6', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Greymoor area', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #7', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Bellhart area', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #8', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Shellwood area', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #9', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Cogwork Core area', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #10', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Choral Chambers area', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #11', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Wormways area', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #12', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Blasted Steps area', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #13', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Hidden location #1', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'Various'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #14', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Hidden location #2', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'Various'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #15', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Hidden location #3', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'Various'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #16', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Hidden location #4', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'Various'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #17', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Hidden location #5', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'Various'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #18', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Hidden location #6', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'Various'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #19', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Hidden location #7', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'Various'}, {'Category': 'Mask Shards', 'Item Name': 'Mask Shard #20', 'Description': 'Health upgrade component. 4 shards = 1 health mask.', 'Location': 'Hidden location #8', 'Type/Subtype': 'Health Upgrade', 'Required for': 'Exploration', 'Reward': '+1 Health (when combined)', 'Mandatory/Optional': 'Optional', 'Source': 'Various'}, {'Category': 'Spool Fragments', 'Item Name': 'Spool Fragment #1', 'Description': 'Silk capacity upgrade. Extends silk spool beyond 9 rings.', 'Location': 'Moss Grotto area', 'Type/Subtype': 'Silk Upgrade', 'Required for': 'Exploration', 'Reward': '+Silk capacity', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Spool Fragments', 'Item Name': 'Spool Fragment #2', 'Description': 'Silk capacity upgrade. Extends silk spool beyond 9 rings.', 'Location': 'The Marrow area', 'Type/Subtype': 'Silk Upgrade', 'Required for': 'Exploration', 'Reward': '+Silk capacity', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Spool Fragments', 'Item Name': 'Spool Fragment #3', 'Description': 'Silk capacity upgrade. Extends silk spool beyond 9 rings.', 'Location': 'Deep Docks area', 'Type/Subtype': 'Silk Upgrade', 'Required for': 'Exploration', 'Reward': '+Silk capacity', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Spool Fragments', 'Item Name': 'Spool Fragment #4', 'Description': 'Silk capacity upgrade. Extends silk spool beyond 9 rings.', 'Location': "Hunter's March area", 'Type/Subtype': 'Silk Upgrade', 'Required for': 'Exploration', 'Reward': '+Silk capacity', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Spool Fragments', 'Item Name': 'Spool Fragment #5', 'Description': 'Silk capacity upgrade. Extends silk spool beyond 9 rings.', 'Location': 'Far Fields area', 'Type/Subtype': 'Silk Upgrade', 'Required for': 'Exploration', 'Reward': '+Silk capacity', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Spool Fragments', 'Item Name': 'Spool Fragment #6', 'Description': 'Silk capacity upgrade. Extends silk spool beyond 9 rings.', 'Location': 'Greymoor area', 'Type/Subtype': 'Silk Upgrade', 'Required for': 'Exploration', 'Reward': '+Silk capacity', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Spool Fragments', 'Item Name': 'Spool Fragment #7', 'Description': 'Silk capacity upgrade. Extends silk spool beyond 9 rings.', 'Location': 'Bellhart area', 'Type/Subtype': 'Silk Upgrade', 'Required for': 'Exploration', 'Reward': '+Silk capacity', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Spool Fragments', 'Item Name': 'Spool Fragment #8', 'Description': 'Silk capacity upgrade. Extends silk spool beyond 9 rings.', 'Location': 'Shellwood area', 'Type/Subtype': 'Silk Upgrade', 'Required for': 'Exploration', 'Reward': '+Silk capacity', 'Mandatory/Optional': 'Optional', 'Source': 'IGN'}, {'Category': 'Items', 'Item Name': "Hunter's Cloak", 'Description': 'Default starting protective garb. Expertly woven but aged.', 'Location': 'Default starting item', 'Type/Subtype': 'Starting Equipment', 'Required for': 'Game start', 'Reward': 'Basic protection', 'Mandatory/Optional': 'Mandatory', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'Tool Pouch', 'Description': 'Basic pouch for holding tools, traps and crafting materials.', 'Location': 'Default starting item', 'Type/Subtype': 'Starting Equipment', 'Required for': 'Game start', 'Reward': 'Tool storage', 'Mandatory/Optional': 'Mandatory', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'Everbloom', 'Description': 'Ethereal flower that glows with pale light and wards against void.', 'Location': 'Deep memory/special location', 'Type/Subtype': 'Special Item', 'Required for': 'Story progression', 'Reward': 'Void protection', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'Craftmetal', 'Description': "Rare element found in Pharloom's rock and bone. Used for crafting.", 'Location': 'Bone Bottom shop, various locations', 'Type/Subtype': 'Crafting Material', 'Required for': '60 Rosaries', 'Reward': 'Tool crafting', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'Memory Locket', 'Description': 'Keepsake containing precious memory. Used to expand Crests.', 'Location': "Mort's Shop", 'Type/Subtype': 'Crest Upgrade', 'Required for': '150 Rosaries', 'Reward': 'Crest expansion', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'Pale Oil', 'Description': 'Bile gland of rare sylphean slug. Improves blade sharpness.', 'Location': 'Various locations', 'Type/Subtype': 'Upgrade Material', 'Required for': 'Exploration', 'Reward': 'Blade enhancement', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'Simple Key', 'Description': 'Rusted common key. Opens simple locks, breaks after use.', 'Location': 'Bone Bottom shop', 'Type/Subtype': 'Key Item', 'Required for': '500 Rosaries', 'Reward': 'Lock opening', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'Diving Bell Key', 'Description': "Worker's key for Deep Docks diving bell.", 'Location': 'Deep Docks area', 'Type/Subtype': 'Key Item', 'Required for': 'Exploration/Quest', 'Reward': 'Area access', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'Gate Key', 'Description': "Worker's key for Deep Docks middle gate.", 'Location': 'Deep Docks area', 'Type/Subtype': 'Key Item', 'Required for': 'Exploration/Quest', 'Reward': 'Area access', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'White Key', 'Description': "Surgical implement-shaped key for Citadel's Whiteward.", 'Location': 'Unknown location', 'Type/Subtype': 'Key Item', 'Required for': 'Unknown', 'Reward': 'Citadel access', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'Mossberry', 'Description': 'Sweet fruit with toxic seeds. Found in moist environments.', 'Location': 'Starting area, various locations', 'Type/Subtype': 'Consumable', 'Required for': 'Exploration', 'Reward': 'Food item', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'Silver Bell', 'Description': 'Finely forged bell made from gleaming metal.', 'Location': 'Unknown location', 'Type/Subtype': 'Valuable Item', 'Required for': 'Unknown', 'Reward': 'Trading/Quest item', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'Fine Pin', 'Description': 'Common Pharloom weapon in good condition. Metal rod with sharp tip.', 'Location': 'Various locations', 'Type/Subtype': 'Weapon/Material', 'Required for': 'Exploration', 'Reward': 'Crafting material', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'Shining Cog', 'Description': "Pristine automaton cog. Metal hasn't dulled despite use.", 'Location': 'Automaton enemies', 'Type/Subtype': 'Crafting Material', 'Required for': 'Enemy defeat', 'Reward': 'Crafting component', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': 'Choir Cloak', 'Description': 'Pilgrim garment offering protection against wind and cold.', 'Location': 'Citadel area', 'Type/Subtype': 'Equipment', 'Required for': 'Quest completion', 'Reward': 'Enhanced protection', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Items', 'Item Name': "Queen's Egg", 'Description': 'Fragile egg containing young Silkeater Queen.', 'Location': 'Unknown location', 'Type/Subtype': 'Special Item', 'Required for': 'Unknown', 'Reward': 'Silkeater breeding', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Areas', 'Item Name': 'Moss Grotto', 'Description': 'Starting area. Lush, overgrown region with tutorial content.', 'Location': 'Game beginning', 'Type/Subtype': 'Starting Area', 'Required for': 'Game start', 'Reward': 'Tutorial progression', 'Mandatory/Optional': 'Mandatory', 'Source': 'Multiple sources'}, {'Category': 'Areas', 'Item Name': 'Bone Bottom', 'Description': 'Underground area beneath Moss Grotto. Contains shops.', 'Location': 'Below Moss Grotto', 'Type/Subtype': 'Underground Area', 'Required for': 'Moss Mother defeat', 'Reward': 'Shopping and upgrades', 'Mandatory/Optional': 'Mandatory', 'Source': 'Multiple sources'}, {'Category': 'Areas', 'Item Name': 'The Marrow', 'Description': 'Central area with Bell Beast. Hub for fast travel.', 'Location': 'Central Pharloom', 'Type/Subtype': 'Hub Area', 'Required for': 'Early progression', 'Reward': 'Transportation hub', 'Mandatory/Optional': 'Mandatory', 'Source': 'Multiple sources'}, {'Category': 'Areas', 'Item Name': 'Deep Docks', 'Description': 'Industrial docks area with water and machinery.', 'Location': 'Connected to The Marrow', 'Type/Subtype': 'Industrial Area', 'Required for': 'Silkspear ability', 'Reward': 'Story progression', 'Mandatory/Optional': 'Mandatory', 'Source': 'Multiple sources'}, {'Category': 'Areas', 'Item Name': "Hunter's March", 'Description': 'Wild hunting grounds with beast-themed content.', 'Location': 'Western regions', 'Type/Subtype': 'Wildlife Area', 'Required for': 'Swift Step ability', 'Reward': 'Beast Crest location', 'Mandatory/Optional': 'Mandatory', 'Source': 'Multiple sources'}, {'Category': 'Areas', 'Item Name': 'Far Fields', 'Description': 'Agricultural and open field areas.', 'Location': 'Northern regions', 'Type/Subtype': 'Field Area', 'Required for': 'Various abilities', 'Reward': 'Fourth Chorus boss', 'Mandatory/Optional': 'Mandatory', 'Source': 'Multiple sources'}, {'Category': 'Areas', 'Item Name': 'Greymoor', 'Description': 'Moorland area with Reaper Chapel.', 'Location': 'Far left regions', 'Type/Subtype': 'Moorland Area', 'Required for': 'Mid-game progression', 'Reward': 'Reaper Crest location', 'Mandatory/Optional': 'Optional', 'Source': 'Multiple sources'}, {'Category': 'Areas', 'Item Name': 'Bellhart', 'Description': 'Elevated area above other regions.', 'Location': 'Upper areas', 'Type/Subtype': 'Elevated Area', 'Required for': 'Cling Grip', 'Reward': 'Widow boss location', 'Mandatory/Optional': 'Mandatory', 'Source': 'Multiple sources'}, {'Category': 'Areas', 'Item Name': 'Shellwood', 'Description': 'Forest area with wooden/shell structures.', 'Location': 'Forest regions', 'Type/Subtype': 'Forest Area', 'Required for': 'Unknown', 'Reward': 'Sister Splinter boss', 'Mandatory/Optional': 'Optional', 'Source': 'Multiple sources'}, {'Category': 'Areas', 'Item Name': 'Cogwork Core', 'Description': 'Mechanical area with automaton enemies.', 'Location': 'Industrial regions', 'Type/Subtype': 'Mechanical Area', 'Required for': 'Unknown', 'Reward': 'Cogwork boss fights', 'Mandatory/Optional': 'Optional', 'Source': 'Multiple sources'}, {'Category': 'Areas', 'Item Name': 'Choral Chambers', 'Description': 'Musical-themed area with singing elements.', 'Location': 'Connected to Cogwork', 'Type/Subtype': 'Musical Area', 'Required for': 'Unknown', 'Reward': 'Musical progression', 'Mandatory/Optional': 'Optional', 'Source': 'Multiple sources'}, {'Category': 'Areas', 'Item Name': 'Wormways', 'Description': 'Underground tunnel system.', 'Location': 'Underground network', 'Type/Subtype': 'Tunnel System', 'Required for': 'Unknown', 'Reward': "Dead Bug's Purse tool", 'Mandatory/Optional': 'Optional', 'Source': 'Multiple sources'}, {'Category': 'Areas', 'Item Name': 'Blasted Steps', 'Description': 'Final area leading to Grand Gate.', 'Location': 'Endgame location', 'Type/Subtype': 'Final Area', 'Required for': 'Late game', 'Reward': 'Last Judge boss', 'Mandatory/Optional': 'Mandatory', 'Source': 'Multiple sources'}, {'Category': 'Areas', 'Item Name': 'Weavenest Atla', 'Description': 'Hidden area for crest upgrades.', 'Location': 'Behind sealed door in Moss Grotto', 'Type/Subtype': 'Secret Area', 'Required for': 'Needolin instrument', 'Reward': 'Hunter Crest upgrade', 'Mandatory/Optional': 'Optional', 'Source': 'Nintendo Life'}, {'Category': 'Tools', 'Item Name': 'Longpin', 'Description': 'Extended range piercing tool.', 'Location': 'Unknown location', 'Type/Subtype': 'Red Tool (Offensive)', 'Required for': 'Combat', 'Reward': 'Long-range piercing', 'Mandatory/Optional': 'Optional', 'Source': 'Nintendo Life'}, {'Category': 'Tools', 'Item Name': 'Sprintmaster Medal', 'Description': 'Tool that enhances movement speed.', 'Location': 'Speed challenge completion', 'Type/Subtype': 'Yellow Tool (Utility)', 'Required for': 'Speed challenge', 'Reward': 'Movement enhancement', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Tools', 'Item Name': 'Bell Fragment', 'Description': 'Crafting component for bell-based tools.', 'Location': 'Various bell locations', 'Type/Subtype': 'Crafting Material', 'Required for': 'Exploration', 'Reward': 'Tool crafting', 'Mandatory/Optional': 'Optional', 'Source': 'Various'}, {'Category': 'Tools', 'Item Name': 'Silk Weaver', 'Description': 'Tool that enhances silk-based abilities.', 'Location': 'Unknown location', 'Type/Subtype': 'Blue Tool (Passive)', 'Required for': 'Unknown', 'Reward': 'Silk enhancement', 'Mandatory/Optional': 'Optional', 'Source': 'Search Results'}, {'Category': 'Tools', 'Item Name': 'Needle Polish', 'Description': 'Tool upgrade material for needle weapons.', 'Location': 'Unknown location', 'Type/Subtype': 'Upgrade Material', 'Required for': 'Exploration', 'Reward': 'Needle enhancement', 'Mandatory/Optional': 'Optional', 'Source': 'Search Results'}, {'Category': 'Tools', 'Item Name': 'Bone Charm', 'Description': 'Protective charm made from carved bone.', 'Location': 'Unknown location', 'Type/Subtype': 'Blue Tool (Passive)', 'Required for': 'Unknown', 'Reward': 'Protection enhancement', 'Mandatory/Optional': 'Optional', 'Source': 'Search Results'}, {'Category': 'Tools', 'Item Name': "Hunter's Medal", 'Description': 'Recognition token for skilled hunters.', 'Location': 'Hunting challenges', 'Type/Subtype': 'Yellow Tool (Utility)', 'Required for': 'Combat achievements', 'Reward': 'Hunter recognition', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Tools', 'Item Name': 'Swift Pin', 'Description': 'Fast-firing projectile tool.', 'Location': 'Unknown location', 'Type/Subtype': 'Red Tool (Offensive)', 'Required for': 'Unknown', 'Reward': 'Rapid-fire attacks', 'Mandatory/Optional': 'Optional', 'Source': 'Search Results'}, {'Category': 'NPCs', 'Item Name': 'Eva', 'Description': 'Crest upgrade specialist in Weavenest Atla. Provides Hunter Crest upgrades.', 'Location': 'Weavenest Atla', 'Type/Subtype': 'Crest Specialist', 'Required for': 'Needolin instrument', 'Reward': 'Hunter Crest upgrade', 'Mandatory/Optional': 'Optional', 'Source': 'Nintendo Life'}, {'Category': 'NPCs', 'Item Name': 'Mort', 'Description': 'Shop keeper selling various items and upgrades.', 'Location': 'Bone Bottom area', 'Type/Subtype': 'Merchant', 'Required for': 'Game progression', 'Reward': 'Item sales', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'NPCs', 'Item Name': 'Bell Hermit', 'Description': 'Mysterious character associated with bells and souls.', 'Location': 'Unknown location', 'Type/Subtype': 'Quest Giver', 'Required for': 'Unknown', 'Reward': "Hermit's Soul item", 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'NPCs', 'Item Name': 'Chapel Maid', 'Description': 'Religious figure providing soul-related items.', 'Location': 'Various chapels', 'Type/Subtype': 'Quest Giver', 'Required for': 'Chapel access', 'Reward': "Maiden's Soul item", 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'NPCs', 'Item Name': 'Sprintmaster Swift', 'Description': 'Speed challenge organizer.', 'Location': 'Unknown location', 'Type/Subtype': 'Challenge Giver', 'Required for': 'Speed trials', 'Reward': 'Sprintmaster Medal', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'NPCs', 'Item Name': 'Seth the Guardian', 'Description': 'Wandering warrior offering challenges.', 'Location': 'Various locations', 'Type/Subtype': 'Challenge Giver', 'Required for': 'Combat trials', 'Reward': "Guardian's Memento", 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'NPCs', 'Item Name': 'Mergwin', 'Description': 'Food delivery recipient in Choral Chambers.', 'Location': 'Choral Chambers', 'Type/Subtype': 'Quest Receiver', 'Required for': "Courier's Rasher delivery", 'Reward': 'Quest reward', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'NPCs', 'Item Name': 'Lugoli', 'Description': 'Disgraced chef known for pickled delicacies.', 'Location': 'Unknown location', 'Type/Subtype': 'Lore Character', 'Required for': 'Unknown', 'Reward': 'Pickled Muckmaggot recipe', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Quests', 'Item Name': 'Courier Mission', 'Description': "Deliver Courier's Rasher to Mergwin in Choral Chambers.", 'Location': 'Various locations to Choral Chambers', 'Type/Subtype': 'Delivery Quest', 'Required for': "Obtain Courier's Rasher", 'Reward': 'Quest reward', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Quests', 'Item Name': 'Hunter Trials', 'Description': 'Complete hunting challenges for recognition.', 'Location': 'Various hunting grounds', 'Type/Subtype': 'Combat Quest', 'Required for': 'Combat skills', 'Reward': "Hunter's Memento", 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Quests', 'Item Name': 'Speed Challenges', 'Description': 'Complete timed movement challenges.', 'Location': 'Various locations', 'Type/Subtype': 'Speed Quest', 'Required for': 'Movement abilities', 'Reward': 'Sprintmaster Memento', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Quests', 'Item Name': 'Bell Collection', 'Description': 'Gather and restore various bells throughout Pharloom.', 'Location': 'Multiple bell locations', 'Type/Subtype': 'Collection Quest', 'Required for': 'Exploration', 'Reward': 'Bell-related rewards', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Quests', 'Item Name': 'Soul Seeking', 'Description': 'Collect souls from various characters and locations.', 'Location': 'Multiple NPCs and areas', 'Type/Subtype': 'Collection Quest', 'Required for': 'NPC interactions', 'Reward': 'Soul vials', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}, {'Category': 'Quests', 'Item Name': 'Craft Master', 'Description': 'Learn and master various crafting recipes.', 'Location': 'Crafting locations', 'Type/Subtype': 'Crafting Quest', 'Required for': 'Materials gathering', 'Reward': 'Enhanced crafting', 'Mandatory/Optional': 'Optional', 'Source': 'Game8'}];
+
+        let completedItems = new Set();
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        // Load saved progress
+        function loadProgress() {
+            const saved = localStorage.getItem('silksong-checklist-progress');
+            if (saved) {
+                completedItems = new Set(JSON.parse(saved));
+            }
+        }
+
+        // Save progress
+        function saveProgress() {
+            localStorage.setItem('silksong-checklist-progress', JSON.stringify([...completedItems]));
+        }
+
+        // Update statistics
+        function updateStats() {
+            const total = checklistData.length;
+            const completed = completedItems.size;
+            const rate = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            const mandatoryItems = checklistData.filter(item => item['Mandatory/Optional'] === 'Mandatory');
+            const mandatoryCompleted = mandatoryItems.filter(item => 
+                completedItems.has(item.Category + '|' + item['Item Name'])
+            ).length;
+
+            document.getElementById('total-items').textContent = total;
+            document.getElementById('completed-items').textContent = completed;
+            document.getElementById('completion-rate').textContent = rate + '%';
+            document.getElementById('mandatory-completed').textContent = mandatoryCompleted + '/' + mandatoryItems.length;
+            document.getElementById('progress-bar').style.width = rate + '%';
+        }
+
+        // Toggle item completion
+        function toggleItem(category, itemName) {
+            const key = category + '|' + itemName;
+            if (completedItems.has(key)) {
+                completedItems.delete(key);
+            } else {
+                completedItems.add(key);
+            }
+            saveProgress();
+            renderChecklist();
+            updateStats();
+        }
+
+        // Filter and search items
+        function getFilteredItems() {
+            let filtered = checklistData;
+
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(item => item.Category === currentFilter);
+            }
+
+            if (searchQuery) {
+                filtered = filtered.filter(item => 
+                    item['Item Name'].toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    item.Description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    item.Location.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+            }
+
+            return filtered;
+        }
+
+        // Group items by category
+        function groupByCategory(items) {
+            const grouped = {};
+            items.forEach(item => {
+                if (!grouped[item.Category]) {
+                    grouped[item.Category] = [];
+                }
+                grouped[item.Category].push(item);
+            });
+            return grouped;
+        }
+
+        // Render checklist
+        function renderChecklist() {
+            const container = document.getElementById('checklist-container');
+            const filtered = getFilteredItems();
+            const grouped = groupByCategory(filtered);
+
+            let html = '';
+
+            Object.keys(grouped).sort().forEach(category => {
+                const items = grouped[category];
+                const categoryKey = 'category-' + category.replace(/[^a-zA-Z0-9]/g, '');
+
+                html += `
+                    <div class="category-section">
+                        <div class="category-header" onclick="toggleCategory('${categoryKey}')">
+                            <div class="category-title">${category}</div>
+                            <div class="category-count">${items.length}项</div>
+                        </div>
+                        <div class="category-items expanded" id="${categoryKey}">
+                `;
+
+                items.forEach(item => {
+                    const key = item.Category + '|' + item['Item Name'];
+                    const isCompleted = completedItems.has(key);
+
+                    html += `
+                        <div class="checklist-item ${isCompleted ? 'completed' : ''}">
+                            <div class="checkbox ${isCompleted ? 'checked' : ''}" 
+                                 onclick="toggleItem('${item.Category}', '${item['Item Name']}')">
+                                ${isCompleted ? '✓' : ''}
+                            </div>
+                            <div class="item-details">
+                                <div class="item-name">${item['Item Name']}</div>
+                                <div class="item-description">${item.Description}</div>
+                                <div class="item-meta">
+                                    <span class="meta-tag location">📍 ${item.Location}</span>
+                                    <span class="meta-tag">${item['Type/Subtype']}</span>
+                                    <span class="meta-tag ${item['Mandatory/Optional'].toLowerCase()}">
+                                        ${item['Mandatory/Optional'] === 'Mandatory' ? '⚠️ 必须' : '⭐ 可选'}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Toggle category visibility
+        function toggleCategory(categoryId) {
+            const element = document.getElementById(categoryId);
+            element.classList.toggle('expanded');
+        }
+
+        // Export progress
+        function exportProgress() {
+            const data = {
+                progress: [...completedItems],
+                exportDate: new Date().toISOString(),
+                totalItems: checklistData.length,
+                completedCount: completedItems.size
+            };
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'silksong-checklist-progress.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Import progress
+        function importProgress() {
+            document.getElementById('import-file').click();
+        }
+
+        // Handle import
+        function handleImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.progress && Array.isArray(data.progress)) {
+                        completedItems = new Set(data.progress);
+                        saveProgress();
+                        renderChecklist();
+                        updateStats();
+                        alert('进度导入成功！');
+                    } else {
+                        alert('无效的进度文件格式！');
+                    }
+                } catch (error) {
+                    alert('导入失败：' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Reset progress
+        function resetProgress() {
+            if (confirm('确定要重置所有进度吗？此操作无法撤销！')) {
+                completedItems.clear();
+                saveProgress();
+                renderChecklist();
+                updateStats();
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProgress();
+            renderChecklist();
+            updateStats();
+
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.getAttribute('data-category');
+                    renderChecklist();
+                });
+            });
+
+            // Search input
+            document.getElementById('search-input').addEventListener('input', function() {
+                searchQuery = this.value;
+                renderChecklist();
+            });
+        });
+    </script>
+</body>
+</html>

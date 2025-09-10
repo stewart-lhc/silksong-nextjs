@@ -74,11 +74,23 @@ export interface TimelineEvent {
   category: string;
 }
 
-// Checklist Data Types (based on existing structure)
+// Checklist Data Types (enhanced structure with CSV data)
 export interface ChecklistSubItem {
   id: string;
-  text: string;
   completed: boolean;
+  
+  // New enhanced format (CSV data)
+  name?: string;
+  description?: string;
+  location?: string;
+  type?: string;
+  requiredFor?: string;
+  reward?: string;
+  mandatory?: string;
+  source?: string;
+  
+  // Legacy simple format (backwards compatibility)
+  text?: string;
 }
 
 export interface ChecklistCategory {

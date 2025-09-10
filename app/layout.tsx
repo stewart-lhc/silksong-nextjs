@@ -1,7 +1,6 @@
 import { Footer } from '@/components/footer';
 import { Navigation } from '@/components/navigation';
 import { PerformanceMonitor } from '@/components/performance-monitor';
-import { PerformanceOptimizer } from '@/components/performance-optimizer';
 import { PWAInstaller } from '@/components/pwa-installer';
 import { StructuredData } from '@/components/structured-data';
 import { organizationSchema, websiteSchema } from '@/lib/structured-data';
