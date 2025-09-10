@@ -1,15 +1,88 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ArrowUp, Search, Hash, CheckCircle2, Package, Filter, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { ChecklistCategory } from '@/types';
+import { useDebounce } from '@/hooks/use-debounce';
+
+// 性能优化：搜索防抖延迟
+const SEARCH_DEBOUNCE_DELAY = 300;
+
+// 性能优化：缓存分类图标
+const CATEGORY_EMOJI_CACHE = new Map<string, string>([
+  ['bosses', '👹'],
+  ['tools', '🔧'],
+  ['crests', '⚜️'],
+  ['abilities', '✨'],
+  ['mask-shards', '🎭'],
+  ['spool-fragments', '🧵'],
+  ['items', '📦'],
+  ['areas', '🗺️'],
+  ['npcs', '👤'],
+  ['quests', '📜']
+]);
+
+
+// 性能优化：缓存的分类按钮组件
+interface CategoryButtonProps {
+  category?: {
+    id: string;
+    title: string;
+    description?: string;
+    isComplete?: boolean;
+  } | null;
+  isActive: boolean;
+  isAllButton?: boolean;
+  onClick: () => void;
+}
+
+const CategoryButton = memo(({ 
+  category, 
+  isActive, 
+  isAllButton = false, 
+  onClick 
+}: CategoryButtonProps) => {
+  const emoji = isAllButton ? null : CATEGORY_EMOJI_CACHE.get(category?.id || '') || '📋';
+  const title = isAllButton ? 'All' : category?.title || '';
+  const description = isAllButton ? 'View all categories and items' : category?.description || '';
+  const isComplete = !isAllButton && category?.isComplete;
+  
+  return (
+    <button
+      onClick={onClick}
+      className={`p-2 rounded-lg border text-left hover:bg-muted/50 group relative transition-all duration-200 ${
+        isActive 
+          ? 'border-hornet-primary bg-hornet-primary/10 text-hornet-primary shadow-md shadow-hornet-primary/20 ring-2 ring-hornet-primary/20' 
+          : 'border-border bg-card hover:border-hornet-primary/30'
+      }`}
+    >
+      <div className="flex items-center gap-1.5">
+        {isAllButton ? (
+          <Package className={`w-3 h-3 flex-shrink-0 ${isActive ? 'text-hornet-primary' : ''}`} />
+        ) : (
+          <span className={`text-sm flex-shrink-0 ${isActive ? 'scale-110' : ''} transition-transform duration-200`}>{emoji}</span>
+        )}
+        <span className={`text-xs font-medium truncate ${isActive ? 'font-semibold' : ''}`}>{title}</span>
+        {isComplete && (
+          <CheckCircle2 className="w-3 h-3 text-green-600 flex-shrink-0 ml-auto" />
+        )}
+      </div>
+      
+      {/* Hover tooltip */}
+      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-popover text-popover-foreground text-xs rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-[9999] max-w-80 border border-border/20 backdrop-blur-sm">
+        {description}
+      </div>
+    </button>
+  );
+});
+
+CategoryButton.displayName = 'CategoryButton';
 
 export interface FilterState {
   searchTerm: string;
@@ -35,23 +108,7 @@ export interface CategorySidebarProps {
   className?: string;
 }
 
-const getCategoryEmoji = (categoryId: string): string => {
-  const emojiMap: Record<string, string> = {
-    bosses: '👹',
-    tools: '🔧',
-    crests: '⚜️',
-    abilities: '✨',
-    'mask-shards': '🎭',
-    'spool-fragments': '🧵',
-    items: '📦',
-    areas: '🗺️',
-    npcs: '👤',
-    quests: '📜'
-  };
-  return emojiMap[categoryId] || '📋';
-};
-
-export function CategorySidebar({
+export const CategorySidebar = memo(function CategorySidebar({
   checklist,
   activeCategory,
   onCategorySelect,
@@ -65,17 +122,43 @@ export function CategorySidebar({
   className = ''
 }: CategorySidebarProps) {
   const [isFiltersExpanded, setIsFiltersExpanded] = useState(false);
+  const [localSearchTerm, setLocalSearchTerm] = useState(filters.searchTerm);
+  
+  // 性能优化：防抖搜索
+  const debouncedSearchTerm = useDebounce(localSearchTerm, SEARCH_DEBOUNCE_DELAY);
+  
+  // 性能优化：只在防抖值变化时更新父组件
+  useEffect(() => {
+    if (debouncedSearchTerm !== filters.searchTerm) {
+      onFiltersChange({
+        ...filters,
+        searchTerm: debouncedSearchTerm
+      });
+    }
+  }, [debouncedSearchTerm, filters, onFiltersChange]);
+  
+  // 性能优化：同步外部搜索词变化
+  useEffect(() => {
+    if (filters.searchTerm !== localSearchTerm) {
+      setLocalSearchTerm(filters.searchTerm);
+    }
+  }, [filters.searchTerm, localSearchTerm]);
 
   const handleFilterChange = useCallback((key: keyof FilterState, value: string) => {
     // Convert "all" back to empty string for internal state
     const actualValue = value === 'all' ? '' : value;
-    onFiltersChange({
-      ...filters,
-      [key]: actualValue
-    });
+    if (key === 'searchTerm') {
+      setLocalSearchTerm(actualValue);
+    } else {
+      onFiltersChange({
+        ...filters,
+        [key]: actualValue
+      });
+    }
   }, [filters, onFiltersChange]);
 
   const handleClearAllFilters = useCallback(() => {
+    setLocalSearchTerm('');
     onFiltersChange({
       searchTerm: '',
       category: '',
@@ -104,39 +187,21 @@ export function CategorySidebar({
       });
   }, [checklist]);
 
-  const totalStats = useMemo(() => {
-    const totalItems = checklist.reduce((sum, cat) => sum + cat.items.length, 0);
-    const totalCompleted = checklist.reduce((sum, cat) => 
-      sum + cat.items.filter(item => item.completed).length, 0
-    );
-    const overallProgress = totalItems > 0 ? Math.round((totalCompleted / totalItems) * 100) : 0;
-    
-    return { totalItems, totalCompleted, overallProgress };
-  }, [checklist]);
 
+  // 性能优化：使用本地搜索词计算活跃过滤器数量
   const activeFilterCount = useMemo(() => {
-    return Object.entries(filters).filter(([key, value]) => key !== 'category' && value !== '').length;
-  }, [filters]);
+    const searchCount = localSearchTerm ? 1 : 0;
+    const otherFiltersCount = Object.entries(filters)
+      .filter(([key, value]) => key !== 'category' && key !== 'searchTerm' && value !== '')
+      .length;
+    return searchCount + otherFiltersCount;
+  }, [filters, localSearchTerm]);
 
   const hasActiveFilters = activeFilterCount > 0;
 
-  const getProgressColor = (progress: number, isActive: boolean = false) => {
-    if (isActive) return 'text-hornet-primary';
-    if (progress === 100) return 'text-green-600';
-    if (progress >= 80) return 'text-blue-600';
-    if (progress >= 50) return 'text-yellow-600';
-    if (progress >= 25) return 'text-orange-600';
-    return 'text-gray-500';
-  };
-
-  const getBorderColor = (progress: number, isActive: boolean = false) => {
-    if (isActive) return 'border-hornet-primary bg-hornet-primary/5';
-    if (progress === 100) return 'border-green-200 bg-green-50 hover:bg-green-100';
-    return 'border-border bg-card hover:bg-muted/50';
-  };
 
   return (
-    <ScrollArea className={`h-full ${className}`}>
+    <div className={`h-full ${className} overflow-y-auto overflow-x-visible checklist-scroll-area`}>
       <div className="p-4 space-y-4">
       {/* Search & Filter Header */}
       <Card className="mb-4">
@@ -160,13 +225,13 @@ export function CategorySidebar({
             <Search className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
             <Input
               placeholder="Search items by name, description, location..."
-              value={filters.searchTerm}
-              onChange={(e) => handleFilterChange('searchTerm', e.target.value)}
+              value={localSearchTerm}
+              onChange={(e) => setLocalSearchTerm(e.target.value)}
               className="pl-10 pr-10"
             />
-            {filters.searchTerm && (
+            {localSearchTerm && (
               <button
-                onClick={() => handleFilterChange('searchTerm', '')}
+                onClick={() => setLocalSearchTerm('')}
                 className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
               >
                 <X className="w-4 h-4" />
@@ -175,15 +240,15 @@ export function CategorySidebar({
           </div>
 
           {/* Quick Filter Buttons */}
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 gap-2">
             <Select value={filters.mandatory || 'all'} onValueChange={(value) => handleFilterChange('mandatory', value)}>
               <SelectTrigger className="h-9">
                 <SelectValue placeholder="All items" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All items</SelectItem>
-                <SelectItem value="Mandatory">Required only</SelectItem>
-                <SelectItem value="Optional">Optional only</SelectItem>
+                <SelectItem value="Mandatory">Mandatory</SelectItem>
+                <SelectItem value="Optional">Optional</SelectItem>
               </SelectContent>
             </Select>
             <Select value={filters.completed || 'all'} onValueChange={(value) => handleFilterChange('completed', value)}>
@@ -287,55 +352,24 @@ export function CategorySidebar({
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0 h-full">
-          <ScrollArea className="h-full px-4 py-4">
+          <div className="h-full px-4 py-4 overflow-y-auto overflow-x-visible checklist-scroll-area">
             <div className="grid grid-cols-2 gap-2">
               {/* All Categories Button */}
-              <button
+              <CategoryButton
+                category={null}
+                isActive={activeCategory === null}
+                isAllButton={true}
                 onClick={() => onCategorySelect(null)}
-                className={`p-2 rounded-lg border text-left hover:bg-muted/50 group relative ${
-                  activeCategory === null 
-                    ? 'border-hornet-primary bg-hornet-primary/5 text-hornet-primary' 
-                    : 'border-border bg-card'
-                }`}
-                title="View all categories and items"
-              >
-                <div className="flex items-center gap-1.5">
-                  <Package className="w-3 h-3 flex-shrink-0" />
-                  <span className="text-xs font-medium truncate">All</span>
-                </div>
-                {/* Hover tooltip for description */}
-                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-popover text-popover-foreground text-xs rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                  View all categories and items
-                </div>
-              </button>
+              />
               
               {categoriesWithStats.map((category) => {
-                const isActive = activeCategory === category.id;
-                
                 return (
-                  <button
+                  <CategoryButton
                     key={category.id}
+                    category={category}
+                    isActive={activeCategory === category.id}
                     onClick={() => onCategorySelect(category.id)}
-                    className={`p-2 rounded-lg border text-left hover:bg-muted/50 group relative ${
-                      isActive 
-                        ? 'border-hornet-primary bg-hornet-primary/5 text-hornet-primary' 
-                        : 'border-border bg-card'
-                    }`}
-                    title={category.description}
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-sm flex-shrink-0">{getCategoryEmoji(category.id)}</span>
-                      <span className="text-xs font-medium truncate">{category.title}</span>
-                      {category.isComplete && (
-                        <CheckCircle2 className="w-3 h-3 text-green-600 flex-shrink-0 ml-auto" />
-                      )}
-                    </div>
-                    
-                    {/* Hover tooltip for description */}
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-popover text-popover-foreground text-xs rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50 max-w-48">
-                      {category.description}
-                    </div>
-                  </button>
+                  />
                 );
               })}
             </div>
@@ -348,7 +382,7 @@ export function CategorySidebar({
                 <p className="text-xs">Try adjusting your search terms</p>
               </div>
             )}
-          </ScrollArea>
+          </div>
         </CardContent>
       </Card>
 
@@ -365,6 +399,8 @@ export function CategorySidebar({
         </Button>
       </div>
       </div>
-    </ScrollArea>
+    </div>
   );
-}
+});
+
+CategorySidebar.displayName = 'CategorySidebar';
