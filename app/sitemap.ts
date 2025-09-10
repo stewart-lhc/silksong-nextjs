@@ -2,9 +2,9 @@ import { MetadataRoute } from 'next';
 import { BASE_URL } from '../config/seo';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Use August 2025 dates to reflect recent updates
-  const recentUpdate = new Date('2025-08-25');
-  const homeUpdate = new Date('2025-08-25'); // Homepage updated most recently
+  // Use September 2025 dates to reflect recent updates
+  const recentUpdate = new Date('2025-09-10');
+  const homeUpdate = new Date('2025-09-10'); // Homepage updated most recently
   
   // Define all static routes with their priorities and change frequencies
   const staticRoutes: MetadataRoute.Sitemap = [
