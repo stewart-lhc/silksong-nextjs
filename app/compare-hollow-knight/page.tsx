@@ -22,6 +22,11 @@ export const metadata: Metadata = {
     title: 'Hollow Knight vs Silksong - Complete Comparison Guide',
     description: 'Comprehensive analysis of differences between Hollow Knight and Silksong',
     type: 'article',
+    url: 'https://www.hollowknightsilksong.org/compare-hollow-knight',
+    images: ['/pressKit/Silksong_Promo_02_2400.png']
+  },
+  alternates: {
+    canonical: 'https://www.hollowknightsilksong.org/compare-hollow-knight'
   },
 };
 
@@ -45,18 +50,18 @@ const getStatusBadge = (status: ComparisonItem['status']) => {
   const statusConfig = {
     confirmed: {
       label: 'Confirmed',
-      className: 'bg-hornet-secondary text-white hover:bg-hornet-secondary/80',
-      style: { backgroundColor: 'var(--hornet-secondary)' }
+      className: 'bg-green-600 text-white hover:bg-green-700',
+      style: { backgroundColor: '#16a34a' }
     },
     hinted: {
       label: 'Hinted',
-      className: 'bg-hornet-accent text-white hover:bg-hornet-accent/80',
-      style: { backgroundColor: 'var(--hornet-accent)' }
+      className: 'bg-yellow-600 text-white hover:bg-yellow-700',
+      style: { backgroundColor: '#ca8a04' }
     },
     tba: {
       label: 'TBA',
-      className: 'bg-hornet-dark text-white hover:bg-hornet-dark/80',
-      style: { backgroundColor: 'var(--hornet-dark)' }
+      className: 'bg-gray-600 text-white hover:bg-gray-700',
+      style: { backgroundColor: '#4b5563' }
     }
   };
 
@@ -205,7 +210,7 @@ export default function CompareHollowKnightPage() {
                         href={item.source.url} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-hornet-accent hover:text-hornet-light underline underline-offset-2"
+                        className="text-primary hover:text-accent underline underline-offset-2"
                       >
                         {item.source.label}
                       </a>
@@ -231,10 +236,10 @@ export default function CompareHollowKnightPage() {
             {unconfirmedExpectations.map((item: UnconfirmedExpectation, index: number) => (
               <div
                 key={index}
-                className="p-4 rounded-lg bg-gradient-to-br from-hornet-dark/5 to-hornet-accent/5 border border-hornet-accent/20 hover:border-hornet-accent/30 transition-colors"
+                className="p-4 rounded-lg bg-gradient-to-br from-muted/5 to-primary/5 border border-primary/20 hover:border-primary/30 transition-colors"
               >
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-hornet-accent flex-shrink-0 mt-2" />
+                  <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0 mt-2" />
                   <div className="flex-1 space-y-2">
                     <h4 className="font-medium text-sm text-foreground">{item.expectation}</h4>
                     <p className="text-xs text-muted-foreground leading-relaxed">{item.rationale}</p>
@@ -248,7 +253,7 @@ export default function CompareHollowKnightPage() {
 
       {/* Call to Action */}
       <div className="text-center space-y-4">
-        <h2 className="text-2xl font-semibold mb-4 text-hornet-light">Stay Updated on Silksong Development</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-primary">Stay Updated on Silksong Development</h2>
         <div className="flex flex-wrap justify-center gap-4">
           <Button asChild className="btn-fantasy">
             <Link href="/timeline">View Development Timeline</Link>

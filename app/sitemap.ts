@@ -39,6 +39,42 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${BASE_URL}/announcement`,
+      lastModified: recentUpdate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/news`,
+      lastModified: recentUpdate,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/guides`,
+      lastModified: recentUpdate,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/contact`,
+      lastModified: recentUpdate,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/privacy`,
+      lastModified: recentUpdate,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
+      url: `${BASE_URL}/terms`,
+      lastModified: recentUpdate,
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+    {
       url: `${BASE_URL}/faq`,
       lastModified: new Date('2025-08-21'), // FAQ specifically updated on Aug 21, 2025
       changeFrequency: 'weekly',
@@ -61,6 +97,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: recentUpdate,
       changeFrequency: 'monthly',
       priority: 0.6,
+    },
+    {
+      url: `${BASE_URL}/what-is-silksong`,
+      lastModified: recentUpdate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
     },
     // Add the embed countdown route that's missing
     {

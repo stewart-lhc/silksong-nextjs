@@ -19,14 +19,29 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: 'Home', path: '/', description: 'Latest news and countdown' },
   {
-    label: 'Timelines',
-    path: '/timeline',
-    description: 'Official statements timeline',
+    label: 'News',
+    path: '/news',
+    description: 'Latest official updates and announcements',
   },
   {
-    label: 'Platforms',
+    label: 'What is Silksong?',
+    path: '/what-is-silksong',
+    description: 'Complete beginner\'s guide',
+  },
+  {
+    label: 'Guides',
+    path: '/guides',
+    description: 'Gameplay guides and strategies',
+  },
+  {
+    label: 'Announcements',
+    path: '/announcement',
+    description: 'Official announcement history',
+  },
+  {
+    label: 'Platforms & Pricing',
     path: '/platforms',
-    description: 'Available platforms and FAQ',
+    description: 'Pricing, platforms & release info',
   },
   {
     label: 'Checklist',

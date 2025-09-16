@@ -1,8 +1,8 @@
 export const siteConfig = {
-  name: "Silk Song Archive",
-  title: "Silk Song Archive - Hollow Knight: Silksong",
+  name: "Hollow Knight Silksong",
+  title: "Hollow Knight Silksong - Official News & Updates",
   description: "Your ultimate destination for Hollow Knight: Silksong news, updates, and comprehensive game information.",
-  url: "https://silksong-archive.com",
+  url: "https://www.hollowknightsilksong.org",
   ogImage: "/og-image.jpg",
   links: {
     twitter: "https://x.com/teamcherry",

@@ -45,6 +45,11 @@ const fontMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NODE_ENV === 'production'
+      ? 'https://www.hollowknightsilksong.org'
+      : 'http://localhost:3000'
+  ),
   title: {
     default: 'Hollow Knight: Silksong - Official Release Tracker',
     template: '%s | Hollow Knight: Silksong',
@@ -68,7 +73,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url:
       process.env.NODE_ENV === 'production'
-        ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
+        ? 'https://www.hollowknightsilksong.org'
         : 'http://localhost:3000',
     siteName: 'Hollow Knight: Silksong Release Tracker',
     title: 'Hollow Knight: Silksong - Official Release Tracker',
@@ -105,7 +110,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical:
       process.env.NODE_ENV === 'production'
-        ? process.env.NEXT_PUBLIC_SITE_URL || 'https://hollowknightsilksong.org'
+        ? 'https://www.hollowknightsilksong.org'
         : 'http://localhost:3000',
   },
 };
@@ -170,18 +175,6 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
 
-        {/* Critical font preloading */}
-        <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=optional"
-          as="style"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
         
         
         <Providers>

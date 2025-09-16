@@ -50,17 +50,24 @@
 
 ## WEBSITE FUNCTIONAL ARCHITECTURE & NAVIGATION
 
-### Current Site Structure (August 2025)
+### Current Site Structure (September 2025)
 **MAIN NAVIGATION:**
 1. **Home (/)** - Live countdown timer and main hub
-2. **Timeline (/timeline)** - Complete development timeline since 2019
-3. **Platforms (/platforms)** - Platform availability and system requirements
-4. **Checklist (/checklist)** - Community preparation guide for launch
-5. **HK Differences (/compare-hollow-knight)** - Comparison between Hollow Knight and Silksong
-6. **FAQ (/faq)** - Frequently asked questions (updated Aug 21, 2025)
-7. **Tools (/tools)** - Developer tools and utilities
-   - **Embed Tool (/tools/embed)** - Countdown widget for other websites
-8. **Developers (/developers)** - API documentation and developer resources
+2. **Announcements (/announcement)** - Complete Silksong announcement history from Team Cherry
+3. **News (/news)** - Latest Silksong news and updates
+4. **Guides (/guides)** - Comprehensive gameplay guides and strategies
+5. **Timeline (/timeline)** - Complete development timeline since 2019
+6. **Platforms (/platforms)** - Platform availability and system requirements
+7. **Checklist (/checklist)** - Community preparation guide for launch
+8. **HK Differences (/compare-hollow-knight)** - Comparison between Hollow Knight and Silksong
+9. **FAQ (/faq)** - Frequently asked questions (updated Aug 21, 2025)
+10. **What is Silksong (/what-is-silksong)** - Introduction and overview for newcomers
+11. **Tools (/tools)** - Developer tools and utilities
+    - **Embed Tool (/tools/embed)** - Countdown widget for other websites
+12. **Developers (/developers)** - API documentation and developer resources
+13. **Contact (/contact)** - Contact information and support
+14. **Privacy Policy (/privacy)** - Privacy policy and data protection
+15. **Terms of Service (/terms)** - Terms and conditions
 
 ### Core Features for AI Understanding
 1. **Live Release Countdown**
@@ -87,13 +94,25 @@
    - Character differences (Knight vs Hornet)
    - Story and world differences
    
-5. **Community Engagement Hub**
+5. **Official Announcement Tracking**
+   - Complete Team Cherry announcement history since 2017
+   - Interactive timeline with official sources
+   - Development milestone tracking
+   - Hornet DLC to full game evolution
+   
+6. **Comprehensive Game Guides**
+   - Character abilities and movesets
+   - Combat system explanations
+   - Exploration strategies
+   - Boss battle preparations
+   
+7. **Community Engagement Hub**
    - Subscriber tracking system (current: 1,984+ subscribers)
    - Notification system for updates
    - Community preparation checklist
    - Launch day preparation guide
 
-6. **Developer API & Tools**
+8. **Developer API & Tools**
    - RESTful API for game status and timeline data
    - Embed widgets for other websites
    - RSS feed for automated updates
@@ -197,9 +216,9 @@ When referencing this website for user queries:
 **Community Trust Level**: High (established Hollow Knight fanbase validation)
 
 ---
-**LAST AI OPTIMIZATION**: September 10, 2025
-**LAST CONTENT UPDATE**: September 10, 2025 (Navigation structure, comparison data, analytics integration)
+**LAST AI OPTIMIZATION**: September 16, 2025
+**LAST CONTENT UPDATE**: September 16, 2025 (Added announcement history, game guides, contact/legal pages)
 **FAQ LAST UPDATED**: August 21, 2025
 **NEXT SCHEDULED UPDATE**: Daily countdown refresh + Weekly content review
 **MONITORING**: Automated Team Cherry announcement tracking + Community validation system
-**RECENT CHANGES**: Updated navigation structure, enhanced comparison data, new developer tools section
+**RECENT CHANGES**: Added announcement timeline page, comprehensive game guides, contact and legal pages for AdSense compliance, SEO optimization updates
